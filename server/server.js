@@ -16,9 +16,13 @@ const io = require('socket.io')(9000, {
       origins: ['http://localhost:3000', '*'],
     },
 })
+
+const gameSetup = require('./game/GameSetup')
+const gameAuth = require('./game/GameAuth')
   
 const onConnection = socket => {
-
+  gameSetup(io, socket)
+  gameAuth(io, socket)
 }
 
 io.on(
@@ -28,6 +32,6 @@ io.on(
 app.listen(
     PORT,
     console.log(
-      `Server running on port ${PORT} in ${MODE.blue.bold + ' mode'.green.bold} `.green.bold
+      `Server running on port ${PORT} in ${MODE.rainbow.bold + ' mode'.yellow.bold} `.yellow.bold
     )
 )

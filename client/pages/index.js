@@ -5,12 +5,7 @@ import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const socket = useContext(SocketContext)
-  const clickHandler = () => {
-    socket.emit('create-team')
-  }
-  const show = () => {
-    socket.emit('show')
-  }
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -18,8 +13,7 @@ export default function Home() {
         <meta name="description" content="Emo-G" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <button onClick = {clickHandler}>Create a Team</button>
-      <button onClick = {show}>Show Team Details</button>
+      <p className='stroke-current text-7xl'>E<span className='text-yellow-400'>M</span><span className='text-'>O</span><span>-</span><span>G</span></p>
     </div>
   )
 }

@@ -1,7 +1,10 @@
 const game = []
 const {Teams} = require('../data/Teams')
 const defaultGame = Teams
-const mode = 'default'
+let mode = 'default'
+let guessingTimer = 180//in seconds
+let typingTimer = 90//in seconds
+let MAX_ROUNDS = 6
 
 module.exports = (io, socket) => {
 
@@ -38,8 +41,19 @@ module.exports = (io, socket) => {
         mode = mode
     }
 
+    const setTimer = ({guessingTime, typingTime}) => {
+        guessingTimer = guessingTime
+        typingTimer = typingTime
+    }
+
+    const setRounds = ({MAX_ROUND}) => {
+        MAX_ROUNDS = MAX_ROUND
+    }
+
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)
     socket.on('mode', selectAMode)
     socket.on('join-team', joinATeam)
+    socket.on('set-time', setTimer)
+    socket.on('no-of-rounds', setRounds)
 }

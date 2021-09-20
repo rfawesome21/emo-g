@@ -23,7 +23,6 @@ const settings = () => {
         socket.on('Room-code', code => setGameCode(code))
         socket.on('Players', players => setNumberOfPlayers(players))
         socket.on('guessing-timer', guessTime => {
-            console.log(guessTime);
             let secondArr = guessTime.split(':')
             setGuessingTime(secondArr[0])
             setGuessingTimeInSeconds(secondArr[1])
@@ -35,12 +34,9 @@ const settings = () => {
         })
     }, [socket])
 
-
     const continueGame = () => {
         const guesser = `${guessingTime}:${guessingTimeInSeconds}`
-        console.log(guesser);
         const typer = `${typingTime}:${typingTimeInSeconds}`
-        console.log(typer);
         socket.emit('set-time', {guesser, typer})
         const MAX_ROUND = numberOfRounds
         socket.emit('no-of-rounds', MAX_ROUND )

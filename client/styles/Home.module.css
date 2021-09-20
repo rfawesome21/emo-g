@@ -17,6 +17,30 @@
   align-items: center;
 }
 
+.heading {
+  color: #fff;
+  text-shadow: -1px -1px 0 #309f3f, 1px -1px 0 #309f3f, -2px 2px 0 #b9c933, 2px 2px 0 #b9c933;
+  font-size: 5rem;
+}
+
+.m{
+  color: #fff;
+  text-shadow: -1px -1px 0 #e2a132, 4px -1px 0 #dd8634, -2px 1px 0 #dd8634, 1px 1px 0 #e2a132;
+}
+
+.o{
+  text-shadow: -1px -1px 0 #da7243, 4px -1px 0 #c7356e, -2px 1px 0 #c7356e, 1px 1px 0 #da7243;
+}
+
+.dash{
+  text-shadow: -1px -1px 0 #cd4e8b, 1px -1px 0 #cd4e8b, -1px 1px 0 #cd4e8b, 1.5px 1.5px 0 #9e4ed2;
+}
+
+.g{
+  text-shadow: -1px -1px 0 #925cce, 2px -2px 0 #33dbb3, -2px 2px 0 #33dbb3, 1px 1px 0 #925cce;
+
+}
+
 .footer {
   width: 100%;
   height: 100px;

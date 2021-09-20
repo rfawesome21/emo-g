@@ -9,21 +9,42 @@ const settings = () => {
 
     const router = useRouter()
     const socket = useContext(SocketContext)
-    const [numberOfRounds, setNumberOfRounds] = useState(6)
+    const [numberOfRounds, setNumberOfRounds] = useState('')
     const [numberOfPlayers, setNumberOfPlayers] = useState(20)
     const [gameCode, setGameCode] = useState("")
     const [disabled, setDisabled] = useState(true)
-    const [guessingTime, setGuessingTime] = useState('03')
-    const [typingTime, setTypingTime] = useState('01')
-    const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('00')
-    const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('30')
-    
+    const [guessingTime, setGuessingTime] = useState('')
+    const [typingTime, setTypingTime] = useState('')
+    const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('')
+    const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
+
     useEffect(() => {
         socket.emit('create-game')
         socket.on('Room-code', code => setGameCode(code))
         socket.on('Players', players => setNumberOfPlayers(players))
+        socket.on('guessing-timer', guessTime => {
+            console.log(guessTime);
+            let secondArr = guessTime.split(':')
+            setGuessingTime(secondArr[0])
+            setGuessingTimeInSeconds(secondArr[1])
+        })
+        socket.on('typing-timer', typeTime => {
+            let secondArr = typeTime.split(':')
+            setTypingTime(secondArr[0])
+            setTypingTimeInSeconds(secondArr[1])
+        })
+    }, [socket])
 
-    }, [])
+
+    const continueGame = () => {
+        const guesser = `${guessingTime}:${guessingTimeInSeconds}`
+        console.log(guesser);
+        const typer = `${typingTime}:${typingTimeInSeconds}`
+        console.log(typer);
+        socket.emit('set-time', {guesser, typer})
+        const MAX_ROUND = numberOfRounds
+        socket.emit('no-of-rounds', MAX_ROUND )
+    }
 
     const onChangeHandlerInMinutes = (e) => {
         e.target.name === 'guess'? setGuessingTime(e.target.value) : setTypingTime(e.target.value)
@@ -34,7 +55,7 @@ const settings = () => {
 
     return ( 
         <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack />
+            <SettingsAndBack link = '/host/settings' />
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
                 <div className="flex flex-row justify-between bg-gray-200 px-4 py-4">
@@ -50,45 +71,76 @@ const settings = () => {
                             onChange = {e => onChangeHandlerInMinutes(e)}
                             value = {guessingTime}
                             disabled={disabled? true:false}
-
+                            className={disabled?`ml-1 text-center disabled:opacity-50 bg-gray-500 w-14 text-blue-100` : 'ml-1 text-center w-14'}
+                            name = "guess"
                             />
                             <input type = "number"
                             min="1"
                             max="60"
+                            className={disabled?`ml-1 text-center disabled:opacity-50 bg-gray-500 w-14 text-blue-100` : 'ml-1 text-center w-14'}
                             onChange = {e => onChangeHandlerInSeconds(e)}
                             value = {guessingTimeInSeconds}
                             disabled={disabled? true:false}
+                            name = "guessInSeconds"
                             />
+                            mins
                         </div>
-                        <div className="flex justify-between ml-4 my-2 text-lg">Typing time <input 
-                                                                                            type="number" 
-                                                                                            min='01:00' 
-                                                                                            max='10:00'
-                                                                                            value={typingTime} 
-                                                                                            className={`ml-4`}
-                                                                                            disabled={disabled? true:false}
-                                                                                            name = 'type'
-                                                                                            onChange = {e => onChangeHandlerInMinutes(e)}
-                                                                                            />
-                                                                                            <input 
-                                                                                            type="number" 
-                                                                                            min='01:00' 
-                                                                                            max='10:00'
-                                                                                            value={typingTimeInSeconds} 
-                                                                                            className={`ml-4 ${styles.input}`}
-                                                                                            disabled={disabled? true:false}
-                                                                                            name = 'type'
-                                                                                            onChange = {e => onChangeHandlerInSeconds(e)}
-                                                                                            />
-                                                                                            </div>
+                        <div className="flex justify-between ml-4 my-2 text-lg">
+                            Typing time 
+                            <input 
+                            type="number" 
+                            min='1' 
+                            max='10'
+                            value={typingTime} 
+                            className={disabled?`ml-6 text-center disabled:opacity-50 bg-gray-500 w-14 text-blue-100` : 'ml-6 text-center w-14'}
+                            disabled={disabled? true:false}
+                            name = 'type'
+                            onChange = {e => onChangeHandlerInMinutes(e)}
+                            />
+                            <input 
+                            type="number" 
+                            min='1' 
+                            max='60'
+                            value={typingTimeInSeconds} 
+                            className={disabled?`ml-1 text-center disabled:opacity-50 bg-gray-500 w-14 text-blue-100` : 'ml-1 text-center w-14'}
+                            disabled={disabled? true:false}
+                            name = 'type'
+                            onChange = {e => onChangeHandlerInSeconds(e)}
+                            />
+                            mins
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between bg-gray-200 px-4 py-4">
                     <div className="font-bold text-xl">Number of rounds</div>
-                    <div className="text-xl"><input type="checkbox" className="form-checkbox"/> 10 Rounds</div>
-                    <div className="text-xl"><input type="checkbox" className="form-checkbox"/> <input value={numberOfRounds} onChange={event => setNumberOfRounds(event.target.value)} type="number" min="6" style={{width:"4rem"}} className="border-2"/></div>
+                    <div className="text-xl">
+                        <input type="radio" 
+                        name="round" 
+                        className="form-checkbox"
+                        defaultChecked
+                        onClick = {() => setDisabled(true)}
+                        /> 
+                        10 Rounds(Default)
+                        </div>
+                    <div className="text-xl">
+                        <input 
+                        type="radio" 
+                        name="round" 
+                        className="form-checkbox"
+                        onClick = {() => setDisabled(false)}
+                        /> 
+                        <input 
+                        value={numberOfRounds} 
+                        onChange={event => setNumberOfRounds(event.target.value)} 
+                        type="number" min="6" 
+                        style={{width:"10rem"}}
+                        placeholder = 'Set Number of Rounds' 
+                        disabled={disabled?true:false}
+                        className={disabled? 'border-2 bg-gray-300 text-black text-sm' : 'border-2 text-sm'}
+                        />
+                    </div>
                 </div>
-                <div className="text-center"><button onClick={() => router.push("/hostScreen2")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center"><button onClick={continueGame} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
             </div>
         </div>
      );

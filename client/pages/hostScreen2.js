@@ -16,7 +16,8 @@ const hostScreen2 = () => {
 
     return ( 
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
-            <SettingsAndBack />
+            <SettingsAndBack link = '/host/settings' />
+            
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
 

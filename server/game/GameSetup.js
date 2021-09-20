@@ -2,9 +2,7 @@ const game = []
 const {Teams} = require('../data/Teams')
 const defaultGame = Teams
 let mode = 'default'
-let guessingTimer = 180//in seconds
-let typingTimer = 90//in seconds
-let MAX_ROUNDS = 6
+let { roomSpecificGamePlay, Password} = require('./GameVariables')
 
 module.exports = (io, socket) => {
 
@@ -41,19 +39,42 @@ module.exports = (io, socket) => {
         mode = mode
     }
 
-    const setTimer = ({guessingTime, typingTime}) => {
-        guessingTimer = guessingTime
-        typingTimer = typingTime
-    }
+    
 
     const setRounds = ({MAX_ROUND}) => {
-        MAX_ROUNDS = MAX_ROUND
+        let index = 0
+        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
+            for(var j of Password){
+                if(value.id === j){
+                    index = i
+                    break
+                }
+            }
+        }
+        roomSpecificGamePlay.room.game[index].MAX_ROUNDS = MAX_ROUND
     }
 
+    const setTimer = ({guesser, typer}) => {
+        let index
+        console.log(Password);
+        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
+            for(var j of Password){
+                if((value.id) === j){
+                    console.log(`Match Found!`);
+                    index = i
+                    break
+                }
+            }
+        }
+        roomSpecificGamePlay.room.game[index].guessingTimer = guesser
+        roomSpecificGamePlay.room.game[index].typingTimer = typer
+    }
+
+
+    socket.on('set-time', setTimer)
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)
     socket.on('mode', selectAMode)
     socket.on('join-team', joinATeam)
-    socket.on('set-time', setTimer)
     socket.on('no-of-rounds', setRounds)
 }

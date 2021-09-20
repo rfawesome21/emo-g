@@ -68,7 +68,7 @@ const hostScreen7 = () => {
                     </div>
                     <div className="flex flex-row flex-wrap md:max-w-md lg:max-w-lg max-h-44" style={{overflowY:"scroll"}} id="players">
                         {players.map(player => (
-                            <div style={{zIndex:2}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})}>
+                            <div style={{zIndex:2, textAlign:"center"}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})}>
                                 <div className="mx-7">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -80,7 +80,7 @@ const hostScreen7 = () => {
                     </div>
                 </div>
 
-                <div className="text-center"><button onClick={() => router.push("/hostScreen7")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center"><button onClick={() => router.push("/hostScreen8")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
 
 
                 {

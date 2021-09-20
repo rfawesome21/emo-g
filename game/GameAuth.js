@@ -1,5 +1,8 @@
 const {genRanHex} = require('./GameFunctions')
 let code = ''
+const {Teams} = require('../data/Teams')
+const {Scenes} = require('../data/Scenes')
+
 const Players = []
 let {roomSpecificGamePlay, Password} = require('./GameVariables')
 
@@ -36,12 +39,12 @@ module.exports = (io, socket) => {
         }],
         guessingTimer : '3:00',
         score : [],
-        scene : [],
+        scene : Scenes,
         typingTimer : '1:30',
         roundNo : 1,
         MAX_ROUNDS : 10,
         lifelines : [],
-        teams : []})
+        teams : Teams})
         let index
         if(roomSpecificGamePlay.room.game.length > 0){
             for(var [i,value]  of roomSpecificGamePlay.room.game.entries()){

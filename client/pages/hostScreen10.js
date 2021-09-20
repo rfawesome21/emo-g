@@ -28,7 +28,7 @@ const hostScreen10 = () => {
             },
             {
                 name:"x3"
-            },,
+            },
             {
                 name:"x4"
             },

@@ -13,7 +13,7 @@ export default function Home() {
         <meta name="description" content="Emo-G" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <p className='stroke-current text-7xl'>E<span className='text-yellow-400'>M</span><span className='text-'>O</span><span>-</span><span>G</span></p>
+      <p className='stroke-current xl:text-7xl md:text-4xl'>E<span className='text-yellow-400'>M</span><span className='text-'>O</span><span>-</span><span>G</span></p>
     </div>
   )
 }

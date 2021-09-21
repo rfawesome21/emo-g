@@ -11,6 +11,7 @@ const teams = () => {
 
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
+    const [mode, setMode] = useState('random')
 
     const [players, setPlayers] = useState([])
     const [playerIcon, deletePlayer] = useState()
@@ -56,6 +57,20 @@ const teams = () => {
         ])
     }, [])
 
+    const continueGame = () => {
+        console.log(mode);
+        if(mode === 'random')
+        {
+            router.push('/host/random')
+        }
+        else if(mode === 'manual'){
+            router.push('/host/manual')
+        }
+        else if(mode === 'choice'){
+            router.push('/host/choice')
+        }
+    }
+
     return ( 
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/scenes'} />
@@ -65,12 +80,16 @@ const teams = () => {
                 <div className="flex flex-row justify-evenly w-screen">
                     <div className="bg-gray-200 px-16 py-4 flex flex-column justify-evenly">
                         <div className="font-bold text-xl">Divide players into Teams</div>
-                        <div className="font-bold text-xl">Player per team:  <input type="number" min="2" style={{width:"4rem"}}/></div>
+                        <div className="font-bold text-xl mt-5">Player per team:  <input type="number" min="2" style={{width:"4rem"}}/></div>
+                        <div className="text-xl font-semibold mt-5"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>
+                        <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('manual')} /> Manual  </div>
+                        <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('choice')} /> Player's choice  </div>
+                    
                     </div>
                     <PlayerComponent players = {players} />
                 </div>
 
-                <div className="text-center"><button onClick={() => router.push("/host/divide")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center"><button onClick={() => continueGame()} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
 
 
                 {

@@ -12,44 +12,11 @@ const avatar = () => {
     useEffect(() => {
         const gameCode = sessionStorage.getItem('game-code')
         socket.emit('join-avatar', {gameCode})
-        socket.on('players', players => setNumberOfPlayers(players))
-        //get players and gamecode
-        setPlayers([
-            {
-                name:"x0"
-            },
-            {
-                name:"x1"
-            },
-            {
-                name:"x2"
-            },
-            {
-                name:"x3"
-            },
-            {
-                name:"x4"
-            },
-            {
-                name:"x5"
-            },
-            {
-                name:"x6"
-            },
-            {
-                name:"bajra"
-            },
-            {
-                name:"x8"
-            },
-            {
-                name:"x9"
-            },
-            {
-                name:"x10"
-            }
-        ])
-    }, [])
+        socket.on('players', players => {
+            setNumberOfPlayers(players.length)
+            setPlayers(players)
+        })
+    }, [socket])
 
     return ( 
         <div>
@@ -90,7 +57,20 @@ const avatar = () => {
                             </div>
                         </div>
                     </div>
-                    <PlayerComponent players = {players} />
+                    <div className="flex flex-row flex-wrap md:max-w-md lg:max-w-lg max-h-44" style={{overflowY:"scroll"}} id="players">
+                        {players.map(player => (
+                            <div style={{zIndex:2, textAlign:"center"}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})}>
+                                <div className="mx-7">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                {player.name}
+                            </div>
+                        ))}
+                    </div>
+
+
                 </div>
             </div>
         </div>

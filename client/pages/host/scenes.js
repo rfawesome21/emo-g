@@ -23,25 +23,18 @@ const scenes = () => {
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
             <SettingsAndBack link = '/host/settings' />
             
-            <div className="flex flex-column justify-evenly">
+            <div className="flex flex-col justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
 
-                <div className="flex justify-between">
-                    <div className="flex flex-column justify-evenly align-center bg-gray-200 p-8 mx-4">
+                <div className="flex flex-col justify-between">
+                    <div className="flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4">
                         <div className="font-bold text-xl">Set the Scene</div>
-                        <br />
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50" 
+                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" 
                         onClick = {() => setScenes(!scenes)}>Choose Existing</button>
-                        <br />
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50" 
-                        onClick = {() => setCreateScene(!createScene)}>Create New</button>
                     </div>
-                    <div className="flex flex-column justify-evenly align-center bg-gray-200 p-8 mx-4">
+                    <div className="flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4">
                         <div className="font-bold text-xl">Set Emotions</div>
-                        <br />
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50" onClick = {() => setEmotion(!emotion)}>Choose Existing</button>
-                        <br />
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50" onClick = {() => setCreateEmotion(!createEmotion)}>Create New</button>
+                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" onClick = {() => setEmotion(!emotion)}>Choose Existing</button>
                     </div>
                 </div>
 

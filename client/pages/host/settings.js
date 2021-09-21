@@ -25,7 +25,7 @@ const settings = () => {
             setGameCode(code)})
         socket.on('players', players => {
             sessionStorage.setItem('players-length', players)
-            setNumberOfPlayers(players)})
+            setNumberOfPlayers(players.length)})
         socket.on('guessing-timer', guessTime => {
             let secondArr = guessTime.split(':')
             setGuessingTime(secondArr[0])

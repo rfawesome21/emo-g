@@ -87,7 +87,7 @@ module.exports = (io, socket) => {
         }
         console.log(index)
         socket.join(gameCode)
-        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players.length)
+        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
     }
 
     socket.on('join-scenes', joinScenes)

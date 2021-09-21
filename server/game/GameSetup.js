@@ -1,5 +1,6 @@
 const game = []
 const {Teams} = require('../data/Teams')
+const {Scenes} = require('../data/Scenes')
 const defaultGame = Teams
 let mode = 'default'
 let { roomSpecificGamePlay, Password} = require('./GameVariables')
@@ -41,40 +42,61 @@ module.exports = (io, socket) => {
 
     
 
-    const setRounds = ({MAX_ROUND}) => {
+    const setRounds = ({MAX_ROUND, gameCode}) => {
         let index = 0
-        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
-            for(var j of Password){
-                if(value.id === j){
-                    index = i
-                    break
-                }
+        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+            if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                index = i
             }
         }
         roomSpecificGamePlay.room.game[index].MAX_ROUNDS = MAX_ROUND
     }
 
-    const setTimer = ({guesser, typer}) => {
-        let index
-        console.log(Password);
-        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
-            for(var j of Password){
-                if((value.id) === j){
-                    console.log(`Match Found!`);
+    const setTimer = ({guesser, typer, gameCode}) => {
+        let index = 0
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
                     index = i
-                    break
                 }
-            }
         }
         roomSpecificGamePlay.room.game[index].guessingTimer = guesser
         roomSpecificGamePlay.room.game[index].typingTimer = typer
     }
 
+    const joinScenes = () => {
+        io.to(socket.id).emit('scenes',Scenes)
+    }
 
+    const addNewScenes = ({addScenesToGame, gameCode}) => {
+        let index = 0
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                    index = i
+                }
+        }
+        roomSpecificGamePlay.room.game[index].scene = addScenesToGame
+    }
+
+    const joinAvatar = ({gameCode}) => {
+        let index
+        console.log(gameCode)
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                    index = i
+                }
+        }
+        console.log(index)
+        socket.join(gameCode)
+        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
+    }
+
+    socket.on('join-scenes', joinScenes)
+    socket.on('new-scenes', addNewScenes)
     socket.on('set-time', setTimer)
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)
     socket.on('mode', selectAMode)
     socket.on('join-team', joinATeam)
     socket.on('no-of-rounds', setRounds)
+    socket.on('join-avatar', joinAvatar)
 }

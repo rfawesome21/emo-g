@@ -1,13 +1,36 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import Button from '../Button'
+import {SocketContext} from '../../context/socket/SocketContext'
+import {useRouter} from "next/router"
 
 const Join = () => {
+    const router = useRouter()
+    const [code, setCode] = useState('')
+    const [name, setName] = useState('')
+    const [pressed, setPressed] = useState(false)
+    const socket = useContext(SocketContext)
+
+    const clickHandler = () => {
+        socket.emit('join-game', {code, name})
+        socket.on('err', ({message}) => {
+            if(!pressed)
+                alert(message)
+            setPressed(true)})
+        socket.on('authenticated',() => {
+            sessionStorage.setItem('game-code', code)
+            router.push('/player/avatar')}
+        )
+    }
+
+    const onChangeHandler = (e) => {
+        e.target.name === 'code'? setCode(e.target.value) : setName(e.target.value)
+    }
+
     return (
         <div className='h-full flex flex-col'>
-            <input className='bg-gray-300 rounded-md p-2 text-black text-center' placeholder='Enter Name' />
-            <input className='bg-gray-300 rounded-md p-2 mt-3 text-black text-center' placeholder='Enter Code' />
-            <button className='bg-gray-200 border-2 border-black rounded-md px-2 py-1 mt-3 w-20 text-lg font-bold self-center'>
-            Join 
-            </button>
+            <input name = 'name' className='bg-gray-300 rounded-md p-2 text-black text-center' placeholder='Enter Name' value = {name} onChange = {e => onChangeHandler(e)} />
+            <input name = 'code' className='bg-gray-300 rounded-md p-2 mt-3 text-black text-center' placeholder='Enter Code' value = {code} onChange = {e => onChangeHandler(e)} />
+            <Button text = {'Join'} clickHandler = {clickHandler} />
         </div>
     )
 }

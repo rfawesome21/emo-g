@@ -3,7 +3,7 @@ const sendCodeToInvitePlayers = (props) => {
         <div>
             <div className="text-center font-bold text-xl">Send code to invite players</div>
             <br />
-            <div className="flex flex-row justify-evenly">
+            <div className="flex flex-row justify-around">
                 <div className="border-2 cursor-pointer border-black rounded-md flex justify-between" onClick={() => {navigator.clipboard.writeText(props.gameCode)}}>
                     <span className="py-2 px-4 font-bold text-lg">{props.gameCode}</span>
                     <span className="bg-black p-2">

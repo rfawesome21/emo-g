@@ -18,7 +18,6 @@ const teams = () => {
 
     useEffect(() => {
         setGameCode(sessionStorage.getItem('game-code'))
-        setNumberOfPlayers(sessionStorage.getItem('players-length'))
         //get players and gamecode
         setPlayers([
             {

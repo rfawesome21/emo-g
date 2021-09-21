@@ -63,18 +63,26 @@ module.exports = (io, socket) => {
         roomSpecificGamePlay.room.game[index].typingTimer = typer
     }
 
-    const joinScenes = () => {
+    const joinScenes = (gameCode) => {
+        let index
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                    index = i
+                }
+        }
         io.to(socket.id).emit('scenes',Scenes)
+        io.to(socket.id).emit('players', roomSpecificGamePlay.room.game[index].players)
     }
 
     const addNewScenes = ({addScenesToGame, gameCode}) => {
-        let index = 0
+        let index
             for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
                 if(roomSpecificGamePlay.room.game[i].id === gameCode){
                     index = i
                 }
         }
         roomSpecificGamePlay.room.game[index].scene = addScenesToGame
+        console.log(roomSpecificGamePlay.room.game[index]);
     }
 
     const joinAvatar = ({gameCode}) => {
@@ -90,8 +98,40 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
     }
 
+    const gameScenes = (gameCode) => {
+        let index
+        console.log(gameCode)
+        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+            if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                index = i
+            }
+        }
+        socket.join(gameCode)
+        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
+    }
+
+    const addScene = ({scene}) => {
+        Scenes.push({
+            id : Scenes.length + 1,
+            scene : scene})
+        io.to(socket.id).emit('scenes',Scenes)
+    }
+
+    const editScenes = ({sceneID, scene}) => {
+        for(let i = 0; i < Scenes.length; i++){
+            if(sceneID === Scenes[i].id){
+                console.log('Match found!');
+                Scenes[i].scene = scene
+            }
+        }
+        io.to(socket.id).emit('scenes', Scenes)
+    }
+
+    socket.on('edit-scenes', editScenes)
+    socket.on('game-scenes', gameScenes)
     socket.on('join-scenes', joinScenes)
     socket.on('new-scenes', addNewScenes)
+    socket.on('add-scene', addScene)
     socket.on('set-time', setTimer)
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)

@@ -1,10 +1,15 @@
 import Modal from "./Modal";
 import Button from './Button'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/socket/SocketContext";
 
 const CreateNewScene = ({closeButton, text, sceneID}) => {
     const [scene, setScene] = useState(text)
+    const [gameCode, setGameCode] = useState(0)
+
+    useEffect(() => {
+        setGameCode(sessionStorage.getItem('game-code'))
+    },[])
 
     const socket = useContext(SocketContext)
     const onChangeHandler = (e) => {
@@ -12,12 +17,12 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
     }
 
     const addScene = () => {
-        socket.emit('add-scene', {scene})
+        socket.emit('add-scene', {gameCode,scene})
         closeButton()
     }
 
     const editScene = () => {
-        socket.emit('edit-scenes', {sceneID, scene})
+        socket.emit('edit-scenes', {sceneID, scene, gameCode})
         closeButton()
     }
 

@@ -62,6 +62,7 @@ module.exports = (io, socket) => {
         roundNo : 1,
         MAX_ROUNDS : 10,
         lifelines : [],
+        MAX_PLAYERS_PER_TEAM : 5,
         teams : Teams})
         let index
         if(roomSpecificGamePlay.room.game.length > 0){

@@ -82,7 +82,9 @@ const SelectScene = () => {
                                 return(
                                 <div key = {index}>
                                     <button className="py-2 px-4 font-bold text-lg h-28 w-96 bg-gray-50 rounded" key = {index}
-                                    onClick = {() => setCreateScenes(true)}
+                                    onClick = {() => {
+                                        setEditSceneText('')
+                                        setCreateScenes(true)}}
                                     >+ Create Scene</button> 
                                 </div>
                                 )

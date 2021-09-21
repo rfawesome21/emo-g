@@ -21,7 +21,8 @@ const SelectScene = ({closeButton}) => {
     }
 
     const saveChanges = () => {
-        socket.emit('new-scenes', addScenesToGame)
+        const gameCode = sessionStorage.getItem('game-code')
+        socket.emit('new-scenes', {addScenesToGame, gameCode})
         closeButton()
     }
 

@@ -10,7 +10,7 @@ const settings = () => {
     const router = useRouter()
     const socket = useContext(SocketContext)
     const [numberOfRounds, setNumberOfRounds] = useState('')
-    const [numberOfPlayers, setNumberOfPlayers] = useState(20)
+    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [guessingTime, setGuessingTime] = useState('')
@@ -23,7 +23,7 @@ const settings = () => {
         socket.on('Room-code', code => {
             sessionStorage.setItem('game-code', code)
             setGameCode(code)})
-        socket.on('Players', players => {
+        socket.on('players', players => {
             sessionStorage.setItem('players-length', players)
             setNumberOfPlayers(players)})
         socket.on('guessing-timer', guessTime => {
@@ -41,9 +41,9 @@ const settings = () => {
     const continueGame = () => {
         const guesser = `${guessingTime}:${guessingTimeInSeconds}`
         const typer = `${typingTime}:${typingTimeInSeconds}`
-        socket.emit('set-time', {guesser, typer})
+        socket.emit('set-time', {guesser, typer, gameCode})
         const MAX_ROUND = numberOfRounds
-        socket.emit('no-of-rounds', MAX_ROUND )
+        socket.emit('no-of-rounds', {MAX_ROUND, gameCode} )
         router.push('/host/scenes')
     }
 

@@ -8,11 +8,32 @@ let {roomSpecificGamePlay, Password} = require('./GameVariables')
 
 module.exports = (io, socket) => {
     const authentication = ({code, name}) => {
-        if(Password.includes(code)){
+        let index = false
+        if(roomSpecificGamePlay.room.game.length > 0){
+            for(let j of Password){
+                if(code === j){
+                    index = true
+                }
+            }
+        }
+        if(index){
             socket.join(code)
-            Players.push(name)
+            for (let index = 0; index < roomSpecificGamePlay.room.game.length; index++) {
+                if(code === roomSpecificGamePlay.room.game[index].id){
+                    roomSpecificGamePlay.room.game[index].players.push({
+                        name : name,
+                        avatar : ''
+                    })
+                    io.in(roomSpecificGamePlay.room.game[index].id)
+                    .emit('players', roomSpecificGamePlay.room.game[index].players.length)
+                    break
+                }
+            }
+            io.to(socket.id).emit('authenticated')
+            console.log('Player joined!');
         }
         else{
+            console.log('Wrong');
             socket.emit('err', {message : 'Wrong Room Code entered!'})
         }
     }
@@ -33,10 +54,7 @@ module.exports = (io, socket) => {
         
         Password.push(code)
         roomSpecificGamePlay.room.game.push({id : code,
-        players : [{
-            name : '',
-            avatar : ''
-        }],
+        players : [],
         guessingTimer : '3:00',
         score : [],
         scene : Scenes,

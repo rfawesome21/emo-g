@@ -5,17 +5,6 @@ const defaultGame = Teams
 let mode = 'default'
 let { roomSpecificGamePlay, Password} = require('./GameVariables')
 
-
-const getIndex = (arr1, arr2) => {
-    for(j of arr2){
-        for([value, key] of arr1){
-            if(j === value.id){
-                return key
-            }
-        }
-    }
-}
-
 module.exports = (io, socket) => {
 
     const createTeam = () => {
@@ -53,26 +42,22 @@ module.exports = (io, socket) => {
 
     
 
-    const setRounds = ({MAX_ROUND}) => {
+    const setRounds = ({MAX_ROUND, gameCode}) => {
         let index = 0
-        for(let j of Password){
-            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-                if(roomSpecificGamePlay.room.game[i].id === j){
-                    index = i
-                }
+        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+            if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                index = i
             }
         }
         roomSpecificGamePlay.room.game[index].MAX_ROUNDS = MAX_ROUND
     }
 
-    const setTimer = ({guesser, typer}) => {
+    const setTimer = ({guesser, typer, gameCode}) => {
         let index = 0
-        for(let j of Password){
             for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-                if(roomSpecificGamePlay.room.game[i].id === j){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
                     index = i
                 }
-            }
         }
         roomSpecificGamePlay.room.game[index].guessingTimer = guesser
         roomSpecificGamePlay.room.game[index].typingTimer = typer
@@ -82,18 +67,27 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('scenes',Scenes)
     }
 
-    const addNewScenes = (scenes) => {
+    const addNewScenes = ({addScenesToGame, gameCode}) => {
         let index = 0
-        for(let j of Password){
             for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-                if(roomSpecificGamePlay.room.game[i].id === j){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
                     index = i
                 }
-            }
         }
-        console.log(index);
-        roomSpecificGamePlay.room.game[index].scene = scenes
-        console.log(roomSpecificGamePlay.room.game);
+        roomSpecificGamePlay.room.game[index].scene = addScenesToGame
+    }
+
+    const joinAvatar = ({gameCode}) => {
+        let index
+        console.log(gameCode)
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                    index = i
+                }
+        }
+        console.log(index)
+        socket.join(gameCode)
+        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players.length)
     }
 
     socket.on('join-scenes', joinScenes)
@@ -104,4 +98,5 @@ module.exports = (io, socket) => {
     socket.on('mode', selectAMode)
     socket.on('join-team', joinATeam)
     socket.on('no-of-rounds', setRounds)
+    socket.on('join-avatar', joinAvatar)
 }

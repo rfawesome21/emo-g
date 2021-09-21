@@ -110,21 +110,33 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
     }
 
-    const addScene = ({scene}) => {
-        Scenes.push({
-            id : Scenes.length + 1,
-            scene : scene})
-        io.to(socket.id).emit('scenes',Scenes)
-    }
-
-    const editScenes = ({sceneID, scene}) => {
-        for(let i = 0; i < Scenes.length; i++){
-            if(sceneID === Scenes[i].id){
-                console.log('Match found!');
-                Scenes[i].scene = scene
+    const addScene = ({scene, gameCode}) => {
+        let index
+        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+            if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                index = i
+                roomSpecificGamePlay.room.game[i].scene.push({
+                    id : roomSpecificGamePlay.room.game[i].scene.length + 1,
+                    scene : scene
+                }) 
             }
         }
-        io.to(socket.id).emit('scenes', Scenes)
+        io.to(socket.id).emit('scenes',roomSpecificGamePlay.room.game[index].scene)
+    }
+
+    const editScenes = ({sceneID, scene, gameCode}) => {
+        let index
+        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+            if(roomSpecificGamePlay.room.game[i].id === gameCode){
+                index = i
+                for(let j = 0; j < roomSpecificGamePlay.room.game[i].scene.length; j++){
+                    if(roomSpecificGamePlay.room.game[i].scene[j].id === sceneID){
+                        roomSpecificGamePlay.room.game[i].scene[j].scene = scene
+                    }
+                } 
+            }
+        }
+        io.to(socket.id).emit('scenes', roomSpecificGamePlay.room.game[index].scene)
     }
 
     socket.on('edit-scenes', editScenes)

@@ -1,8 +1,20 @@
 const game = []
 const {Teams} = require('../data/Teams')
+const {Scenes} = require('../data/Scenes')
 const defaultGame = Teams
 let mode = 'default'
 let { roomSpecificGamePlay, Password} = require('./GameVariables')
+
+
+const getIndex = (arr1, arr2) => {
+    for(j of arr2){
+        for([value, key] of arr1){
+            if(j === value.id){
+                return key
+            }
+        }
+    }
+}
 
 module.exports = (io, socket) => {
 
@@ -43,11 +55,10 @@ module.exports = (io, socket) => {
 
     const setRounds = ({MAX_ROUND}) => {
         let index = 0
-        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
-            for(var j of Password){
-                if(value.id === j){
+        for(let j of Password){
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === j){
                     index = i
-                    break
                 }
             }
         }
@@ -55,14 +66,11 @@ module.exports = (io, socket) => {
     }
 
     const setTimer = ({guesser, typer}) => {
-        let index
-        console.log(Password);
-        for(var [i, value] of roomSpecificGamePlay.room.game.entries()){
-            for(var j of Password){
-                if((value.id) === j){
-                    console.log(`Match Found!`);
+        let index = 0
+        for(let j of Password){
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === j){
                     index = i
-                    break
                 }
             }
         }
@@ -70,7 +78,26 @@ module.exports = (io, socket) => {
         roomSpecificGamePlay.room.game[index].typingTimer = typer
     }
 
+    const joinScenes = () => {
+        io.to(socket.id).emit('scenes',Scenes)
+    }
 
+    const addNewScenes = (scenes) => {
+        let index = 0
+        for(let j of Password){
+            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
+                if(roomSpecificGamePlay.room.game[i].id === j){
+                    index = i
+                }
+            }
+        }
+        console.log(index);
+        roomSpecificGamePlay.room.game[index].scene = scenes
+        console.log(roomSpecificGamePlay.room.game);
+    }
+
+    socket.on('join-scenes', joinScenes)
+    socket.on('new-scenes', addNewScenes)
     socket.on('set-time', setTimer)
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)

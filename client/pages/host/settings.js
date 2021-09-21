@@ -20,8 +20,12 @@ const settings = () => {
 
     useEffect(() => {
         socket.emit('create-game')
-        socket.on('Room-code', code => setGameCode(code))
-        socket.on('Players', players => setNumberOfPlayers(players))
+        socket.on('Room-code', code => {
+            sessionStorage.setItem('game-code', code)
+            setGameCode(code)})
+        socket.on('Players', players => {
+            sessionStorage.setItem('players-length', players)
+            setNumberOfPlayers(players)})
         socket.on('guessing-timer', guessTime => {
             let secondArr = guessTime.split(':')
             setGuessingTime(secondArr[0])
@@ -40,6 +44,7 @@ const settings = () => {
         socket.emit('set-time', {guesser, typer})
         const MAX_ROUND = numberOfRounds
         socket.emit('no-of-rounds', MAX_ROUND )
+        router.push('/host/scenes')
     }
 
     const onChangeHandlerInMinutes = (e) => {

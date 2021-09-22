@@ -49,6 +49,8 @@ module.exports = (io, socket) => {
                     })
                     io.in(roomSpecificGamePlay.room.game[index].id)
                     .emit('players', roomSpecificGamePlay.room.game[index].players.length)
+                    io.in(roomSpecificGamePlay.room.game[index].id)
+                    .emit('players-info', roomSpecificGamePlay.room.game[index].players)
                     break
                 }
             }
@@ -88,9 +90,10 @@ module.exports = (io, socket) => {
         lifelines : [],
         MAX_PLAYERS_PER_TEAM : 5,
         GAME_SCENES : deepCopyFunction(MainScenes),
-        teams : Teams,
+        teams : deepCopyFunction(Teams),
         emotions : GameEmotions,
-        emotionsPerRounds : []
+        emotionsPerRounds : [],
+        mode : ''
         })
         let index
         if(roomSpecificGamePlay.room.game.length > 0){

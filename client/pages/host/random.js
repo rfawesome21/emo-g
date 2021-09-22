@@ -1,85 +1,57 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import PlayerComponent from "../../components/Host/PlayerComponent";
+import { SocketContext } from "../../context/socket/SocketContext";
+import TeamComponent from "../../components/TeamComponent";
+import Button from "../../components/Button";
+import TeamPlayers from "../../components/TeamPlayers";
 // import styles from "../css/hostScreen.module.css"
 
 const random = () => {
 
     const router = useRouter()
-
-    const [numberOfPlayers, setNumberOfPlayers] = useState(20)
-    const [gameCode, setGameCode] = useState("LN69ASX")
-
-    const [players, setPlayers] = useState([])
+    const socket = useContext(SocketContext)
+    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
+    const [gameCode, setGameCode] = useState("")
+    const [teams, setTeams] = useState([])
     const [playerIcon, deletePlayer] = useState()
-
+    const [activeTeam, setActiveTeam] = useState(1)
     useEffect(() => {
+        let isMounted = true
+        if(isMounted)
+            setGameCode(sessionStorage.getItem('game-code'))
         //get players and gamecode
-        setPlayers([
-            {
-                name:"x0"
-            },
-            {
-                name:"x1"
-            },
-            {
-                name:"x2"
-            },
-            {
-                name:"x3"
-            }
-        ])
-    }, [])
+        socket.emit('random-division', sessionStorage.getItem('game-code'))
+        socket.on('random-teams', teams => {
+            if(isMounted)
+                setTeams(teams)
+        })
+        return () => {
+            isMounted = false
+        }
+    }, [socket])
 
+    const activeButton = (active) => {
+        setActiveTeam(active)
+    }
+    
     return ( 
-        <div className="flex flex-row justify-center" style={{height:"100vh"}}>
-            <SettingsAndBack link = {'/host/divide'} />
-            <div className="flex flex-column justify-evenly">
+        <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
+            <SettingsAndBack link = {'/host/teams'} />
+            <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
-
-                <div className="flex flex-row justify-evenly w-screen">
-                    <div className="bg-gray-200">
-                        <div className="font-bold text-xl ml-4 mt-4">
-                            TeamName
-                        </div>
-                        <div className="font-bold ml-4 my-4">
-                            4 Players
-                        </div>
-                        <PlayerComponent players = {players} deletePlayer = {deletePlayer} />
+            </div>
+                <div className='flex flex-row w-full justify-around'>
+                    <div className='lg:w-3/12 md:w-4/12'>
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
                     </div>
-                    <div className="bg-gray-200">
-                        <div className="font-bold text-xl ml-4 mt-4">
-                            TeamName
-                        </div>
-                        <div className="font-bold ml-4 my-4">
-                            4 Players
-                        </div> 
-                        <PlayerComponent players = {players} deletePlayer = {deletePlayer} />
+                    <div className='w-5/12'>
+                    {teams? <TeamPlayers teams = {teams.filter(t => t.id === activeTeam)} activeTeam = {activeTeam} /> : null}
                     </div>
-                    <div className="bg-gray-200">
-                        <div className="font-bold text-xl ml-4 mt-4">
-                            TeamName
-                        </div>
-                        <div className="font-bold ml-4 my-4">
-                            3 Players
-                        </div> 
-                        <PlayerComponent players = {players} deletePlayer = {deletePlayer} />
-                    </div>
-
-
-                    <div className="flex items-center cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
-
                 </div>
-
-                <div className="text-center"><button onClick={() => router.push("/hostScreen8")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Start</button></div>
-
-
+                <div className="text-center"><Button text = {'Start'} /></div>
                 {
                 playerIcon?
                 <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
@@ -87,7 +59,6 @@ const random = () => {
                     <div onClick={() => deletePlayer(undefined)}>Back</div>  
                 </div>:<></>}
             </div>
-        </div>
      );
 }
  

@@ -1,9 +1,13 @@
 import React from 'react'
 
-const PlayerComponent = ({players, deletePlayer}) => {
+const PlayerComponent = ({players, deletePlayer, width, largeWidth}) => {
+    let compWidth
+    let respWidth
+    width === 'large'? compWidth = 'lg' : compWidth = 'xl'
+    largeWidth === 'md' ? respWidth = 'md' : respWidth = 'xs'
     return (
-        <div className="flex flex-row flex-wrap md:max-w-xs lg:max-w-xs justify-evenly max-h-44" style={{overflowY:"auto"}} id="players">
-                        {players.map((player, index) => (
+        <div className={`flex flex-row flex-wrap md:max-w-${respWidth} lg:max-w-${compWidth} justify-evenly max-h-44`} style={{overflowY:"scroll"}} id="players">
+                        {players && players.map((player, index) => (
                             <div style={{zIndex:2, textAlign:"center"}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})} key = {index}>
                                 <div className="mx-7">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">

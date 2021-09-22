@@ -56,7 +56,7 @@ const manual = () => {
 
     return ( 
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
-            <SettingsAndBack link = {'/host/divide'} />
+            <SettingsAndBack link = {'/host/teams'} />
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
 

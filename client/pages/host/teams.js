@@ -1,63 +1,44 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import PlayerComponent from "../../components/Host/PlayerComponent";
+import {SocketContext} from '../../context/socket/SocketContext'
+import Button from '../../components/Button'
 // import styles from "../css/hostScreen.module.css"
 
 const teams = () => {
 
     const router = useRouter()
-
+    const socket = useContext(SocketContext)
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const [mode, setMode] = useState('random')
 
     const [players, setPlayers] = useState([])
     const [playerIcon, deletePlayer] = useState()
-
+    const [playersPerTeam, setPlayersPerTeam] = useState(4)
     useEffect(() => {
-        //setGameCode(sessionStorage.getItem('game-code'))
-        //get players and gamecode
-        setPlayers([
-            {
-                name:"x0"
-            },
-            {
-                name:"x1"
-            },
-            {
-                name:"x2"
-            },
-            {
-                name:"x3"
-            },
-            {
-                name:"x4"
-            },
-            {
-                name:"x5"
-            },
-            {
-                name:"x6"
-            },
-            {
-                name:"bajra"
-            },
-            {
-                name:"x8"
-            },
-            {
-                name:"x9"
-            },
-            {
-                name:"x10"
+        let isMounted = true
+        if(isMounted)
+            setGameCode(sessionStorage.getItem('game-code'))
+        socket.emit('join-teams', sessionStorage.getItem('game-code'))
+        socket.on('players', numberPlayers => {
+            if(isMounted){
+                setNumberOfPlayers(numberPlayers.length)
+                console.log(numberPlayers);
+                setPlayers(numberPlayers)
             }
-        ])
-    }, [])
+        })
+        
+        return() => {
+            isMounted = false
+        }
+    }, [socket])
 
     const continueGame = () => {
-        console.log(mode);
+        socket.emit('max-players', {gameCode, playersPerTeam})
+        socket.emit('mode', {gameCode, mode})
         if(mode === 'random')
         {
             router.push('/host/random')
@@ -70,25 +51,37 @@ const teams = () => {
         }
     }
 
+    const onChangeHandler = (e) => {
+        setPlayersPerTeam(e.target.value)
+    }
+
     return ( 
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/scenes'} />
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
 
-                <div className="flex flex-row justify-evenly w-screen">
+                <div className="flex flex-row justify-center items-center w-screen">
                     <div className="bg-gray-200 px-16 py-4 flex flex-column justify-evenly">
                         <div className="font-bold text-xl">Divide players into Teams</div>
-                        <div className="font-bold text-xl mt-5">Player per team:  <input type="number" min="2" style={{width:"4rem"}}/></div>
+                        <div className="font-bold text-xl mt-5">Players per team:  <input type="number" min="2" max = "10"  style={{width:"4rem"}}
+                        value = {playersPerTeam}
+                        onChange = {(e) => onChangeHandler(e)}
+                        /></div>
                         <div className="text-xl font-semibold mt-5"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>
                         <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('manual')} /> Manual  </div>
                         <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('choice')} /> Player's choice  </div>
                     
                     </div>
-                    <PlayerComponent players = {players} />
+                    {players.length > 0?   
+                    <PlayerComponent players = {players} width = {'large'} largeWidth = {'md'} />
+                    : null
+                }
                 </div>
 
-                <div className="text-center"><button onClick={() => continueGame()} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center">
+                    <Button clickHandler = {continueGame} text = 'Continue' />
+                </div>
 
 
                 {

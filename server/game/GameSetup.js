@@ -36,12 +36,6 @@ module.exports = (io, socket) => {
         }
     }
 
-    const selectAMode = ({mode}) => {
-        mode = mode
-    }
-
-    
-
     const setRounds = ({MAX_ROUND, gameCode}) => {
         let index = 0
         for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
@@ -156,7 +150,6 @@ module.exports = (io, socket) => {
     socket.on('set-time', setTimer)
     socket.on('create-team', createTeam)
     socket.on('show', showTeamDetails)
-    socket.on('mode', selectAMode)
     socket.on('join-team', joinATeam)
     socket.on('no-of-rounds', setRounds)
     socket.on('join-avatar', joinAvatar)

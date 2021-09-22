@@ -17,7 +17,7 @@ const teams = () => {
     const [playerIcon, deletePlayer] = useState()
 
     useEffect(() => {
-        setGameCode(sessionStorage.getItem('game-code'))
+        //setGameCode(sessionStorage.getItem('game-code'))
         //get players and gamecode
         setPlayers([
             {

@@ -10,15 +10,23 @@ const scenes = () => {
 
     const socket = useContext(SocketContext)
     const [gameCode, setGameCode] = useState('')
-    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
+    const [numberOfPlayers, setNumberOfPlayers] = useState('')
     const [scenes, setScenes] = useState(false)
     const [emotion, setEmotion] = useState(false)
 
     useEffect(() => {
-        setGameCode(sessionStorage.getItem('game-code'))
+        let isMounted = true
+        if(isMounted)
+            setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('game-scenes', sessionStorage.getItem('game-code'))
-        socket.on('players', players => setNumberOfPlayers(players.length))
-    })
+        socket.on('players', players => {
+            if(isMounted)
+                setNumberOfPlayers(players.length)})
+        return () => {
+            isMounted = false
+        }
+    },[socket])
+
     const router = useRouter()
 
     return ( 

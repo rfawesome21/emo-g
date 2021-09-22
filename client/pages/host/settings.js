@@ -10,7 +10,7 @@ const settings = () => {
     const router = useRouter()
     const socket = useContext(SocketContext)
     const [numberOfRounds, setNumberOfRounds] = useState('')
-    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
+    const [numberOfPlayers, setNumberOfPlayers] = useState('')
     const [gameCode, setGameCode] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [guessingTime, setGuessingTime] = useState('')
@@ -19,23 +19,34 @@ const settings = () => {
     const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
 
     useEffect(() => {
+        let isMounted = true
         socket.emit('create-game')
         socket.on('Room-code', code => {
             sessionStorage.setItem('game-code', code)
-            setGameCode(code)})
-        socket.on('players', players => {
-            sessionStorage.setItem('players-length', players)
-            setNumberOfPlayers(players.length)})
+            if(isMounted)
+                setGameCode(code)}
+        )
+        socket.on('Players', players => {
+            if(isMounted)
+                setNumberOfPlayers(players)
+        })
         socket.on('guessing-timer', guessTime => {
             let secondArr = guessTime.split(':')
-            setGuessingTime(secondArr[0])
-            setGuessingTimeInSeconds(secondArr[1])
+            if(isMounted){
+                setGuessingTime(secondArr[0])
+                setGuessingTimeInSeconds(secondArr[1])
+            }
         })
         socket.on('typing-timer', typeTime => {
             let secondArr = typeTime.split(':')
-            setTypingTime(secondArr[0])
-            setTypingTimeInSeconds(secondArr[1])
+            if(isMounted){
+                setTypingTime(secondArr[0])
+                setTypingTimeInSeconds(secondArr[1])
+            }
         })
+        return () => {
+            isMounted = false
+        }
     }, [socket])
 
     const continueGame = () => {
@@ -56,7 +67,7 @@ const settings = () => {
 
     return ( 
         <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack link = '/host/settings' />
+            <SettingsAndBack link = '/play' />
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
                 <div className="flex flex-row justify-between bg-gray-200 px-4 py-4">

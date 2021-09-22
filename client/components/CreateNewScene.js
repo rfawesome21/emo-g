@@ -8,7 +8,13 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
     const [gameCode, setGameCode] = useState(0)
 
     useEffect(() => {
-        setGameCode(sessionStorage.getItem('game-code'))
+        let isMounted = true
+        if(isMounted)
+            setGameCode(sessionStorage.getItem('game-code'))
+        
+        return () => {
+            isMounted = false
+        }
     },[])
 
     const socket = useContext(SocketContext)

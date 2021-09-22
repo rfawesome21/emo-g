@@ -11,13 +11,14 @@ const SelectScene = () => {
     const [scenes, setScenes] = useState([])
     const [addScenesToGame, setAddScenesToGame] = useState([])
     const [createScenes, setCreateScenes] = useState(false)
-    const [gameCode, setGameCode] = useState(0)
+    const [gameCode, setGameCode] = useState('')
     const [selectedItem, setSelectedItem] = useState([])
-    const [playerLength, setPlayerLength] = useState(0)
+    const [playerLength, setPlayerLength] = useState('')
     const [editSceneText, setEditSceneText] = useState('')
     const [sceneID, setSceneID] = useState()
 
     const router = useRouter()
+
     const addScenes = (scene) => {
         let arr = addScenesToGame.slice(0)
         arr.push(scene)
@@ -31,11 +32,28 @@ const SelectScene = () => {
         router.push('/host/scenes')
     }
 
+    const removeScene = (scene) => {
+        setAddScenesToGame(addScenesToGame.filter(a => a !== scene))
+    }
+
     useEffect(() => {
-        setGameCode(sessionStorage.getItem('game-code'))
-        socket.emit('join-scenes', sessionStorage.getItem('game-code'))
-        socket.on('scenes', scenes => setScenes(scenes))
-        socket.on('players', players => setPlayerLength(players.length))
+            let isMounted = true
+            if(isMounted)
+                setGameCode(sessionStorage.getItem('game-code'))
+            socket.emit('join-scenes', sessionStorage.getItem('game-code'))
+            socket.on('scenes', scenes => {
+                if(isMounted){
+                    console.log('tequila')
+                    setScenes(scenes)
+                }})
+            socket.on('players', players => 
+            {
+                if(isMounted)
+                    setPlayerLength(players.length)
+            })
+            return () => {
+                isMounted = false
+            }
     },  [socket])
 
 
@@ -62,14 +80,16 @@ const SelectScene = () => {
                                         {
                                             arr = arr.filter(a => a !== index)
                                             setSelectedItem(arr)
+                                            removeScene(scene.scene)
                                         }
                                         else{
-                                        arr.push(index)
-                                        arr = new Set(arr)
-                                        setSelectedItem([...arr])
+                                            arr.push(index)
+                                            arr = new Set(arr)
+                                            setSelectedItem([...arr])
+                                            addScenes(scene.scene)}}
                                         }
-                                        addScenes(scene.scene)}}
                                     onDoubleClick = {() => {
+                                        setAddScenesToGame(addScenesToGame.filter(a => a !== scene.scene))
                                         setEditSceneText(scene.scene)
                                         setCreateScenes(true)}}
                                     >

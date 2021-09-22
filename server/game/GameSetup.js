@@ -119,13 +119,13 @@ module.exports = (io, socket) => {
                     id : roomSpecificGamePlay.room.game[i].scene.length + 1,
                     scene : scene
                 })
-                roomSpecificGamePlay.room.game[i].GAME_SCENES[i].push({
+                roomSpecificGamePlay.room.game[i].GAME_SCENES.push({
                     id : roomSpecificGamePlay.room.game[i].scene.length + 1,
                     scene : scene
                 }) 
             }
         }
-        io.to(socket.id).emit('scenes',roomSpecificGamePlay.room.game[index].scene)
+        io.to(socket.id).emit('scenes',roomSpecificGamePlay.room.game[index].GAME_SCENES)
     }
 
     const editScenes = ({sceneID, scene, gameCode}) => {

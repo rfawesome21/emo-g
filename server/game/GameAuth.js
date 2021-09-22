@@ -6,6 +6,8 @@ const GameScenes = JSON.parse(JSON.stringify(Scenes))
 const MainScenes = JSON.parse(JSON.stringify(Scenes))
 const Players = []
 let {roomSpecificGamePlay, Password} = require('./GameVariables')
+const { Emotions } = require('../data/Emotions')
+const GameEmotions = JSON.parse(JSON.stringify(Emotions))
 
 const deepCopyFunction = (inObject) => {
     let outObject, value, key
@@ -86,7 +88,9 @@ module.exports = (io, socket) => {
         lifelines : [],
         MAX_PLAYERS_PER_TEAM : 5,
         GAME_SCENES : deepCopyFunction(MainScenes),
-        teams : Teams
+        teams : Teams,
+        emotions : GameEmotions,
+        emotionsPerRounds : []
         })
         let index
         if(roomSpecificGamePlay.room.game.length > 0){

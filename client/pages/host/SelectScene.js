@@ -42,10 +42,13 @@ const SelectScene = () => {
                 setGameCode(sessionStorage.getItem('game-code'))
             socket.emit('join-scenes', sessionStorage.getItem('game-code'))
             socket.on('scenes', scenes => {
-                if(isMounted){
-                    console.log('tequila')
+                if(isMounted)
                     setScenes(scenes)
-                }})
+                })
+            socket.on('updated-scenes', scenes => {
+                if(isMounted)
+                    setScenes(scenes)
+            })
             socket.on('players', players => 
             {
                 if(isMounted)

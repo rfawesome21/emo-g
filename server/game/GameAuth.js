@@ -2,9 +2,30 @@ const {genRanHex} = require('./GameFunctions')
 let code = ''
 const {Teams} = require('../data/Teams')
 const {Scenes} = require('../data/Scenes')
-
+const GameScenes = JSON.parse(JSON.stringify(Scenes))
+const MainScenes = JSON.parse(JSON.stringify(Scenes))
 const Players = []
 let {roomSpecificGamePlay, Password} = require('./GameVariables')
+
+const deepCopyFunction = (inObject) => {
+    let outObject, value, key
+  
+    if (typeof inObject !== "object" || inObject === null) {
+      return inObject // Return the value if inObject is not an object
+    }
+  
+    // Create an array or object to hold the values
+    outObject = Array.isArray(inObject) ? [] : {}
+  
+    for (key in inObject) {
+      value = inObject[key]
+  
+      // Recursively (deep) copy for nested objects, including arrays
+      outObject[key] = deepCopyFunction(value)
+    }
+  
+    return outObject
+  }
 
 module.exports = (io, socket) => {
     const authentication = ({code, name}) => {
@@ -51,19 +72,22 @@ module.exports = (io, socket) => {
         }
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
-        
+        console.log(MainScenes);
         Password.push(code)
-        roomSpecificGamePlay.room.game.push({id : code,
+        roomSpecificGamePlay.room.game.push({
+        id : code,
         players : [],
         guessingTimer : '3:00',
         score : [],
-        scene : Scenes,
+        scene : GameScenes,
         typingTimer : '1:30',
         roundNo : 1,
         MAX_ROUNDS : 10,
         lifelines : [],
         MAX_PLAYERS_PER_TEAM : 5,
-        teams : Teams})
+        GAME_SCENES : deepCopyFunction(MainScenes),
+        teams : Teams
+        })
         let index
         if(roomSpecificGamePlay.room.game.length > 0){
             for(var [i,value]  of roomSpecificGamePlay.room.game.entries()){

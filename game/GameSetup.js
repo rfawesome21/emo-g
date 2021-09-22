@@ -70,7 +70,7 @@ module.exports = (io, socket) => {
                     index = i
                 }
         }
-        io.to(socket.id).emit('scenes',Scenes)
+        io.to(socket.id).emit('scenes', roomSpecificGamePlay.room.game[index].GAME_SCENES)
         io.to(socket.id).emit('players', roomSpecificGamePlay.room.game[index].players)
     }
 
@@ -118,6 +118,10 @@ module.exports = (io, socket) => {
                 roomSpecificGamePlay.room.game[i].scene.push({
                     id : roomSpecificGamePlay.room.game[i].scene.length + 1,
                     scene : scene
+                })
+                roomSpecificGamePlay.room.game[i].GAME_SCENES[i].push({
+                    id : roomSpecificGamePlay.room.game[i].scene.length + 1,
+                    scene : scene
                 }) 
             }
         }
@@ -129,14 +133,19 @@ module.exports = (io, socket) => {
         for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
             if(roomSpecificGamePlay.room.game[i].id === gameCode){
                 index = i
-                for(let j = 0; j < roomSpecificGamePlay.room.game[i].scene.length; j++){
-                    if(roomSpecificGamePlay.room.game[i].scene[j].id === sceneID){
-                        roomSpecificGamePlay.room.game[i].scene[j].scene = scene
-                    }
-                } 
             }
         }
-        io.to(socket.id).emit('scenes', roomSpecificGamePlay.room.game[index].scene)
+        let sceneIndex
+        for(let j = 0; j < roomSpecificGamePlay.room.game[index].scene.length; j++){
+            if(roomSpecificGamePlay.room.game[index].scene[j].id === sceneID){
+                sceneIndex = j
+            }
+        }               
+        console.log(sceneIndex);
+        console.log(index);
+        roomSpecificGamePlay.room.game[index].scene[sceneIndex].scene = scene
+        roomSpecificGamePlay.room.game[index].GAME_SCENES[sceneIndex].scene = scene
+        io.to(socket.id).emit('updated-scenes', roomSpecificGamePlay.room.game[index].GAME_SCENES)
     }
 
     socket.on('edit-scenes', editScenes)

@@ -20,6 +20,7 @@ const scenes = () => {
             setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('game-scenes', sessionStorage.getItem('game-code'))
         socket.on('players', players => {
+            console.log(players);
             if(isMounted)
                 setNumberOfPlayers(players.length)})
         return () => {

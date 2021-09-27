@@ -16,10 +16,15 @@ const Join = () => {
             if(!pressed)
                 alert(message)
             setPressed(true)})
-        socket.on('authenticated',() => {
+        socket.on('authenticated',(value) => {
             sessionStorage.setItem('game-code', code)
-            router.push('/player/avatar')}
-        )
+            if(value === 1)
+                router.push('/player/avatar')
+            else{
+                if(!pressed)
+                    alert('Wrong code entered! Please try again.')
+           }
+        })
     }
 
     const onChangeHandler = (e) => {

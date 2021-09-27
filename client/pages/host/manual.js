@@ -1,57 +1,29 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import PlayerComponent from "../../components/Host/PlayerComponent";
+import {SocketContext} from '../../context/socket/SocketContext'
 // import styles from "../css/hostScreen.module.css"
 
 const manual = () => {
 
     const router = useRouter()
-
-    const [numberOfPlayers, setNumberOfPlayers] = useState(20)
-    const [gameCode, setGameCode] = useState("LN69ASX")
+    const socket = useContext(SocketContext)
+    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
+    const [gameCode, setGameCode] = useState("")
 
     const [players, setPlayers] = useState([])
     const [playerIcon, deletePlayer] = useState()
 
     useEffect(() => {
+        socket.emit('manual-division', sessionStorage.getItem('game-code'))
+        socket.on('players', players => {
+            setNumberOfPlayers(players.length)
+            setPlayers(players)})
+        setGameCode(sessionStorage.getItem('game-code'))
         //get players and gamecode
-        setPlayers([
-            {
-                name:"x0"
-            },
-            {
-                name:"x1"
-            },
-            {
-                name:"x2"
-            },
-            {
-                name:"x3"
-            },,
-            {
-                name:"x4"
-            },
-            {
-                name:"x5"
-            },
-            {
-                name:"x6"
-            },
-            {
-                name:"bajra"
-            },
-            {
-                name:"x8"
-            },
-            {
-                name:"x9"
-            },
-            {
-                name:"x10"
-            }
-        ])
+        
     }, [])
 
     return ( 

@@ -1,4 +1,9 @@
-const Scenes = [{
+const Scenes = [
+{
+    id : 0,
+    scene : ''
+},    
+{
     id : 1,
     scene : 'Everyone was busy, so I went to the movie alone.'
 },

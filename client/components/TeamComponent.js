@@ -7,7 +7,7 @@ const TeamComponent = ({teams, activeIcon}) => {
             {teams.map((team, index) => {
                 return(
                     <div className='text-lg' key = {index}>
-                        <div className='flex flex-row justify-between bg-gray-400 mb-3 px-3 cursor-pointer' onClick = {() => activeIcon(team.id)}>
+                        <div className='flex flex-row justify-between bg-gray-400 mb-3 px-3 cursor-pointer' onClick = {() => activeIcon(team.teamName)}>
                             <div className='self-start font-bold'>
                                 {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
                             </div>

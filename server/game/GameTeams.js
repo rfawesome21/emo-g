@@ -1,67 +1,60 @@
 const { getRandomInt } = require('./GameFunctions')
-let {roomSpecificGamePlay, Password} = require('./GameVariables')
+// let {roomSpecificGamePlay, Password} = require('./GameVariables')
+
+const { roomArrayMap } = require("./GameVariables")
+
 
 module.exports = (io, socket) => {
     const joinTeams = (gameCode) => {
-        let index
-            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-                if(roomSpecificGamePlay.room.game[i].id === gameCode){
-                    index = i
-                }
-        }
         socket.join(gameCode)
-        console.log(`${index} is index and ${gameCode} is game code`);
-        io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
+        io.in(gameCode).emit('players', roomArrayMap.get(gameCode).playerDetails)
     }
 
-    const maxPlayersPerTeam = ({gameCode, playerPerTeam}) => {
-        let index
-            for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-                if(roomSpecificGamePlay.room.game[i].id === gameCode){
-                    index = i
-                }
-        }
-        roomSpecificGamePlay.room.game[index].MAX_PLAYERS_PER_TEAM = playerPerTeam
+    const maxPlayersPerTeam = ({gameCode, playersPerTeam}) => {
+        console.log('dudes : ',playersPerTeam);
+        console.log('code : ', gameCode);
+        roomArrayMap.get(gameCode).MAX_PLAYERS_PER_TEAM = playersPerTeam
     }
 
     const selectAMode = ({gameCode, mode}) => {
-        let index
-        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-            if(roomSpecificGamePlay.room.game[i].id === gameCode){
-                index = i
-            }
-        }
-        roomSpecificGamePlay.room.game[index].mode = mode
+        let roomObject = roomArrayMap.get(gameCode)
+        roomArrayMap.get(gameCode).mode = mode
         if(mode === 'random'){
-            for(let i = 0; i < roomSpecificGamePlay.room.game[index].players.length; i++){
-                let j = getRandomInt(0,19)
-                if(roomSpecificGamePlay.room.game[index].teams[j].teamMembers.length < roomSpecificGamePlay.room.game[index].MAX_PLAYERS_PER_TEAM)
-                    roomSpecificGamePlay.room.game[index].teams[j].teamMembers.push(roomSpecificGamePlay.room.game[index].players[i])
+            roomObject.NO_OF_TEAMS = Math.ceil(roomObject.players.length/roomObject.MAX_PLAYERS_PER_TEAM)
+            for(let m = 0; m < roomObject.NO_OF_TEAMS; m++){
+                roomObject.teams.push({
+                    teamName : m+1,
+                    teamMembers : []
+                })
+            }
+            for(let i = 0; i < roomObject.players.length; i++){
+                let j = getRandomInt(0, roomObject.teams.length - 1)
+                if(roomObject.teams[j].teamMembers.length < roomObject.MAX_PLAYERS_PER_TEAM)
+                    roomObject.teams[j].teamMembers.push(roomObject.playerDetails[i])
                 else{
                     let k
-                    while(k!== j){
-                        k = getRandomInt(0,19)
+                    console.log('Max Players exceeded');
+                    while(k === j){
+                        k = getRandomInt(0, roomObject.teams.length - 1)
                     }
-                    roomSpecificGamePlay.room.game[index].teams[k].teamMembers.push(roomSpecificGamePlay.room.game[index].players[i])
+                    roomObject.teams[k].teamMembers.push(roomObject.playerDetails[i])
                 }
             }
-            console.log(roomSpecificGamePlay.room.game[index]);
         }
     }
 
     const randomTeamDivision = (gameCode) => {
-        let index
-        for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-            if(roomSpecificGamePlay.room.game[i].id === gameCode){
-                index = i
-            }
-        }
-        io.to(socket.id).emit('random-teams', roomSpecificGamePlay.room.game[index].teams)
+        io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
+        io.to(socket.id).emit('no-players', roomArrayMap.get(gameCode).players.length)
+    }
+
+    const manualTeamDivision = (gameCode) => {
+        
     }
 
     socket.on('join-teams', joinTeams)
     socket.on('max-players', maxPlayersPerTeam)
     socket.on('mode', selectAMode)
     socket.on('random-division', randomTeamDivision)
-
+    socket.on('manual-division', manualTeamDivision)
 }

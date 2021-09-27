@@ -28,6 +28,10 @@ const random = () => {
             if(isMounted)
                 setTeams(teams)
         })
+        socket.on('no-players', players => {
+            if(isMounted)
+                setNumberOfPlayers(players)
+        })
         return () => {
             isMounted = false
         }
@@ -36,7 +40,7 @@ const random = () => {
     const activeButton = (active) => {
         setActiveTeam(active)
     }
-    
+
     return ( 
         <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/teams'} />
@@ -48,7 +52,9 @@ const random = () => {
                     {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
                     </div>
                     <div className='w-5/12'>
-                    {teams? <TeamPlayers teams = {teams.filter(t => t.id === activeTeam)} activeTeam = {activeTeam} /> : null}
+                    {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
+                    {console.log(activeTeam)}
+                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} /> : null}
                     </div>
                 </div>
                 <div className="text-center"><Button text = {'Start'} /></div>

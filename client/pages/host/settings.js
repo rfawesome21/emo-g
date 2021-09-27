@@ -10,13 +10,14 @@ const settings = () => {
     const router = useRouter()
     const socket = useContext(SocketContext)
     const [numberOfRounds, setNumberOfRounds] = useState('')
-    const [numberOfPlayers, setNumberOfPlayers] = useState('')
+    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const [disabled, setDisabled] = useState(true)
     const [guessingTime, setGuessingTime] = useState('')
     const [typingTime, setTypingTime] = useState('')
     const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('')
     const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
+    const [disableRounds, setDisableRounds] = useState(true)
 
     useEffect(() => {
         let isMounted = true
@@ -26,9 +27,10 @@ const settings = () => {
             if(isMounted)
                 setGameCode(code)}
         )
-        socket.on('Players', players => {
+        socket.on('players', players => {
+            console.log(players);
             if(isMounted)
-                setNumberOfPlayers(players)
+                setNumberOfPlayers(players.length)
         })
         socket.on('guessing-timer', guessTime => {
             let secondArr = guessTime.split(':')
@@ -130,7 +132,7 @@ const settings = () => {
                         name="round" 
                         className="form-checkbox"
                         defaultChecked
-                        onClick = {() => setDisabled(true)}
+                        onClick = {() => setDisableRounds(true)}
                         /> 
                         10 Rounds(Default)
                         </div>
@@ -139,7 +141,7 @@ const settings = () => {
                         type="radio" 
                         name="round" 
                         className="form-checkbox"
-                        onClick = {() => setDisabled(false)}
+                        onClick = {() => setDisableRounds(false)}
                         /> 
                         <input 
                         value={numberOfRounds} 
@@ -147,8 +149,8 @@ const settings = () => {
                         type="number" min="6" 
                         style={{width:"10rem"}}
                         placeholder = 'Set Number of Rounds' 
-                        disabled={disabled?true:false}
-                        className={disabled? 'border-2 bg-gray-300 text-black text-sm' : 'border-2 text-sm'}
+                        disabled={disableRounds?true:false}
+                        className={disableRounds? 'border-2 bg-gray-300 text-black text-sm' : 'border-2 text-sm'}
                         />
                     </div>
                 </div>

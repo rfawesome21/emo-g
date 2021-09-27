@@ -20,10 +20,11 @@ const io = require('socket.io')(9000, {
 const gameSetup = require('./game/GameSetup')
 const gameAuth = require('./game/GameAuth')
 const gameTeams = require('./game/GameTeams')
-  
+const gameScenes = require('./game/GameScenes')
 const onConnection = socket => {
   gameSetup(io, socket)
   gameAuth(io, socket)
+  gameScenes(io, socket)
   gameTeams(io, socket)
 }
 

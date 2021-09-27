@@ -1,10 +1,35 @@
+import { useEffect, useState } from "react";
+import { createPopper } from '@popperjs/core';
+import tippy from 'tippy.js';
+import 'tippy.js/themes/material.css';
+import {roundArrow} from 'tippy.js';
+import 'tippy.js/dist/svg-arrow.css';
+
 const sendCodeToInvitePlayers = (props) => {
+
+    const [copy, setCopy] = useState(undefined)
+    const [copied, setCopied] = useState(undefined)
+
+    useEffect(() => {
+        tippy('#copy', {
+            content: 'Copied!',
+            trigger: 'click',
+            duration: 100,
+            inertia: true, 
+            placement: 'bottom-end',
+            arrow: roundArrow,
+            theme:"material"
+          });
+    }, [])
+
     return ( 
         <div>
             <div className="text-center font-bold text-xl">Send code to invite players</div>
             <br />
-            <div className="flex flex-row justify-around">
-                <div className="border-2 cursor-pointer border-black rounded-md flex justify-between" onClick={() => {navigator.clipboard.writeText(props.gameCode)}}>
+            <div className="flex flex-row justify-evenly">
+                <div id="copy" className="border-2 cursor-pointer border-black rounded-md flex justify-between" onClick={() => {
+                    navigator.clipboard.writeText(props.gameCode);
+                    }}>
                     <span className="py-2 px-4 font-bold text-lg">{props.gameCode}</span>
                     <span className="bg-black p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#fff">

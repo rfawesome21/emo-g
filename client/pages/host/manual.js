@@ -15,6 +15,7 @@ const manual = () => {
 
     const [players, setPlayers] = useState([])
     const [playerIcon, deletePlayer] = useState()
+    const [teams, setTeams] = useState(["Team 1", "Team 2", "Team 3", "Team 4"])
 
     useEffect(() => {
         socket.emit('manual-division', sessionStorage.getItem('game-code'))
@@ -40,7 +41,7 @@ const manual = () => {
                         <div className="font-bold ml-4 my-4">
                             20 Players
                         </div>
-                        <PlayerComponent players = {players} deletePlayer = {deletePlayer} />
+                        <PlayerComponent players = {players} deletePlayer = {deletePlayer} teams={teams}/>
                     </div>
                     <div className="bg-gray-200">
                         <div className="font-bold text-xl mx-4 mt-4 flex justify-between">
@@ -53,16 +54,7 @@ const manual = () => {
                             4 Players
                         </div> 
                         <div className="flex flex-row flex-wrap max-w-xs max-h-44 justify-evenly my-4" style={{overflowY:"auto"}} id="players">
-                            {players.map(player => (
-                                <div style={{zIndex:2, textAlign:"center"}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})}>
-                                    <div className="mx-7">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    {player.name}
-                                </div>
-                            ))}
+                            <PlayerComponent players = {players} deletePlayer = {deletePlayer} teams={teams}/>
                         </div>
                     </div>
                     <div className="bg-gray-200">
@@ -76,16 +68,7 @@ const manual = () => {
                             4 Players
                         </div> 
                         <div className="flex flex-row flex-wrap max-w-xs max-h-44 justify-evenly my-4" style={{overflowY:"auto"}} id="players">
-                            {players.map(player => (
-                                <div style={{zIndex:2, textAlign:"center"}} onClick={event => deletePlayer({x: event.clientX, y: event.clientY, player: player})}>
-                                    <div className="mx-7">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    {player.name}
-                                </div>
-                            ))}
+                            <PlayerComponent players = {players} deletePlayer = {deletePlayer} teams={teams}/>
                         </div>
                     </div>
 

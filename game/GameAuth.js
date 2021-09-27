@@ -54,7 +54,8 @@ module.exports = (io, socket) => {
                 roomObject.players.push(name)
                 roomObject.playerDetails.push({
                     name : name,
-                    avatar : ''
+                    avatar : '',
+                    join : false
                 })
                 console.log(`Player joined!`);
                 io.to(code).emit('players', roomObject.playerDetails)

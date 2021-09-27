@@ -1,8 +1,5 @@
 let Password = []
-let roomSpecificGamePlay = {
-    room : {
-        game : [] 
-    }
-}
 
-module.exports = {Password, roomSpecificGamePlay}
+let roomArrayMap = new Map()
+
+module.exports = {Password, roomArrayMap}

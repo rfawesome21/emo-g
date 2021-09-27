@@ -5,7 +5,7 @@ const {Scenes} = require('../data/Scenes')
 const GameScenes = JSON.parse(JSON.stringify(Scenes))
 const MainScenes = JSON.parse(JSON.stringify(Scenes))
 const Players = []
-let {roomSpecificGamePlay, Password} = require('./GameVariables')
+let { Password, roomArrayMap} = require('./GameVariables')
 const { Emotions } = require('../data/Emotions')
 const GameEmotions = JSON.parse(JSON.stringify(Emotions))
 
@@ -30,38 +30,41 @@ const deepCopyFunction = (inObject) => {
   }
 
 module.exports = (io, socket) => {
+
     const authentication = ({code, name}) => {
-        let index = false
-        if(roomSpecificGamePlay.room.game.length > 0){
-            for(let j of Password){
-                if(code === j){
-                    index = true
-                }
+        console.log(code);
+        console.log(typeof(code));
+        if(!name || !code){
+            io.to(socket.id).emit('err', {message : 'Please fill all the fields before proceeding'})
+            return
+        }
+        if(name.length > 10){
+            io.to(socket.id).emit('err', {message : 'Your username should only be 10 characters long'})
+            return
+        }
+        code = code.trim()
+        if(roomArrayMap.get(code))
+        {
+
+            let roomObject = roomArrayMap.get(code)
+            if(roomObject.players.includes(name)){
+                io.to(socket.id).emit('err', {message : 'This player already exists. Please Enter with a different name'})
+            }
+            else{
+                roomObject.players.push(name)
+                roomObject.playerDetails.push({
+                    name : name,
+                    avatar : ''
+                })
+                console.log(`Player joined!`);
+                io.to(code).emit('players', roomObject.playerDetails)
+                io.to(socket.id).emit('authenticated', 1)
             }
         }
-        if(index){
-            socket.join(code)
-            for (let index = 0; index < roomSpecificGamePlay.room.game.length; index++) {
-                if(code === roomSpecificGamePlay.room.game[index].id){
-                    roomSpecificGamePlay.room.game[index].players.push({
-                        name : name,
-                        avatar : ''
-                    })
-                    io.in(roomSpecificGamePlay.room.game[index].id)
-                    .emit('players', roomSpecificGamePlay.room.game[index].players.length)
-                    io.in(roomSpecificGamePlay.room.game[index].id)
-                    .emit('players-info', roomSpecificGamePlay.room.game[index].players)
-                    break
-                }
-            }
-            io.to(socket.id).emit('authenticated')
-            console.log('Player joined!');
+
+        else
+            io.to(socket.id).emit('authenticated', 0)
         }
-        else{
-            console.log('Wrong');
-            socket.emit('err', {message : 'Wrong Room Code entered!'})
-        }
-    }
     
     const createNewGame = () => {
         code = genRanHex(6)
@@ -76,40 +79,28 @@ module.exports = (io, socket) => {
         }
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
-        console.log(MainScenes);
         Password.push(code)
-        roomSpecificGamePlay.room.game.push({
-        id : code,
-        players : [],
-        guessingTimer : '3:00',
-        score : [],
-        scene : GameScenes,
-        typingTimer : '1:30',
-        roundNo : 1,
-        MAX_ROUNDS : 10,
-        lifelines : [],
-        MAX_PLAYERS_PER_TEAM : 5,
-        GAME_SCENES : deepCopyFunction(MainScenes),
-        teams : deepCopyFunction(Teams),
-        emotions : GameEmotions,
-        emotionsPerRounds : [],
-        mode : ''
+        roomArrayMap.set(code, {
+            id : code,
+            players : [],
+            playerDetails : [],
+            guessingTimer : '3:00',
+            score : [],
+            scene : GameScenes,
+            typingTimer : '1:30',
+            roundNo : 1,
+            MAX_ROUNDS : 10,
+            lifelines : [],
+            MAX_PLAYERS_PER_TEAM : 5,
+            GAME_SCENES : deepCopyFunction(MainScenes),
+            teams : [],
+            emotions : GameEmotions,
+            emotionsPerRounds : [],
+            mode : ''
         })
-        let index
-        if(roomSpecificGamePlay.room.game.length > 0){
-            for(var [i,value]  of roomSpecificGamePlay.room.game.entries()){
-                for(var j of Password)
-                if(value.id === j){
-                    index = i
-                    break
-                }
-            }
-        }
-        else{
-            index = 0
-        }
-        io.to(socket.id).emit('guessing-timer', roomSpecificGamePlay.room.game[index].guessingTimer)
-        io.to(socket.id).emit('typing-timer', roomSpecificGamePlay.room.game[index].typingTimer)
+        
+        io.to(socket.id).emit('guessing-timer', roomArrayMap.get(code).guessingTimer)
+        io.to(socket.id).emit('typing-timer', roomArrayMap.get(code).typingTimer)
         console.log('The Host has created the game!')
     }
 

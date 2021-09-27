@@ -53,8 +53,7 @@ const random = () => {
                     </div>
                     <div className='w-5/12'>
                     {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                    {console.log(activeTeam)}
-                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} /> : null}
+                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
                     </div>
                 </div>
                 <div className="text-center"><Button text = {'Start'} /></div>

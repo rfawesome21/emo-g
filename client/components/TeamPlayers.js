@@ -1,7 +1,7 @@
 import React from 'react'
 import PlayerComponent from './Host/PlayerComponent';
 
-const TeamPlayers = ({teams, activeTeam}) => {
+const TeamPlayers = ({teams, allTeams}) => {
     console.log(teams);
     if(teams[0])
         console.log(teams[0].teamName);
@@ -11,10 +11,11 @@ const TeamPlayers = ({teams, activeTeam}) => {
                 {teams[0]? `Team ${teams[0].teamName}` : null}
             </div>
             <div className='font-bold text-lg py-4'>
-                {teams[0]? `${teams[0].teamMembers.length} players` : null}
+                {teams[0] && !teams[0][0]? `${teams[0].teamMembers.length} players` : `0 Players`}
             </div>
             <div className='w-full'>
-                <PlayerComponent players = {teams[0] && teams[0].teamMembers} width='medium' largeWidth='xs' />
+
+                <PlayerComponent players = {teams[0] && teams[0].teamMembers} teams = {allTeams} width='medium' largeWidth='xs' />
             </div>
         </div>
     )

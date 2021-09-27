@@ -33,11 +33,11 @@ module.exports = (io, socket) => {
                 if(roomObject.teams[j].teamMembers.length < roomObject.MAX_PLAYERS_PER_TEAM)
                     roomObject.teams[j].teamMembers.push(roomObject.playerDetails[i])
                 else{
-                    let k
-                    console.log('Max Players exceeded');
+                    let k = getRandomInt(0, roomObject.teams.length - 1)
                     while(k === j){
                         k = getRandomInt(0, roomObject.teams.length - 1)
                     }
+                    console.log(`k is ${k}`);
                     roomObject.teams[k].teamMembers.push(roomObject.playerDetails[i])
                 }
             }
@@ -80,6 +80,37 @@ module.exports = (io, socket) => {
         console.log(roomObject.teams);
     }   
 
+    const changeTeam = ({team, player, gameCode}) => {
+        console.log(team);
+        console.log(player);
+        let roomObject = roomArrayMap.get(gameCode)
+        const teams = roomObject.teams.filter(t => t.teamName === team)
+        const teamMembers = teams[0].teamMembers.filter(p => (p.name === player.name))
+        if(teamMembers.length > 0){
+            console.log('Error message');
+            io.to(socket.id).emit('err' , {message : 'This player already belongs to that team!'})
+        }
+        else{
+            for(let i = 0; i < roomObject.teams.length; i++){
+                for(let j = 0; j < roomObject.teams[i].teamMembers.length; j++){
+                    if(roomObject.teams[i].teamMembers[j].name === player.name){
+                        roomObject.teams[i].teamMembers =  roomObject.teams[i].teamMembers.filter(p => p.name !== player.name)
+                        break
+                    }
+                }
+            }
+            teams[0].teamMembers.push(player)
+        }
+        for(var i of roomObject.teams)
+        {
+            console.log('name: ', i.teamName);
+            console.log('players: ',i.teamMembers);
+        }
+        io.to(socket.id).emit('random-teams', roomObject.teams)
+    }
+
+
+    socket.on('change-team', changeTeam)
     socket.on('join-teams', joinTeams)
     socket.on('max-players', maxPlayersPerTeam)
     socket.on('mode', selectAMode)

@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { createPopper } from '@popperjs/core';
 import tippy from 'tippy.js';
-import 'tippy.js/themes/material.css';
+import 'tippy.js/themes/light-border.css';
 import {roundArrow} from 'tippy.js';
 import 'tippy.js/dist/svg-arrow.css';
 
 const sendCodeToInvitePlayers = (props) => {
 
-    const [copy, setCopy] = useState(undefined)
-    const [copied, setCopied] = useState(undefined)
 
     useEffect(() => {
         tippy('#copy', {
@@ -18,7 +16,7 @@ const sendCodeToInvitePlayers = (props) => {
             inertia: true, 
             placement: 'bottom-end',
             arrow: roundArrow,
-            theme:"material"
+            theme:"light-border"
           });
     }, [])
 

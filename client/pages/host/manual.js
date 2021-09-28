@@ -31,7 +31,7 @@ const manual = () => {
         <div className="flex flex-row justify-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/teams'} />
             <div className="flex flex-column justify-evenly">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
+                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
 
                 <div className="flex flex-row justify-evenly w-screen">
                     <div className="bg-gray-200">
@@ -39,7 +39,7 @@ const manual = () => {
                             Players Online
                         </div>
                         <div className="font-bold ml-4 my-4">
-                            20 Players
+                            {numberOfPlayers}
                         </div>
                         <PlayerComponent players = {players} deletePlayer = {deletePlayer} teams={teams}/>
                     </div>

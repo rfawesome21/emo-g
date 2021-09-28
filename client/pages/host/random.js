@@ -18,6 +18,7 @@ const random = () => {
     const [teams, setTeams] = useState([])
     const [playerIcon, deletePlayer] = useState()
     const [activeTeam, setActiveTeam] = useState(1)
+    const [players, setPlayers] = useState([])
     useEffect(() => {
         let isMounted = true
         if(isMounted)
@@ -31,6 +32,10 @@ const random = () => {
         socket.on('no-players', players => {
             if(isMounted)
                 setNumberOfPlayers(players)
+        })
+        socket.on('players', players => {
+            if(isMounted)
+                setPlayers(players)
         })
         return () => {
             isMounted = false

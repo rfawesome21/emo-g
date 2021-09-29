@@ -119,6 +119,18 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('players-without-teams', playersWithoutTeams)
     }   
 
+    const createTeam = (gameCode) => {
+        let roomObject = roomArrayMap.get(gameCode)
+        let teamName = roomObject.teams.length + 1
+        let teamMembers = []
+        let roundNo = 1
+        let team = {teamName, teamMembers, roundNo}
+        roomObject.teams.push(team)
+        io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
+
+    }
+
+    socket.on('create-team', createTeam)
     socket.on('get-players-no-teams', getPlayers)
     socket.on('change-team', changeTeam)
     socket.on('join-teams', joinTeams)

@@ -13,6 +13,10 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
         socket.on('players-without-teams' , players => setPlayers(players))
     }, [socket])
 
+    const createNewTeam = () => {
+        socket.emit('create-team', sessionStorage.getItem('game-code'))
+    }
+
     console.log("teams", teams);
     return (
         <div className="bg-gray-200 px-8 pb-2 max-h-96 mt-5 overflow-y-auto" style={{minHeight:"50vh"}}>
@@ -39,19 +43,19 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
                         </div>
                     </div>:<></>}
                 </div>
-                {!player?<div className="flex">
+                {!player?<div className="flex" onClick = {createNewTeam}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div className="ml-2 text-base">New Team</div>
                 </div>:<></>}
             </div>
-            <div className='flex flex-row'>
+            <div className='flex flex-row flex-wrap'>
                 {display==="teams"?teams.map((team, index) => {
                     return(
                         <div className='text-lg' key = {index}>
-                            <div className='flex flex-col justify-between bg-gray-400 mb-3 px-3 cursor-pointer pt-2 pb-2 m-2' onClick = {() => activeIcon(team.teamName)}>
-                                <div className='self-start font-bold'>
+                            <div className='flex flex-col justify-between bg-gray-400 mb-3 px-3 cursor-pointer pt-2 pb-2 m-2 flex-wrap' onClick = {() => activeIcon(team.teamName)}>
+                                <div className='self-start font-bold flex-wrap'>
                                     {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
                                 </div>
                                 <div className='text-gray-500'>

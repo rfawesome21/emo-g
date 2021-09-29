@@ -9,12 +9,6 @@ const { roomArrayMap } = require("./GameVariables")
 
 module.exports = (io, socket) => {
 
-//     const createTeam = () => {
-//         let teamName = 'A'
-//         let teamMembers = 'Manan'
-//         let team = {teamName, teamMembers}
-//         game.push(team)
-//     }
 
 //     const showTeamDetails = () => {
 //         console.log(game);
@@ -51,24 +45,16 @@ module.exports = (io, socket) => {
 
 
 
-//     const joinAvatar = ({gameCode}) => {
-//         let index
-//         console.log(gameCode)
-//             for(let i = 0; i < roomSpecificGamePlay.room.game.length; i++){
-//                 if(roomSpecificGamePlay.room.game[i].id === gameCode){
-//                     index = i
-//                 }
-//         }
-//         console.log(index)
-//         socket.join(gameCode)
-//         io.in(gameCode).emit('players', roomSpecificGamePlay.room.game[index].players)
-//     }
+    const joinAvatar = ({gameCode}) => {
+        let roomObject = roomArrayMap.get(gameCode)
+        socket.join(gameCode)
+        io.in(gameCode).emit('players', roomObject.playerDetails)
+    }
     
 
     socket.on('set-time', setTimer)
-//     socket.on('create-team', createTeam)
 //     socket.on('show', showTeamDetails)
 //     socket.on('join-team', joinATeam)
     socket.on('no-of-rounds', setRounds)
-//     socket.on('join-avatar', joinAvatar)
+    socket.on('join-avatar', joinAvatar)
 }

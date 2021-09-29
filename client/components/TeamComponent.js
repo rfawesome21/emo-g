@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { SocketContext } from '../context/socket/SocketContext';
+import PlayerComponent from './Host/PlayerComponent';
 
-const TeamComponent = ({teams, activeIcon, player}) => {
-
+const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
+    console.log(playersWithoutTeams);
     const [display, setDisplay] = useState("teams")    
-    
+    const [players, setPlayers] = useState(playersWithoutTeams)
+    const socket = useContext(SocketContext)
+
+    useEffect(() => {
+        socket.emit('get-players-no-teams', sessionStorage.getItem('game-code'))
+        socket.on('players-without-teams' , players => setPlayers(players))
+    }, [socket])
+
     console.log("teams", teams);
     return (
         <div className="bg-gray-200 px-8 pb-2 max-h-96 mt-5 overflow-y-auto" style={{minHeight:"50vh"}}>
@@ -25,7 +34,7 @@ const TeamComponent = ({teams, activeIcon, player}) => {
                                 Lobby
                             </div>
                             <div className='text-gray-500'>
-                                5 players
+                                {players.length} Player(s)
                             </div>
                         </div>
                     </div>:<></>}
@@ -51,7 +60,7 @@ const TeamComponent = ({teams, activeIcon, player}) => {
                             </div>
                         </div>
                     )
-                }):<></>}
+                }):<PlayerComponent players = {playersWithoutTeams} teams = {teams} />}
             </div>
         </div>
     )

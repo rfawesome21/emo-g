@@ -29,13 +29,14 @@ const random = () => {
             if(isMounted)
                 setTeams(teams)
         })
-        socket.on('no-players', players => {
-            if(isMounted)
-                setNumberOfPlayers(players)
-        })
         socket.on('players', players => {
             if(isMounted)
-                setPlayers(players)
+                setNumberOfPlayers(players.length)
+        })
+        socket.on('players-without-teams', playersWithoutTeams => {
+            console.log('no teams :(');
+            if(isMounted)
+                setPlayers(playersWithoutTeams)
         })
         return () => {
             isMounted = false
@@ -50,11 +51,11 @@ const random = () => {
         <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/teams'} />
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
+                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}

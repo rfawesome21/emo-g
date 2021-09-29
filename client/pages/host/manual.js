@@ -26,7 +26,15 @@ const manual = () => {
         socket.emit('manual-division', sessionStorage.getItem('game-code'))
         socket.on('players', players => {
             setNumberOfPlayers(players.length)
-            setPlayers(players)})
+        })
+        socket.on('teams', teams => setTeams(teams))
+        socket.on('players-without-teams', playersWithoutTeams => {
+            console.log('no teams :(');
+            setPlayers(playersWithoutTeams)
+        })
+        socket.on('manual-teams', teams => {
+            setTeams(teams)
+        })
         setGameCode(sessionStorage.getItem('game-code'))
         //get players and gamecode
         
@@ -44,7 +52,7 @@ const manual = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}

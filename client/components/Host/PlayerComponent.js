@@ -20,7 +20,7 @@ const PlayerComponent = ({players, width, largeWidth, teams}) => {
     width === 'large'? compWidth = 'lg' : compWidth = 'xl'
     largeWidth === 'md' ? respWidth = 'md' : respWidth = 'xs'
     return (
-        <div className={`flex flex-row flex-wrap md:max-w-${respWidth} lg:max-w-${compWidth} justify-evenly max-h-44`} style={{overflowY:"scroll"}} id="players" >
+        <div className={`flex flex-row flex-wrap md:max-w-${respWidth} lg:max-w-${compWidth} justify-evenly max-h-44`} style={{overflowY:"auto"}} id="players" >
                         {players && players.length > 0? players.map((player, index) => (
                             <div style={{zIndex:2, textAlign:"center"}} key = {index} onClick={event => setMenu({x: event.clientX, y: event.clientY, player: player})}>
                                 <div className="mx-7">
@@ -33,15 +33,16 @@ const PlayerComponent = ({players, width, largeWidth, teams}) => {
                         )) : null}
             {
                 menu?
-                <div className="flex flex-row" style={{position:"absolute", top:menu.y, left:menu.x, zIndex:2}}>
-                    <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">
-                        <div onClick={() => setMoveTeams(!moveTeams)}>Move</div>
-                        <div>Remove</div>
-                        <div onClick={() => setMenu(undefined)}>Back</div> 
+                <div className="h-screen w-screen" style={{position:"absolute", top:0, left:0}} onClick={() => {setMenu(undefined); setMoveTeams(false)}} onMouseOver={() => console.log("in")}>
+                    <div className="flex flex-row" style={{position:"absolute", top:menu.y, left:menu.x, zIndex:2}}>
+                        <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">
+                            <div onClick={(event) => {setMoveTeams(!moveTeams); event.stopPropagation()}}>Move</div>
+                            <div>Remove</div>
+                        </div>
+                        {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer">
+                            {teams?teams.map((team) => <div className='w-auto' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}
+                        </div>:<></>}
                     </div>
-                    {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer">
-                        {teams?teams.map((team) => <div className='w-auto' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}
-                    </div>:<></>}
                 </div>:<></>}
         </div>
     )

@@ -52,23 +52,23 @@ const random = () => {
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
             </div>
-                <div className='flex flex-row w-full justify-around'>
-                    <div className='lg:w-3/12 md:w-4/12'>
+            <div className='flex flex-row w-full justify-evenly'>
+                <div className='lg:w-6/12 md:w-6/12'>
                     {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
-                    </div>
-                    <div className='w-5/12'>
-                    {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
-                    </div>
                 </div>
-                <div className="text-center"><Button text = {'Start'} /></div>
-                {
-                playerIcon?
-                <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
-                    <div>Remove Player</div>
-                    <div onClick={() => deletePlayer(undefined)}>Back</div>  
-                </div>:<></>}
+                <div className='w-3/12'>
+                {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
+                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
+                </div>
             </div>
+            <div className="text-center"><Button text = {'Start'} /></div>
+            {
+            playerIcon?
+            <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
+                <div>Remove Player</div>
+                <div onClick={() => deletePlayer(undefined)}>Back</div>  
+            </div>:<></>}
+        </div>
      );
 }
  

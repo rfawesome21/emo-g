@@ -1,14 +1,15 @@
 import React from 'react'
 import PlayerComponent from './Host/PlayerComponent';
 
-const TeamPlayers = ({teams, allTeams}) => {
+const TeamPlayers = ({teams, allTeams, player}) => {
     console.log(teams);
     if(teams[0])
         console.log(teams[0].teamName);
     return (
         <div className={'flex flex-col bg-gray-200 mt-5 w-full px-10 py-2'} style={{minHeight:"50vh"}}>
-            <div className='font-bold text-xl'>
-                {teams[0]? `Team ${teams[0].teamName}` : null}
+            <div className='font-bold text-xl flex justify-between'>
+                <div>{teams[0]? `Team ${teams[0].teamName}` : null}</div>
+                <div className="bg-green-800 font-normal text-base px-2 py-1" style={{color:"white"}}>{player?"JOIN":""}</div>
             </div>
             <div className='font-bold text-lg py-4'>
                 {teams[0] && !teams[0][0]? `${teams[0].teamMembers.length} players` : `0 Players`}

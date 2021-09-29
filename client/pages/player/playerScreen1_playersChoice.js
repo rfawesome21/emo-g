@@ -74,11 +74,11 @@ const choice = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} player={true}/>) : (null)}
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
+                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true}/> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} /></div>

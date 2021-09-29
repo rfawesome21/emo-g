@@ -32,8 +32,6 @@ const deepCopyFunction = (inObject) => {
 module.exports = (io, socket) => {
 
     const authentication = ({code, name}) => {
-        console.log(code);
-        console.log(typeof(code));
         if(!name || !code){
             io.to(socket.id).emit('err', {message : 'Please fill all the fields before proceeding'})
             return
@@ -59,6 +57,8 @@ module.exports = (io, socket) => {
                 })
                 console.log(`Player joined!`);
                 io.to(code).emit('players', roomObject.playerDetails)
+                const playersWithoutTeams = roomObject.playerDetails.filter(p => p.join === false)
+                io.to(code).emit('players-without-teams', playersWithoutTeams)
                 io.to(socket.id).emit('authenticated', 1)
             }
         }
@@ -89,7 +89,6 @@ module.exports = (io, socket) => {
             score : [],
             scene : GameScenes,
             typingTimer : '1:30',
-            roundNo : 1,
             MAX_ROUNDS : 10,
             lifelines : [],
             MAX_PLAYERS_PER_TEAM : 5,

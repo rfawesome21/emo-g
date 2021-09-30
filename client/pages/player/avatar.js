@@ -25,7 +25,7 @@ const avatar = () => {
         <div>
             <div className="flex justify-start h-screen items-center px-10">
                 <div>
-                    <div className="flex flex-column justify-evenly items-center bg-gray-200 px-8 h-96">
+                    <div className="flex flex-column justify-evenly items-center bg-gray-200 px-8 h-96 w-96">
                     <div className="font-bold text-xl">
                             Choose your avatar
                         </div>

@@ -10,7 +10,7 @@ const avatar = () => {
     const [players, setPlayers] = useState([])
     const [color, setColor] = useState(0)
     const colors = ["#f0f", "#ff0", "#0ff","#f00","#0f0", "#00f"]
-    const [img, setImg] = useState(colors[0])
+    const [img, setImg] = useState(colors[0]) // rn color is stored, once the avatar images are ready, we can use them
 
 
     useEffect(() => {

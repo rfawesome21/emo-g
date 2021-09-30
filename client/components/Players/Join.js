@@ -18,6 +18,7 @@ const Join = () => {
             setPressed(true)})
         socket.on('authenticated',(value) => {
             sessionStorage.setItem('game-code', code)
+            sessionStorage.setItem('player-name', name)
             if(value === 1)
                 router.push('/player/avatar')
             else{

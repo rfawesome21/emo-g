@@ -56,16 +56,10 @@ const manual = () => {
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
+                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} /></div>
-            {
-            playerIcon?
-            <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
-                <div>Remove Player</div>
-                <div onClick={() => deletePlayer(undefined)}>Back</div>  
-            </div>:<></>}
         </div>
      );
 }

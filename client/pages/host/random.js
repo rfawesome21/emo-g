@@ -26,6 +26,7 @@ const random = () => {
         //get players and gamecode
         socket.emit('random-division', sessionStorage.getItem('game-code'))
         socket.on('random-teams', teams => {
+            console.log(teams);
             if(isMounted)
                 setTeams(teams)
         })
@@ -38,6 +39,10 @@ const random = () => {
             if(isMounted)
                 setPlayers(playersWithoutTeams)
         })
+        socket.on('teams', teams => {
+            console.log(teams);
+            setTeams(teams)})
+
         return () => {
             isMounted = false
         }
@@ -58,17 +63,10 @@ const random = () => {
                     {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
-                {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
+                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} /></div>
-            {
-            playerIcon?
-            <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
-                <div>Remove Player</div>
-                <div onClick={() => deletePlayer(undefined)}>Back</div>  
-            </div>:<></>}
         </div>
      );
 }

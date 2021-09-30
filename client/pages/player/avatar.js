@@ -1,9 +1,10 @@
+import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
-import PlayerComponent from '../../components/Host/PlayerComponent'
 import { SocketContext } from "../../context/socket/SocketContext";
 
 const avatar = () => {
 
+    const router = useRouter()
     const socket  = useContext(SocketContext)
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
 
@@ -19,6 +20,7 @@ const avatar = () => {
             setNumberOfPlayers(players.length)
             setPlayers(players)
         })
+        socket.on('come-to-teams', () => router.push('/player/choice'))
     }, [socket])
 
     return ( 

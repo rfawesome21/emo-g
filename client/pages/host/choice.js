@@ -1,22 +1,21 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import PlayerComponent from "../../components/Host/PlayerComponent";
 import TeamComponent from "../../components/TeamComponent";
 import Button from "../../components/Button";
 import TeamPlayers from "../../components/TeamPlayers";
+import { SocketContext } from "../../context/socket/SocketContext";
 // import styles from "../css/hostScreen.module.css"
 
 const choice = () => {
 
     const router = useRouter()
-
+    const socket = useContext(SocketContext)
     const [numberOfPlayers, setNumberOfPlayers] = useState(20)
     const [gameCode, setGameCode] = useState("")
-
     const [players, setPlayers] = useState([])
-    const [playerIcon, deletePlayer] = useState()
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
 
@@ -24,42 +23,15 @@ const choice = () => {
 
     useEffect(() => {
         setGameCode(sessionStorage.getItem('game-code'))
+        socket.emit('players-choice', sessionStorage.getItem('game-code'))
+        socket.on('choice-teams', teams => setTeams(teams))
+        socket.on('players-without-teams', playersWithoutTeams => {
+            console.log('no teams :(');
+            setPlayers(playersWithoutTeams)
+        })
+        socket.on('players', players => setNumberOfPlayers(players.length))
+        socket.on('teams', teams => setTeams(teams))
         //get players and gamecode
-        setPlayers([
-            {
-                name:"x0"
-            },
-            {
-                name:"x1"
-            },
-            {
-                name:"x2"
-            },
-            {
-                name:"x3"
-            },
-            {
-                name:"x4"
-            },
-            {
-                name:"x5"
-            },
-            {
-                name:"x6"
-            },
-            {
-                name:"bajra"
-            },
-            {
-                name:"x8"
-            },
-            {
-                name:"x9"
-            },
-            {
-                name:"x10"
-            }
-        ])
     }, [])
 
     const activeButton = (active) => {
@@ -74,20 +46,14 @@ const choice = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} /> : null}
+                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} /></div>
-            {
-            playerIcon?
-            <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
-                <div>Remove Player</div>
-                <div onClick={() => deletePlayer(undefined)}>Back</div>  
-            </div>:<></>}
         </div>
      );
 }

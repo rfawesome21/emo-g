@@ -107,12 +107,12 @@ module.exports = (io, socket) => {
         else{
             console.log(`Max Players : ${roomObject.MAX_PLAYERS_PER_TEAM}`);
             console.log(roomObject.teams.length, ' Teams');
-            console.log(teams[0]);
+            console.log(teams[0].teamMembers.length, ' Players');
             for(let i = 0; i < roomObject.teams.length; i++){
                 for(let j = 0; j < roomObject.teams[i].teamMembers.length; j++){  
-                    console.log('Hello');
-                    if( teams[0].length <= roomObject.MAX_PLAYERS_PER_TEAM)
+                    if( teams[0].teamMembers.length >= roomObject.MAX_PLAYERS_PER_TEAM)
                     {
+                        console.log(teams[0]);
                         console.log('Max Players reached!');
                         io.to(socket.id).emit('err', {message : 'This Team already has maximum number of players!'})
                         return

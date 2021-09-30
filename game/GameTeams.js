@@ -83,6 +83,7 @@ module.exports = (io, socket) => {
         if(teamMembers.length > 0){
             console.log('Error message');
             io.to(socket.id).emit('err' , {message : 'This player already belongs to that team!'})
+            return
         }
         else{
             console.log(`Max Players : ${roomObject.MAX_PLAYERS_PER_TEAM}`);

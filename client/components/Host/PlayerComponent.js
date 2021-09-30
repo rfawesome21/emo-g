@@ -39,8 +39,8 @@ const PlayerComponent = ({players, width, largeWidth, teams}) => {
                             <div onClick={(event) => {setMoveTeams(!moveTeams); event.stopPropagation()}}>Move</div>
                             <div>Remove</div>
                         </div>
-                        {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer">
-                            {teams?teams.map((team) => <div className='w-auto' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}
+                        {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer max-h-32 overflow-y-auto">
+                            {teams?teams.map((team) => <div className='w-auto px-2' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}
                         </div>:<></>}
                     </div>
                 </div>:<></>}

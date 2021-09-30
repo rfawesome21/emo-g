@@ -16,7 +16,12 @@ const sendCodeToInvitePlayers = (props) => {
             inertia: true, 
             placement: 'bottom-end',
             arrow: roundArrow,
-            theme:"light-border"
+            theme:"tomato",
+            onShow(instance) {
+                setTimeout(() => {
+                  instance.hide();
+                }, 3000);
+            }
           });
     }, [])
 

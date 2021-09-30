@@ -10,6 +10,7 @@ const avatar = () => {
     const [players, setPlayers] = useState([])
     const [color, setColor] = useState(0)
     const colors = ["#f0f", "#ff0", "#0ff","#f00","#0f0", "#00f"]
+    const [img, setImg] = useState(colors[0])
 
 
     useEffect(() => {
@@ -45,7 +46,7 @@ const avatar = () => {
                         </div>
                     </div>
                     <div className="flex justify-center">
-                        <div className="rounded px-4 py-2 mt-2 bg-gray-200 border-2 border-black text-xl font-bold">Save</div>
+                        <div className="rounded px-4 py-2 mt-2 bg-gray-200 border-2 border-black text-xl font-bold" onClick={() => setImg(colors[color])}>Save</div>
                     </div>
                 </div>
                 <div className="flex flex-column justify-start px-40 h-3/5 lg:w-9/12 xl:w-auto xl:flex-grow-0">

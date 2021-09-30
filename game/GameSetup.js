@@ -10,27 +10,6 @@ const { roomArrayMap } = require("./GameVariables")
 module.exports = (io, socket) => {
 
 
-//     const showTeamDetails = () => {
-//         console.log(game);
-//         console.log(defaultGame);
-//     }
-
-//     const joinATeam = ({teamName, username}) => {
-//         if(mode === 'default'){
-//             for(let d of defaultGame){
-//                 if(d.teamName === teamName){
-//                     d.teamMembers.push(username)
-//                 }
-//             }
-//         }
-//         else if(mode === 'custom'){
-//             for(let g of game){
-//                 if(g.teamName === teamName){
-//                     g.teamMembers.push(username)
-//                 }
-//             }
-//         }
-//     }
 
     const setRounds = ({MAX_ROUND, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
@@ -53,8 +32,6 @@ module.exports = (io, socket) => {
     
 
     socket.on('set-time', setTimer)
-//     socket.on('show', showTeamDetails)
-//     socket.on('join-team', joinATeam)
     socket.on('no-of-rounds', setRounds)
     socket.on('join-avatar', joinAvatar)
 }

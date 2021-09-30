@@ -135,6 +135,7 @@ module.exports = (io, socket) => {
         playerNu[0].join = true
         const playersWithoutTeams = roomObject.playerDetails.filter(p => p.join === false)
         io.to(gameCode).emit('players-without-teams', playersWithoutTeams)
+        io.in(gameCode).emit('late-comers')
         io.to(socket.id).emit('manual-teams', roomObject.teams)
         io.to(socket.id).emit('random-teams', roomObject.teams)
         io.to(socket.id).emit('choice-teams', roomObject.teams)

@@ -21,6 +21,7 @@ const avatar = () => {
             setNumberOfPlayers(players.length)
             setPlayers(players)
         })
+        socket.on('late-comers', () => router.push('/player/choice'))
         socket.on('come-to-teams', () => router.push('/player/choice'))
     }, [socket])
 

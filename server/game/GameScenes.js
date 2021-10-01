@@ -47,7 +47,11 @@ module.exports = (io, socket) => {
     const addNewScenes = ({addScenesToGame, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene = addScenesToGame
-        console.log(roomObject.scene);
+    }
+
+    const sendGameScene = (gameCode) => {
+        let roomObject = roomArrayMap.get(gameCode)
+        io.to(socket.id).emit('game-scene', roomObject.scene)
     }
 
     socket.on('edit-scenes', editScenes)
@@ -55,5 +59,5 @@ module.exports = (io, socket) => {
     socket.on('join-scenes', joinScenes)
     socket.on('new-scenes', addNewScenes)
     socket.on('add-scene', addScene)
-
+    socket.on('get-game-scene', sendGameScene)
 }

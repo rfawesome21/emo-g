@@ -21,6 +21,7 @@ const settings = () => {
 
     useEffect(() => {
         let isMounted = true
+        sessionStorage.setItem('status', 1)
         socket.emit('create-game')
         socket.on('Room-code', code => {
             sessionStorage.setItem('game-code', code)

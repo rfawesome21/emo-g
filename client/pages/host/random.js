@@ -66,7 +66,7 @@ const random = () => {
                     {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
-            <div className="text-center"><Button text = {'Start'} /></div>
+            <div className="text-center"><Button text = {'Start'} clickHandler = {() => router.push('/scene')} /></div>
         </div>
      );
 }

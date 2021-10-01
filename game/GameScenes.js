@@ -47,6 +47,7 @@ module.exports = (io, socket) => {
     const addNewScenes = ({addScenesToGame, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene = addScenesToGame
+        console.log(roomObject.scene);
     }
 
     socket.on('edit-scenes', editScenes)

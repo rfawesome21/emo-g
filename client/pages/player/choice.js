@@ -15,7 +15,7 @@ const choice = () => {
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const socket = useContext(SocketContext)
-    const [playerIcon, deletePlayer] = useState()
+    const [playerMax, setPlayerMax] = useState()
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
     const [mode, setMode] = useState('')
@@ -29,6 +29,9 @@ const choice = () => {
             setTeams(teams)})
         socket.on('teams', teams => setTeams(teams))
         socket.on('err', ({message}) => alert(message))
+
+        //Max players per team
+        socket.on('max-players', maxPlayers => setPlayerMax(maxPlayers))
     }, [socket])
 
     const activeButton = (active) => {

@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ExitGame from "../../../components/exitGame";
+import { SocketContext } from "../../../context/socket/SocketContext";
 
-const playerScreen5 = () => {
+const game = () => {
 
     const router = useRouter()
     const { teamName } = router.query
@@ -18,70 +19,20 @@ const playerScreen5 = () => {
     const [settingsPressed, setSettingsPressed] = useState(false)
     const [players, setPlayers] = useState([])
     const [messages, setMessages] = useState([])
+    const socket = useContext(SocketContext)
 
     useEffect(() => {
-        setPlayers([
-            {
-                name: "Player 1", 
-                img:"#0f0"
-            },
-            {
-                name: "Player 2", 
-                img:"#000"
-            },
-            {
-                name: "Player 3", 
-                img:"#0ff"
-            },
-            {
-                name: "Player 4", 
-                img:"#ff0"
-            }
-        ])
-
-        setMessages([
-            {
-                id:"1",
-                message:"hola"
-            },
-            {
-                id:"0",
-                message:"hola adsad  qwe w dsad asd awdasd asd awdas "
-            },
-            {
-                id:"0",
-                message:"holasd asd asd asd we w as dad ad saa"
-            },
-            {
-                id:"1",
-                message:"hola adws ads asdasd adads dad ad s asdawdasd "
-            },
-            {
-                id:"0",
-                message:"hoaasd adaw dasd a dasdawdasd a ads adsasdla"
-            },
-            {
-                id:"1",
-                message:"holasdasd asdawddasd awe dawd awd a sd asdd ada"
-            },
-            {
-                id:"1",
-                message:"hola adws ads asdasd adads dad ad s asdawdasd "
-            },
-            {
-                id:"0",
-                message:"hoaasd adaw dasd a dasdawdasd a ads adsasdla"
-            },
-            {
-                id:"1",
-                message:"holasdasd asdawddasd awe dawd awd a sd asdd ada"
-            },
-            {
-                id:"1",
-                message:"hola adws ads asdasd adads dad ad s asdawdasd "
-            }
-        ])   
-    }, [])
+        const gameCode = sessionStorage.getItem('game-code')
+        const team = sessionStorage.getItem('team-name')
+        const playerName = sessionStorage.getItem('player-name')
+        socket.emit('join-team-room', {gameCode, team, playerName })
+        socket.on('team-players', players => setPlayers(players))
+        return () => {
+            gameCode = ''
+            team =  '' 
+        }
+           
+    }, [socket])
 
     return ( 
         <div className="flex flex-column h-screen overflow-y-hidden">
@@ -181,4 +132,4 @@ const playerScreen5 = () => {
      );
 }
 
-export default playerScreen5;
+export default game;

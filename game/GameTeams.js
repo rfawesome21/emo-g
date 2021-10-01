@@ -139,7 +139,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('manual-teams', roomObject.teams)
         io.to(socket.id).emit('random-teams', roomObject.teams)
         io.to(socket.id).emit('choice-teams', roomObject.teams)
-        io.in(gameCode).emit('player-teams', roomObject.teams)
+        io.in(gameCode).emit('teams', roomObject.teams)
     }
 
     const choiceOfPlayers = (gameCode) => {

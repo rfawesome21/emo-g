@@ -52,7 +52,7 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                 </div>
                 <div className="bg-gray-200 flex flex-row pb-2 h-full w-full">
                     <div className="flex-1">
-                        <div className="font-bold mb-5 align-center text-center text-2xl">Create a Scene
+                        <div className="font-bold mb-5 align-center text-center text-2xl">{text? 'Edit scene' : 'Create a Scene'}
                         </div>
                         <div className="flex flex-col px-auto h-3/4 font-bold text-xl justify-between items-center">
                             <textarea cols="60" required className="text-2xl border-2 text-left border-black font-semibold px-1 h-2/5 w-3/4 py-1" value = {scene} onChange = {onChangeHandler}>

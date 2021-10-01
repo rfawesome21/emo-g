@@ -21,6 +21,7 @@ const SelectScene = () => {
 
     const addScenes = (scene) => {
         let arr = addScenesToGame.slice(0)
+        arr.length = 0
         arr.push(scene)
         arr = new Set(arr)
         setAddScenesToGame([...arr])
@@ -79,18 +80,12 @@ const SelectScene = () => {
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
                                         setSceneID(scene.id)
-                                        if(arr.includes(index))
-                                        {
-                                            arr = arr.filter(a => a !== index)
-                                            setSelectedItem(arr)
-                                            removeScene(scene.scene)
-                                        }
-                                        else{
-                                            arr.push(index)
-                                            arr = new Set(arr)
-                                            setSelectedItem([...arr])
-                                            addScenes(scene.scene)}}
-                                        }
+                                        arr.length = 0
+                                        arr.push(index)
+                                        arr = new Set(arr)
+                                        setSelectedItem([...arr])
+                                        addScenes(scene.scene)}}
+                            
                                     onDoubleClick = {() => {
                                         setAddScenesToGame(addScenesToGame.filter(a => a !== scene.scene))
                                         setEditSceneText(scene.scene)

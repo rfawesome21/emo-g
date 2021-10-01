@@ -44,7 +44,7 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                     <div className="inline-block">
                                 <button
                                     onClick={() => closeButton()}
-                                    className="text-dark text-2xl hover:text-dark"
+                                    className="text-dark text-2xl mr-4 hover:text-dark"
                                 >
                                     &times;
                                 </button>
@@ -54,9 +54,18 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                     <div className="flex-1">
                         <div className="font-bold mb-5 align-center text-center text-2xl">Create a Scene
                         </div>
-                        <div className="flex flex-col h-75">
-                            <div className="h-full"><textarea cols="60" required className="text-2xl border-2 text-left border-black font-semibold px-1 h-full w-75 py-1" value = {scene} onChange = {onChangeHandler}>
-                            </textarea></div>
+                        <div className="flex flex-col px-auto h-3/4 font-bold text-xl justify-between items-center">
+                            <textarea cols="60" required className="text-2xl border-2 text-left border-black font-semibold px-1 h-2/5 w-3/4 py-1" value = {scene} onChange = {onChangeHandler}>
+                            </textarea>
+                            <div className="text-left">Roles</div>
+                            <div className="flex mx-auto font-normal">
+                                <div>Role 1</div>
+                                <input className="ml-8" value={nudgeRole1} onChange={(event) => setNudgeRole1(event.target.value)}/>
+                            </div>
+                            <div className="flex mx-auto font-normal">
+                                <div>Role 2</div>
+                                <input className="ml-8" value={nudgeRole2} onChange={(event) => setNudgeRole2(event.target.value)}/>
+                            </div>
                         </div>
                     </div>
                     <div className="flex-1">
@@ -64,7 +73,7 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                             <div>
                                 Nudge
                             </div>
-                            <div className="ml-12">Round No. </div>
+                            <div className="ml-12 mr-4">Round No. </div>
                             <select className="w-16 pl-2 font-bold" value={nudgeRoundNumber} onChange={(event) => setNudgeRoundNumber(event.target.value)} list="rounds" name="Rounds">
                                 <option value="01">01</option>
                                 <option value="02">02</option>
@@ -74,16 +83,10 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                             </select>
                         </div>
                         <div className="text-xl font-bold text-left flex flex-column justify-between h-3/4">
-                            <textarea className="w-3/4 h-2/5" value={nudgeStatement} onChange={(event) => setNudgeStatement(event.target.value)}/>
-                            <div>Roles</div>
-                            <div className="flex font-normal">
-                                <div>Role 1</div>
-                                <input className="ml-8" value={nudgeRole1} onChange={(event) => setNudgeRole1(event.target.value)}/>
-                            </div>
-                            <div className="flex font-normal">
-                                <div>Role 2</div>
-                                <input className="ml-8" value={nudgeRole2} onChange={(event) => setNudgeRole2(event.target.value)}/>
-                            </div>
+                            <textarea className="w-3/4 h-2/5 p-2" placeholder="Angry father is very angry" value={nudgeStatement} onChange={(event) => setNudgeStatement(event.target.value)}/>
+                            <div>Initial Statement</div>
+                            <textarea placeholder="Initial statement 1" className="w-3/4 p-2"/>
+                            <textarea placeholder="Initial statement 2" className="w-3/4 p-2"/>
                         </div>
                     </div>
                 </div>

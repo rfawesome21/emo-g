@@ -1,7 +1,19 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import ExitGame from "../../components/exitGame";
+import ExitGame from "../../../components/exitGame";
 
 const playerScreen5 = () => {
+
+    const router = useRouter()
+    const { teamName } = router.query
+
+    console.log(teamName);
+
+    // this is the parameter passed
+    // to pass parameter from someother page, do
+    //          Router.push({pathname: '/about',query: { name: 'Sajad' },})
+    // or
+    // <Link href={{ pathname: '/about', query: { name: 'Sajad' } }}>
 
     const [settingsPressed, setSettingsPressed] = useState(false)
     const [players, setPlayers] = useState([])

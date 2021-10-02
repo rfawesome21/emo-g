@@ -25,13 +25,18 @@ const choice = () => {
         socket.emit('player-in-teams', sessionStorage.getItem('game-code'))
         socket.on('player-teams', ({teams,mode}) => {
             console.log('pop ',teams);
+            const myTeam  = teams.find(t => t.teamMembers.find(p => p.name === sessionStorage.getItem('player-name')));
+            sessionStorage.setItem('team-name', myTeam.teamName)
             setMode(mode)
             setTeams(teams)})
-        socket.on('teams', teams => setTeams(teams))
+        socket.on('teams', teams => {
+            const myTeam  = teams.find(t => t.teamMembers.find(p => p.name === sessionStorage.getItem('player-name')));
+            sessionStorage.setItem('team-name', myTeam.teamName)
+            setTeams(teams)})
         socket.on('err', ({message}) => alert(message))
-
         //Max players per team
         socket.on('max-players', maxPlayers => setPlayerMax(maxPlayers))
+        socket.on('scene-page', () => router.push('/scene'))
     }, [socket])
 
     const activeButton = (active) => {

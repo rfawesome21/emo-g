@@ -18,20 +18,27 @@ const game = () => {
 
     const [settingsPressed, setSettingsPressed] = useState(false)
     const [players, setPlayers] = useState([])
+    const [roundNo, setRoundNo] = useState(1)
+    const [maxRounds, setMaxRounds] = useState(10)
+    const [guessingTimer, setGuessingTimer] = useState('')
+    const [scene, setScene] = useState('')
     const [messages, setMessages] = useState([])
     const socket = useContext(SocketContext)
 
     useEffect(() => {
         const gameCode = sessionStorage.getItem('game-code')
-        const team = sessionStorage.getItem('team-name')
+        const teamName = sessionStorage.getItem('team-name')
         const playerName = sessionStorage.getItem('player-name')
-        socket.emit('join-team-room', {gameCode, team, playerName })
+        socket.emit('join-team-room', {gameCode, teamName, playerName })
         socket.on('team-players', players => setPlayers(players))
+        socket.on('team-round', roundNumber => setRoundNo(roundNumber))
+        socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
+        socket.on('guessing-timer', guessingTimer => setGuessingTimer(guessingTimer))
+        socket.on('scene', scene => setScene(scene))
         return () => {
             gameCode = ''
             team =  '' 
         }
-           
     }, [socket])
 
     return ( 
@@ -70,10 +77,10 @@ const game = () => {
                 <div className="flex flex-column bg-gray-200 mx-2" style={{flex:"4"}}>
                     <div className="font-bold flex justify-between bg-gray-300 text-xl px-8 py-4">
                         <div>
-                            Round 5/10                            
+                            Round {roundNo}/{maxRounds}                            
                         </div>
                         <div>
-                            02:55
+                            {guessingTimer}
                         </div>
                     </div>
                     <div className="flex flex-column-reverse h-full max-h-full">
@@ -102,7 +109,7 @@ const game = () => {
                 </div>
                 <div className="flex flex-column mx-2" style={{flex:"4"}}>
                     <div className="font-bold px-8 py-4 bg-gray-400 text-lg">
-                        Scene:{"Father is not happy with his daughter's result"}
+                        Scene: {scene}
                     </div>
                     <div className="m-12 p-8 rounded-full bg-gray-200 h-full">
                         <div className="p-8 rounded-full bg-gray-300 h-full">

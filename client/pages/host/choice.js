@@ -2,7 +2,6 @@ import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import PlayerComponent from "../../components/Host/PlayerComponent";
 import TeamComponent from "../../components/TeamComponent";
 import Button from "../../components/Button";
 import TeamPlayers from "../../components/TeamPlayers";
@@ -19,7 +18,10 @@ const choice = () => {
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
 
-
+    const clickHandler = () => {
+        socket.emit('come-to-scene', sessionStorage.getItem('game-code'))
+        socket.on('scene-page', () => router.push('/scene'))
+    }
 
     useEffect(() => {
         setGameCode(sessionStorage.getItem('game-code'))
@@ -53,7 +55,7 @@ const choice = () => {
                 {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
-            <div className="text-center"><Button text = {'Start'} clickHandler = {() => router.push('/scene')} /></div>
+            <div className="text-center"><Button text = {'Start'} clickHandler = {() => clickHandler()} /></div>
         </div>
      );
 }

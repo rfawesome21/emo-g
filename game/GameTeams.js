@@ -27,9 +27,11 @@ module.exports = (io, socket) => {
             roomObject.teams.push({
                 teamName : m+1,
                 teamMembers : [],
-                roundNo : 1
+                roundNo : 1,
+                isPreviouslySelected : 0
             })
         }
+        
         console.log(roomObject.teams);
         if(mode === 'random'){
             for(let i = 0; i < roomObject.players.length; i++){

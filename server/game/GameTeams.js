@@ -28,10 +28,10 @@ module.exports = (io, socket) => {
                 teamName : m+1,
                 teamMembers : [],
                 roundNo : 1,
-                isPreviouslySelected : 0
+                previousSceneRole : ''
             })
         }
-        
+
         console.log(roomObject.teams);
         if(mode === 'random'){
             for(let i = 0; i < roomObject.players.length; i++){

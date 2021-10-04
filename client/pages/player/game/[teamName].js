@@ -34,7 +34,9 @@ const game = () => {
         socket.on('team-round', roundNumber => setRoundNo(roundNumber))
         socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
         socket.on('guessing-timer', guessingTimer => setGuessingTimer(guessingTimer))
-        socket.on('scene', scene => setScene(scene))
+        socket.on('scene', scene => {
+            console.log('prop', scene);
+            setScene(scene)})
         return () => {
             gameCode = ''
             team =  '' 
@@ -61,8 +63,8 @@ const game = () => {
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
                 <div className="flex bg-gray-200 mx-2 flex-column items-center" style={{flex:"1"}}>
-                    {players.map((player) => (
-                        <div className="mt-4">
+                    {players.map((player, index) => (
+                        <div className="mt-4" key = {index}>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke={player.img}>
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

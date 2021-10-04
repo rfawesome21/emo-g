@@ -83,15 +83,35 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('Players', Players.length)
         Password.push(code)
         let number = getRandomInt(0, GameScenes.length - 1)
-        console.log(number);
-        console.log(GameScenes[number].scene);
+        let sceneObj = {
+            id : GameScenes[number].id,
+            scene : GameScenes[number].scene,
+            roleOne : GameScenes[number].roleOne,
+            roleTwo : GameScenes[number].roleTwo,
+            nudge : GameScenes[number].nudge,
+            statementOne : GameScenes[number].statementOne,
+            statementTwo : GameScenes[number].statementTwo
+        }
+        
+        let myData = []
+
+        myData.push({
+            id : sceneObj.id,
+            scene : sceneObj.scene,
+            roleOne : sceneObj.roleOne,
+            roleTwo : sceneObj.roleTwo,
+            nudge : sceneObj.nudge,
+            statementOne : sceneObj.statementOne,
+            statementTwo : sceneObj.statementTwo
+        })
+
         roomArrayMap.set(code, {
             id : code,
             players : [],
             playerDetails : [],
             guessingTimer : '3:00',
             score : [],
-            scene : [GameScenes[number]],
+            scene : myData,
             typingTimer : '1:30',
             MAX_ROUNDS : 10,
             lifelines : [],

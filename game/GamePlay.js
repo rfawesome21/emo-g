@@ -11,14 +11,11 @@ module.exports = (io, socket) => {
         console.log(team);
         const player = roomObject.playerDetails.find(p => p.name === playerName)
         if(player.isRandomlySelected){
-            if(team.previousSceneRole === roomObject.scenes[0].role[0]){
-                io.to(socket.id).emit('role', roomObject.scenes[0].role[1])
+                io.to(socket.id).emit('role', roomObject.scene[0].roleOne)
                 io.to(socket.id).emit('team-players', team.teamMembers)
                 io.to(socket.id).emit('team-round', team.roundNo)
                 io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
                 return
-            }
-            io.to(socket.id).emit('role', roomObject.scenes[0].role[0])
         }
         io.to(socket.id).emit('team-players', team.teamMembers)
         io.to(socket.id).emit('team-round', team.roundNo)
@@ -26,7 +23,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
         io.to(socket.id).emit('typing-timer'. roomObject.typingTimer)
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
-        io.to(socket.id).emit('scene', roomObject.scene)
+        io.to(socket.id).emit('scene', roomObject.scene[0])
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {

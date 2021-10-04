@@ -69,8 +69,10 @@ module.exports = (io, socket) => {
         console.log('Hello');
         let roomObject = roomArrayMap.get(gameCode)
         for(let i = 0; i < roomObject.teams.length; i++){
-            let t = getRandomInt(0, roomObject.teams[i].teamMembers.length - 1)
-            roomObject.teams[i].teamMembers[t].isRandomlySelected = true
+            if(roomObject.teams[i].teamMembers.length !== 0){
+                let t = getRandomInt(0, roomObject.teams[i].teamMembers.length - 1)
+                roomObject.teams[i].teamMembers[t].isRandomlySelected = true
+            }
         }
         for(let i of roomObject.teams)
         {

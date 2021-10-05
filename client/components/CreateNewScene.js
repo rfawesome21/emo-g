@@ -3,24 +3,27 @@ import Button from './Button'
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/socket/SocketContext";
 
-const CreateNewScene = ({closeButton, text, sceneID}) => {
+const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, statementOne, statementTwo}) => {
     const [scene, setScene] = useState(text)
     const [gameCode, setGameCode] = useState(0)
 
-    const [nudgeRoundNumber, setNudgeRoundNumber] = useState()
+    const [nudgeRoundNumber, setNudgeRoundNumber] = useState(nudge)
     const [nudgeStatement, setNudgeStatement] = useState("")
-    const [nudgeRole1, setNudgeRole1] = useState("")
-    const [nudgeRole2, setNudgeRole2] = useState("")
+    const [nudgeRole1, setNudgeRole1] = useState(roleOne)
+    const [nudgeRole2, setNudgeRole2] = useState(roleTwo)
+    const [initialStatementOne, setInitialStatementOne] = useState(statementOne)
+    const [initialStatementTwo, setInitialStatementTwo] = useState(statementTwo)
 
     useEffect(() => {
         let isMounted = true
-        if(isMounted)
+        if(isMounted){
             setGameCode(sessionStorage.getItem('game-code'))
-        
+        }
+
         return () => {
             isMounted = false
         }
-    },[])
+    },[nudge, roleOne, roleTwo, statementTwo, statementOne])
 
     const socket = useContext(SocketContext)
     const onChangeHandler = (e) => {
@@ -85,8 +88,8 @@ const CreateNewScene = ({closeButton, text, sceneID}) => {
                         <div className="text-xl font-bold text-left flex flex-column justify-between h-3/4">
                             <textarea className="w-3/4 h-2/5 p-2" placeholder="Angry father is very angry" value={nudgeStatement} onChange={(event) => setNudgeStatement(event.target.value)}/>
                             <div>Initial Statement</div>
-                            <textarea placeholder="Initial statement 1" className="w-3/4 p-2"/>
-                            <textarea placeholder="Initial statement 2" className="w-3/4 p-2"/>
+                            <textarea placeholder="Initial statement 1" value = {initialStatementOne} className="w-3/4 p-2" onChange = {(e) => setInitialStatementOne(e.target.value)} />
+                            <textarea placeholder="Initial statement 2" value = {initialStatementTwo} className="w-3/4 p-2" onChange = {(e) => setInitialStatementTwo(e.target.value)} />
                         </div>
                     </div>
                 </div>

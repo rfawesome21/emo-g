@@ -15,14 +15,27 @@ const SelectScene = () => {
     const [selectedItem, setSelectedItem] = useState([])
     const [playerLength, setPlayerLength] = useState('')
     const [editSceneText, setEditSceneText] = useState('')
+    const  [nudge, setNudge] = useState('')
+    const [roleOne, setRoleOne] = useState('')
+    const [roleTwo, setRoleTwo] = useState('')
+    const [statementOne, setStatementOne] = useState('')
+    const [statementTwo, setStatementTwo] = useState('')
     const [sceneID, setSceneID] = useState()
 
     const router = useRouter()
 
     const addScenes = (scene) => {
+        const newScene = {
+            scene : scene.scene,
+            nudge : scene.nudge,
+            roleOne : scene.roleOne,
+            roleTwo : scene.roleTwo,
+            statementOne : scene.statementOne,
+            statementTwo : scene.statementTwo
+        }
         let arr = addScenesToGame.slice(0)
         arr.length = 0
-        arr.push(scene)
+        arr.push(newScene)
         arr = new Set(arr)
         setAddScenesToGame([...arr])
     }
@@ -84,11 +97,16 @@ const SelectScene = () => {
                                         arr.push(index)
                                         arr = new Set(arr)
                                         setSelectedItem([...arr])
-                                        addScenes(scene.scene)}}
+                                        addScenes(scene)}}
                             
                                     onDoubleClick = {() => {
                                         setAddScenesToGame(addScenesToGame.filter(a => a !== scene.scene))
                                         setEditSceneText(scene.scene)
+                                        setNudge(scene.nudge)
+                                        setRoleOne(scene.roleOne)
+                                        setRoleTwo(scene.roleTwo)
+                                        setStatementOne(scene.statementOne)
+                                        setStatementTwo(scene.statementTwo)
                                         setCreateScenes(true)}}
                                     >
                                         {scene.scene}
@@ -102,6 +120,11 @@ const SelectScene = () => {
                                     <button className="py-2 px-4 font-bold text-lg h-28 w-96 bg-gray-50 rounded" key = {index}
                                     onClick = {() => {
                                         setEditSceneText('')
+                                        setNudge('')
+                                        setRoleTwo('')
+                                        setRoleOne('')
+                                        setStatementTwo('')
+                                        setStatementOne('')
                                         setCreateScenes(true)}}
                                     >+ Create Scene</button> 
                                 </div>
@@ -112,7 +135,15 @@ const SelectScene = () => {
                 </div>
             </div>
             <div className="text-center"><Button text = 'Save' clickHandler = {clickHandler} /></div>
-            {createScenes? <CreateNewScene closeButton = {() => setCreateScenes(false)} text = {editSceneText} sceneID = {sceneID} /> : null}
+            {createScenes? <CreateNewScene closeButton = {() => setCreateScenes(false)} 
+                            text = {editSceneText} 
+                            nudge = {nudge} 
+                            roleOne = {roleOne}
+                            roleTwo = {roleTwo}
+                            statementOne = {statementOne}
+                            statementTwo = {statementTwo}
+                            sceneID = {sceneID}
+                             /> : null}
         </div>
     )
 }

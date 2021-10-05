@@ -1,4 +1,4 @@
-const {genRanHex} = require('./GameFunctions')
+const {genRanHex, getRandomInt} = require('./GameFunctions')
 let code = ''
 const {Teams} = require('../data/Teams')
 const {Scenes} = require('../data/Scenes')
@@ -53,7 +53,8 @@ module.exports = (io, socket) => {
                 roomObject.playerDetails.push({
                     name : name,
                     avatar : '',
-                    join : false
+                    join : false,
+                    isRandomlySelected : false
                 })
                 console.log(`Player joined!`);
                 io.to(code).emit('players', roomObject.playerDetails)
@@ -81,13 +82,36 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
         Password.push(code)
+        let number = getRandomInt(0, GameScenes.length - 1)
+        let sceneObj = {
+            id : GameScenes[number].id,
+            scene : GameScenes[number].scene,
+            roleOne : GameScenes[number].roleOne,
+            roleTwo : GameScenes[number].roleTwo,
+            nudge : GameScenes[number].nudge,
+            statementOne : GameScenes[number].statementOne,
+            statementTwo : GameScenes[number].statementTwo
+        }
+        
+        let myData = []
+
+        myData.push({
+            id : sceneObj.id,
+            scene : sceneObj.scene,
+            roleOne : sceneObj.roleOne,
+            roleTwo : sceneObj.roleTwo,
+            nudge : sceneObj.nudge,
+            statementOne : sceneObj.statementOne,
+            statementTwo : sceneObj.statementTwo
+        })
+
         roomArrayMap.set(code, {
             id : code,
             players : [],
             playerDetails : [],
             guessingTimer : '3:00',
             score : [],
-            scene : GameScenes,
+            scene : myData,
             typingTimer : '1:30',
             MAX_ROUNDS : 10,
             lifelines : [],

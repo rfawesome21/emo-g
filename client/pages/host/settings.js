@@ -9,7 +9,7 @@ const settings = () => {
 
     const router = useRouter()
     const socket = useContext(SocketContext)
-    const [numberOfRounds, setNumberOfRounds] = useState('')
+    const [numberOfRounds, setNumberOfRounds] = useState(10)
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const [disabled, setDisabled] = useState(true)

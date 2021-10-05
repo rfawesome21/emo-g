@@ -19,6 +19,11 @@ const random = () => {
     const [playerIcon, deletePlayer] = useState()
     const [activeTeam, setActiveTeam] = useState(1)
     const [players, setPlayers] = useState([])
+    const clickHandler = () => {
+        socket.emit('come-to-scene', sessionStorage.getItem('game-code'))
+        socket.on('scene-page', () => router.push('/scene'))
+    }
+
     useEffect(() => {
         let isMounted = true
         if(isMounted)
@@ -66,7 +71,7 @@ const random = () => {
                     {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
-            <div className="text-center"><Button text = {'Start'} clickHandler = {() => router.push('/scene')} /></div>
+            <div className="text-center"><Button text = {'Start'} clickHandler = {() => clickHandler()} /></div>
         </div>
      );
 }

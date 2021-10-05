@@ -21,6 +21,10 @@ const manual = () => {
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
 
+    const clickHandler = () => {
+        socket.emit('come-to-scene', sessionStorage.getItem('game-code'))
+        socket.on('scene-page', () => router.push('/scene'))
+    }
 
     useEffect(() => {
         socket.emit('manual-division', sessionStorage.getItem('game-code'))
@@ -59,7 +63,7 @@ const manual = () => {
                 {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
-            <div className="text-center"><Button text = {'Start'} clickHandler = {() => router.push('/scene')} /></div>
+            <div className="text-center"><Button text = {'Start'} clickHandler = {() => clickHandler()} /></div>
         </div>
      );
 }

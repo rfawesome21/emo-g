@@ -13,22 +13,26 @@ const chooseEmotions = () => {
     const [scenes, setScenes] = useState(false)
     const [emotion, setEmotion] = useState('')
     const [emotionArray, setEmotionArray] = useState([])
+    const [toBeEdited, setEdit] = useState()
 
     const emotionFunction = (emotion, clearClicked) => {
-        setEmotion(emotion)
-        let arr = emotionArray.slice(0)
-        if (arr.length > 9) {
-            alert('Please Select only 10 Emotions')
-            return
+        console.log(toBeEdited, "edit");
+        if(toBeEdited===undefined){
+            setEmotion(emotion)
+            let arr = emotionArray.slice(0)
+            if (arr.length > 9) {
+                alert('Please Select only 10 Emotions')
+                return
+            }
+            arr.push(emotion)
+            setEmotionArray(arr)
+        } else {
+            const arr = emotionArray
+            arr[toBeEdited] = emotion
+            setEmotionArray([...arr])
+            setEdit(undefined)
         }
-        arr.push(emotion)
-        setEmotionArray(arr)
-        console.log(arr)
-
     }
-
-
-
     const myStyle = {
         overflowY: "auto",
         scrollBehavior: "smooth"
@@ -68,10 +72,6 @@ const chooseEmotions = () => {
         emotionArray.force
     }
 
-
-
-    useEffect(() => {}, [emotionArray])
-
     return (
         <div style={{ height: "100vh" }}>
             <div className="mt-20 justify-center align-center text-center flex flex-col container px-10" >
@@ -87,8 +87,9 @@ const chooseEmotions = () => {
                         </div>
 
                         <div className="grid grid-cols-2 grid-flow-row auto-rows-max gap-2">
-                            {emotionArray.map((emotion, index) => <div className="py-2 px-3 w-40 h-16 font-bold text-md bg-gray-50 text-center grid">Round{` ${index + 1}`}
-                                <span className="capitalize ">{emotion}</span></div>)}
+                            {emotionArray.map((emotion, index) => <div className="py-2 px-3 w-40 h-16 font-bold text-md bg-gray-50 text-center grid relative">Round{` ${index + 1}`}
+                                <span className="capitalize ">{emotion}</span>
+                                <span className="absolute top-0 right-0 cursor-pointer" onClick={() => setEdit(index)}>E</span></div>)}
                         </div>
                     </div>
                     <div className=" ">

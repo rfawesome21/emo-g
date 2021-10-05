@@ -68,6 +68,8 @@ const chooseEmotions = () => {
         emotionArray.force
     }
 
+
+
     useEffect(() => {}, [emotionArray])
 
     return (
@@ -81,7 +83,7 @@ const chooseEmotions = () => {
                     <div style={myStyle} className="bg-gray-300 h-96 w-96 p-3 scl">
                         <div className="font-bold mb-3 mt-2 align-center text-center text-xl">Set Emotions
                             <button className="ml-4" onClick={randomize}>Random</button>
-                            <button className="ml-4">Clear</button>
+                            <button className="ml-4" onClick={() => setEmotionArray([])}>Clear</button>
                         </div>
 
                         <div className="grid grid-cols-2 grid-flow-row auto-rows-max gap-2">

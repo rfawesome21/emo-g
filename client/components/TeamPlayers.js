@@ -33,7 +33,7 @@ const TeamPlayers = ({teams, allTeams, player, mode, status}) => {
             </div>
             <div className='w-full'>
 
-                <PlayerComponent players = {teams[0] && teams[0].teamMembers} teams = {allTeams} status = {status} width='medium' largeWidth='xs' />
+                <PlayerComponent players = {teams[0] && teams[0].teamMembers} player={player} teams = {allTeams} status = {status} width='medium' largeWidth='xs' />
             </div>
         </div>
     )

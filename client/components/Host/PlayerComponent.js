@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import {SocketContext} from '../../context/socket/SocketContext'
 
-const PlayerComponent = ({players, width, largeWidth, teams, status}) => {
+const PlayerComponent = ({players, width, largeWidth, teams, status, player}) => {
     console.log(status);
     const socket = useContext(SocketContext)
     const [menu, setMenu] = useState()
@@ -34,7 +34,7 @@ const PlayerComponent = ({players, width, largeWidth, teams, status}) => {
                             </div>
                         )) : null}
             {
-                menu?
+                menu && !player?
                 <div className="h-screen w-screen" style={{position:"absolute", top:0, left:0}} onClick={() => {setMenu(undefined); setMoveTeams(false)}} onMouseOver={() => console.log("in")}>
                     <div className="flex flex-row" style={{position:"absolute", top:menu.y, left:menu.x, zIndex:2}}>
                         <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">

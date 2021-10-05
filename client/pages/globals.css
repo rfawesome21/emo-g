@@ -128,11 +128,10 @@ text {
   font-weight: 500;
   cursor: pointer;
 }
+/* 
+round 1 
+[Anger]
+r 2
+[joy]
 
-/* tippy styles */
-
-.tippy-box[data-theme~="tomato"] {
-  background-color: black;
-  color: white;
-  padding: 4px 8px;
-}
+*/

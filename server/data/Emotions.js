@@ -1,3 +1,7 @@
-const Emotions = [['RAGE','ANGER'],['ANGER']]
+const Emotions = [['RAGE','ANGER'],['ANGER', 'ANNOYANCE'], ['LOATHING', 'DISGUST'], ['DISGUST', 'BOREDOME'], ['ADMIRATION', 'TRUST']
+                , ['TRUST', 'ACCEPTANCE'], ['TERROR', 'FEAR'], ['FEAR', 'APPREHENSION'], ['AMAZEMENT', 'SURPRISE'], ['SURPRISE', 'DISTRACTION'],
+                ['GRIEF', 'SADNESS'], ['SADNESS', 'PENSIVENESS'], ['VIGILANCE', 'ANTICIPATION'], ['ANTICIPATION', 'INTEREST'], ['ECSTACY','JOY'], ['JOY', 'SERENITY']]
 
-module.exports = {Emotions}
+const CompoundEmotions = ['AGRESSIVENESS','CONTEMPT', 'REMORSE', 'DISAPPROVAL', 'AWE', 'SUBMISSION', 'LOVE','OPTIMISM']
+
+module.exports = {Emotions, CompoundEmotions}

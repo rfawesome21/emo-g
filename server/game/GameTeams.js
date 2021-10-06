@@ -28,11 +28,16 @@ module.exports = (io, socket) => {
                 teamName : m+1,
                 teamMembers : [],
                 roundNo : 1,
-                previousSceneRole : ''
+                previousSceneRole : '',
+                messages : [roomObject.scene[0].statementOne, roomObject.scene[0].statementTwo],
+                isDisabled : false, 
+                emotionsGuessed : [], 
+                guessingTimer : roomObject.guessingTimer,
+                typingTimer : roomObject.typingTimer,
+                score : 0
             })
         }
 
-        console.log(roomObject.teams);
         if(mode === 'random'){
             for(let i = 0; i < roomObject.players.length; i++){
                 let j = getRandomInt(0, roomObject.teams.length - 1)
@@ -55,6 +60,7 @@ module.exports = (io, socket) => {
 
     const randomTeamDivision = (gameCode) => {
         console.log(roomArrayMap.get(gameCode).teams);
+        io.in(gameCode).emit('come-to-teams')
         io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
     }
 

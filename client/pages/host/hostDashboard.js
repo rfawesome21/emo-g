@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import PlayerComponent from "../../components/Host/PlayerComponent"
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers"
+import { SocketContext } from "../../context/socket/SocketContext"
 
 const hostDashboard = () => {
 
@@ -13,7 +14,7 @@ const hostDashboard = () => {
     const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('')
     const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
     const [disableRounds, setDisableRounds] = useState(true)
-
+    const socket = useContext(SocketContext)
     const [selected, setSelected] = useState("teams")
     const [ruleBook, ruleBookClicked] = useState(false)
     const [playersWithoutTeams, setPlayers] = useState([{name: "Player 1"}, {name: "Player 2"}, {name: "Player 3"}, {name: "Player 4"}, {name: "Player 5"}, {name: "Player 6"}])
@@ -21,23 +22,6 @@ const hostDashboard = () => {
     const [players, setPlayer] = useState(["Player 1", "Player 2", "Player 3", "Player 4", "Player 5"])
     const [roundResults, setRoundResult] = useState(["Angry", "Happy", "Annoyed", "Excited", "Cool", "", "", "", "", ""])
 
-    useEffect(() => {}, [])
-
-    const continueGame = () => {
-        const guesser = `${guessingTime}:${guessingTimeInSeconds}`
-        const typer = `${typingTime}:${typingTimeInSeconds}`
-        socket.emit('set-time', {guesser, typer, gameCode})
-        const MAX_ROUND = numberOfRounds
-        socket.emit('no-of-rounds', {MAX_ROUND, gameCode} )
-        router.push('/host/scenes')
-    }
-
-    const onChangeHandlerInMinutes = (e) => {
-        e.target.name === 'guess'? setGuessingTime(e.target.value) : setTypingTime(e.target.value)
-    }
-    const onChangeHandlerInSeconds = (e) => {
-        e.target.name === 'guessInSeconds'? setGuessingTimeInSeconds(e.target.value) : setTypingTimeInSeconds(e.target.value)
-    }
 
     return ( <div className="flex flex-row">
         <div className="flex bg-gray-300 flex-column justify-between items-center font-bold text-xl h-screen" style={{flex:2}}>

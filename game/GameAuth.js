@@ -1,13 +1,13 @@
 const {genRanHex, getRandomInt} = require('./GameFunctions')
 let code = ''
-const {Teams} = require('../data/Teams')
 const {Scenes} = require('../data/Scenes')
 const GameScenes = JSON.parse(JSON.stringify(Scenes))
 const MainScenes = JSON.parse(JSON.stringify(Scenes))
 const Players = []
 let { Password, roomArrayMap} = require('./GameVariables')
-const { Emotions } = require('../data/Emotions')
+const { Emotions, CompoundEmotions } = require('../data/Emotions')
 const GameEmotions = JSON.parse(JSON.stringify(Emotions))
+const GameCompoundEmotions = JSON.parse(JSON.stringify(CompoundEmotions))
 
 const deepCopyFunction = (inObject) => {
     let outObject, value, key
@@ -105,6 +105,23 @@ module.exports = (io, socket) => {
             statementTwo : sceneObj.statementTwo
         })
 
+
+        let myEmotionData = new Set()
+        let j = 0
+        while(myEmotionData.size !== 10){
+            let i = getRandomInt(0, Emotions.length - 1)
+            if(myEmotionData.size < 7){
+                myEmotionData.add(GameEmotions[i][j])
+                j = 1
+            }
+            else{
+                i = getRandomInt(0, CompoundEmotions.length - 1)
+                myEmotionData.add(CompoundEmotions[i])
+            }
+        }
+
+        myEmotionData = [...myEmotionData]
+
         roomArrayMap.set(code, {
             id : code,
             players : [],
@@ -119,10 +136,14 @@ module.exports = (io, socket) => {
             GAME_SCENES : deepCopyFunction(MainScenes),
             teams : [],
             emotions : GameEmotions,
+            compoundEmotions : GameCompoundEmotions,
             emotionsPerRounds : [],
+            emotion : myEmotionData,
             mode : ''
         })
         
+        console.log(roomArrayMap.get(code).emotion);
+
         io.to(socket.id).emit('guessing-timer', roomArrayMap.get(code).guessingTimer)
         io.to(socket.id).emit('typing-timer', roomArrayMap.get(code).typingTimer)
         console.log('The Host has created the game!')

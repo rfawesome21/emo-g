@@ -48,18 +48,20 @@ const game = () => {
         socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
-        socket.on('team-disabled', bool => setIsDisabled(bool))
-        socket.on('team-scores', score => setScore(score))
+        socket.on('team-disabled', bool => {
+            setIsTimerOver(bool)
+            setIsDisabled(bool)
+        })
+        socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
-
+        socket.on('typing-counter', counter => setCounter(counter))
+        socket.on('guessing-counter', counter => setGuessCounter(counter))
 
     }, [socket])
 
     useEffect(() => {
         
-        socket.on('typing-counter', counter => setCounter(counter))
-        socket.on('guessing-counter', counter => setGuessCounter(counter))
         
         if(!active)
         {
@@ -115,11 +117,8 @@ const game = () => {
     }
 
     const clickHandler = () => {
+        console.log('Hello');
         const gameCode = sessionStorage.getItem('game-code')
-        sessionStorage.removeItem('guessing-time-format')  
-        sessionStorage.removeItem('counter-guessing')
-        sessionStorage.removeItem('counter-typing')
-        sessionStorage.removeItem('time-format')
         sessionStorage.removeItem('is-disabled')
         sessionStorage.removeItem('is-time-over')
         socket.emit('guessed', {gameCode, teamName, emotion})
@@ -137,6 +136,11 @@ const game = () => {
         const gameCode = sessionStorage.getItem('game-code')
         let message = messages.slice(0)
         message.push(statement)
+        setIsTimerOver(true)
+        setTimeFormat('0:00')
+        setCounter(0)
+        const counterT = 0
+        socket.emit('typing-time', {gameCode, teamName, counterT})
         socket.emit('submit-statement', {gameCode, teamName, message})
     }
 
@@ -227,8 +231,9 @@ const game = () => {
                         <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold">Delete a row</div>
                         <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold">Call the bot</div>
                     </div>
-                    <Button clickHandler={clickHandler} text = {'Confirm'} />
-
+                    {player.name === playerName && player.isRandomlySelected? null:
+                    <button className='bg-gray-200 border-2 border-black rounded-md px-2 py-1 mt-3 w-auto text-lg font-bold self-center'
+                    onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}
                 </div>
             </div>
 

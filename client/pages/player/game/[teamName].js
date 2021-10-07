@@ -163,7 +163,7 @@ const game = () => {
                 </div>
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
-                <div className="flex bg-gray-200 mx-2 flex-column items-center" style={{flex:"1"}}>
+                <div className="flex bg-gray-200 mx-2 flex-column items-center" style={{flex:"1", height:"80vh"}}>
                     {players.map((player, index) => (
                         <div className="mt-4" key = {index}>
                             <div>
@@ -177,8 +177,8 @@ const game = () => {
                         </div>
                     ))}
                 </div>
-                <div className="flex flex-column bg-gray-200 mx-2" style={{flex:"4"}}>
-                    <div className="font-bold flex justify-between bg-gray-300 text-xl px-8 py-4">
+                <div className="flex flex-column bg-gray-200 mx-2" style={{flex:"4", height:"80vh"}}>
+                    <div className="font-bold flex justify-between bg-gray-300 text-xl px-8 py-4" style={{flex:"1"}}>
                         <div>
                             Round {roundNo}/{maxRounds}                            
                         </div>
@@ -186,7 +186,7 @@ const game = () => {
                             {isTimerOver? timeGuesserFormat : timeFormat}
                         </div>
                     </div>
-                    <div className="flex flex-column-reverse h-full max-h-full">
+                    <div className="flex flex-column-reverse overflow-y-auto" style={{flex:"9"}}>
                             {player.name === playerName && player.isRandomlySelected?
                             <div className='flex flex-row justify-between'>
                                 
@@ -194,11 +194,11 @@ const game = () => {
                                 <button className='flex-1 h-full border-2 border-black' onClick = {onSubmit} disabled = {isDisabled? true: false} > Submit </button>
                             </div>
                                 : null}
-                        <div className="flex-1 mx-4 overflow-y-auto">
+                        <div className="flex-1 ml-4 overflow-y-scroll">
                             <div className="inline-block w-full">
                                 {messages.map((message, index) => (
                                     index % 2 !== 0?
-                                        <div className="text-left my-1 overflow-y-auto" key={index}>
+                                        <div className="text-left my-1" key={index}>
                                             <h6 className='text-sm'>{scene.roleOne}</h6>
                                             <div className="mr-8 bg-gray-400 inline-block px-4 py-2 rounded-t-md rounded-r-md">
                                                 {message}
@@ -216,13 +216,13 @@ const game = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-column mx-2" style={{flex:"4"}}>
+                <div className="flex flex-column mx-2 items-center" style={{flex:"4", height:"80vh"}}>
                     <div className="font-bold px-8 py-4 bg-gray-400 text-lg">
                         Scene: {scene.scene}
                     </div>
                     <Wheel emotionFunction = {guessEmotion} />
                 </div>
-                <div className="flex flex-column mx-2" style={{flex:"1"}}>
+                <div className="flex flex-column mx-2" style={{flex:"1", height:"80vh"}}>
                     <div className="font-bold px-8 py-9 bg-gray-300 text-lg">
                         {score}
                     </div>

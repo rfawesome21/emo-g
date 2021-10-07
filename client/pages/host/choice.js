@@ -28,13 +28,12 @@ const choice = () => {
         socket.emit('players-choice', sessionStorage.getItem('game-code'))
         socket.on('choice-teams', teams => setTeams(teams))
         socket.on('players-without-teams', playersWithoutTeams => {
-            console.log('no teams :(');
             setPlayers(playersWithoutTeams)
         })
         socket.on('players', players => setNumberOfPlayers(players.length))
         socket.on('teams', teams => setTeams(teams))
         //get players and gamecode
-    }, [])
+    }, [socket])
 
     const activeButton = (active) => {
         setActiveTeam(active)
@@ -52,7 +51,7 @@ const choice = () => {
                 </div>
                 <div className='w-3/12'>
                 {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
+                {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} clickHandler = {() => clickHandler()} /></div>

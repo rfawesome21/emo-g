@@ -18,6 +18,8 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
+        io.to(socket.id).emit('typing-counter', team.typingCounter)
+        io.to(socket.id).emit('guessing-counter', team.guessingCounter)
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {
@@ -42,10 +44,14 @@ module.exports = (io, socket) => {
         const roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
 
+        if(Emotions.some(row => row.includes(emotion)))
+            console.log('Hello');
+
         let t = getRandomInt(0, team.teamMembers.length - 1)
         while(t === team.randomIndex){
             t = getRandomInt(0, team.teamMembers.length - 1)
         }
+
         team.teamMembers[t].isRandomlySelected = true
         team.randomIndex = t
 
@@ -67,8 +73,22 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
     }
 
+    const typingTimeDetails = ({gameCode, teamName, counterT}) => {
+        const roomObject = roomArrayMap.get(gameCode)
+        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        team.typingCounter = counterT
+    }
+
+    const guessingTimeDetails = ({gameCode, teamName, counterG}) => {
+        const roomObject = roomArrayMap.get(gameCode)
+        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        team.guessingCounter = counterG
+    }
+
     socket.on('submit-statement', addedMessage)
     socket.on('join-team-room', joinTeamRoom)
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
+    socket.on('typing-time', typingTimeDetails)
+    socket.on('guessing-time', guessingTimeDetails)
 }

@@ -23,6 +23,13 @@ module.exports = (io, socket) => {
         roomObject.teams.length = 0
         roomArrayMap.get(gameCode).mode = mode
         roomObject.NO_OF_TEAMS = Math.ceil(roomObject.players.length/roomObject.MAX_PLAYERS_PER_TEAM)
+        
+        let arr = roomObject.guessingTimer.split(':')
+        let totalTimerG = Number(arr[0]) * 60 + Number(arr[1])
+        
+        let arr2 = roomObject.typingTimer.split(':')
+        let totalTimerT = Number(arr2[0]) * 60 + Number(arr2[1])
+
         for(let m = 0; m < roomObject.NO_OF_TEAMS; m++){
             roomObject.teams.push({
                 teamName : m+1,
@@ -35,7 +42,9 @@ module.exports = (io, socket) => {
                 guessingTimer : roomObject.guessingTimer,
                 typingTimer : roomObject.typingTimer,
                 score : 0,
-                randomIndex : 0
+                randomIndex : 0,
+                typingCounter : totalTimerT,
+                guessingCounter : totalTimerG
             })
         }
 

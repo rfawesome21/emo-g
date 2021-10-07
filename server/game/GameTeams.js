@@ -34,7 +34,8 @@ module.exports = (io, socket) => {
                 emotionsGuessed : [], 
                 guessingTimer : roomObject.guessingTimer,
                 typingTimer : roomObject.typingTimer,
-                score : 0
+                score : 0,
+                randomIndex : 0
             })
         }
 

@@ -22,15 +22,12 @@ module.exports = (io, socket) => {
         roomObject.typingTimer = typer
     }
 
-
-
     const joinAvatar = ({gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         socket.join(gameCode)
         io.in(gameCode).emit('players', roomObject.playerDetails)
     }
     
-
     socket.on('set-time', setTimer)
     socket.on('no-of-rounds', setRounds)
     socket.on('join-avatar', joinAvatar)

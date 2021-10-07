@@ -13,52 +13,63 @@ const scenes = () => {
     const [numberOfPlayers, setNumberOfPlayers] = useState('')
     const [scenes, setScenes] = useState(false)
     const [emotion, setEmotion] = useState(false)
-
+    const [sceneClassName, setSceneClassName] = useState(false)
+    const [emotionClassName,setEmotionClassName] = useState(false)
     useEffect(() => {
+        if(sessionStorage.getItem('scene-class'))
+            setSceneClassName(true)
+        
         let isMounted = true
-        if(isMounted)
+        if (isMounted)
             setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('game-scenes', sessionStorage.getItem('game-code'))
         socket.on('players', players => {
-            console.log(players);
-            if(isMounted)
-                setNumberOfPlayers(players.length)})
+            if (isMounted)
+                setNumberOfPlayers(players.length)
+        })
+        socket.on('received-scenes', () => {
+            if(isMounted){
+                setSceneClassName(true)
+                sessionStorage.setItem('scene-class', true)
+            }
+        })
+        socket.on('received-emotions', (bool) => setEmotionClassName(bool))
         return () => {
             isMounted = false
         }
-    },[socket])
+    }, [socket])
 
     const router = useRouter()
 
-    return ( 
+    return (
         <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack link = '/host/settings' />
-            
+            <SettingsAndBack link='/host/settings' />
+
             <div className="flex flex-col justify-evenly">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
+                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
 
                 <div className="flex flex-row justify-between">
-                    <div className="flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4">
+                    <div className={sceneClassName? "flex flex-col justify-evenly align-center bg-green-200 p-8 mx-4" :  "flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4"}>
                         <div className="font-bold text-xl">Set the Scene</div>
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" 
-                        onClick = {() => router.push('/host/SelectScene')}>Choose Existing</button>
+                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2"
+                            onClick={() => router.push('/host/SelectScene')}>Choose Existing</button>
                     </div>
-                    <div className="flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4">
+                    <div className={emotionClassName? "flex flex-col justify-evenly align-center bg-green-200 p-8 mx-4" :  "flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4"}>
                         <div className="font-bold text-xl">Set Emotions</div>
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" onClick = {() => setEmotion(!emotion)}>Choose Existing</button>
+                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" onClick={() => router.push('/host/chooseEmotion')}>Choose Existing</button>
                     </div>
                 </div>
 
                 <div className="text-center"><button onClick={() => router.push("/host/teams")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
             </div>
             {
-                scenes?
-                <SelectScene closeButton = {() => setScenes(!scenes)}/>
-                : 
-                null
+                scenes ?
+                    <SelectScene closeButton={() => setScenes(!scenes)} />
+                    :
+                    null
             }
         </div>
-     );
+    );
 }
- 
+
 export default scenes;

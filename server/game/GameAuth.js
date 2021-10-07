@@ -139,7 +139,9 @@ module.exports = (io, socket) => {
             compoundEmotions : GameCompoundEmotions,
             emotionsPerRounds : [],
             emotion : myEmotionData,
-            mode : ''
+            mode : '',
+            manuallySetScene : false,
+            manuallySetEmotion : false
         })
         
         console.log(roomArrayMap.get(code).emotion);

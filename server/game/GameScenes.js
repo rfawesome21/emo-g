@@ -3,10 +3,7 @@ let { roomArrayMap} = require('./GameVariables')
 
 module.exports = (io, socket) => {
     
-
-    
     const joinScenes = (gameCode) => {
-        
         io.to(socket.id).emit('scenes', roomArrayMap.get(gameCode).GAME_SCENES)
         io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }
@@ -58,6 +55,9 @@ module.exports = (io, socket) => {
     const addNewScenes = ({addScenesToGame, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene = addScenesToGame
+        roomObject.manuallySetScene = true
+        io.to(socket.id).emit('received-scenes', roomObject.manuallySetScene)
+
     }
 
     const sendGameScene = (gameCode) => {
@@ -72,6 +72,7 @@ module.exports = (io, socket) => {
             if(roomObject.teams[i].teamMembers.length !== 0){
                 let t = getRandomInt(0, roomObject.teams[i].teamMembers.length - 1)
                 roomObject.teams[i].teamMembers[t].isRandomlySelected = true
+                roomObject.teams[i].randomIndex = t
             }
         }
         for(let i of roomObject.teams)

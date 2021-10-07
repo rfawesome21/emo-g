@@ -8,10 +8,16 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
     const [players, setPlayers] = useState(playersWithoutTeams)
     const socket = useContext(SocketContext)
 
+    const [menu, setMenu] = useState(undefined)
+
     useEffect(() => {
         socket.emit('get-players-no-teams', sessionStorage.getItem('game-code'))
         socket.on('players-without-teams' , players => setPlayers(players))
     }, [socket])
+
+    useEffect(() => {
+        document.addEventListener("contextmenu", function(event){event.preventDefault()})
+    },[])
 
     const createNewTeam = () => {
         socket.emit('create-team', sessionStorage.getItem('game-code'))
@@ -19,7 +25,7 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
 
     console.log("teams", teams);
     return (
-        <div className="bg-gray-200 px-8 pb-2 max-h-96 mt-5 overflow-y-auto" style={{minHeight:"50vh"}}>
+        <div className="bg-gray-200 px-8 pb-2 max-h-96 mt-5 overflow-y-auto scl" style={{minHeight:"50vh"}}>
             <div className='flex flex-row justify-between items-center'>
                 <div  className='flex flex-row'>
                     <div className='text-lg' onClick={() => setDisplay("teams")}>
@@ -53,7 +59,7 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
             <div className='flex flex-row flex-wrap'>
                 {display==="teams"?teams.map((team, index) => {
                     return(
-                        <div className='text-lg' key = {index}>
+                        <div className='text-lg' key = {index} onClick={(event) => console.log(event, "click")}>
                             <div className='flex flex-col justify-between bg-gray-400 mb-3 px-3 cursor-pointer pt-2 pb-2 m-2 flex-wrap' onClick = {() => activeIcon(team.teamName)}>
                                 <div className='self-start font-bold flex-wrap'>
                                     {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
@@ -62,9 +68,18 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
                                     {team.teamMembers.length} players
                                 </div>
                             </div>
+                            {
+                            menu && !player?
+                            <div className="h-screen w-screen" style={{position:"absolute", top:0, left:0}} onClick={() => setMenu(undefined)} onContextMenu={() => {console.log("right")}} onMouseOver={() => console.log("in")}>
+                                <div className="flex flex-row" style={{position:"absolute", top:menu.y, left:menu.x, zIndex:2}}>
+                                    <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">
+                                        <div>Remove</div>
+                                    </div>
+                                </div>
+                            </div>:<></>}
                         </div>
                     )
-                }):<PlayerComponent players = {playersWithoutTeams} teams = {teams} />}
+                }):<PlayerComponent players = {playersWithoutTeams} player={player} teams = {teams} />}
             </div>
         </div>
     )

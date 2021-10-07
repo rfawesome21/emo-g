@@ -4,13 +4,11 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({gameCode, teamName, playerName}) => {
+    const joinTeamRoom = ({gameCode, teamName}) => {
         console.log('My team is ', teamName);
         socket.join(`${gameCode}-${teamName}`)
         const roomObject = roomArrayMap.get(gameCode)
-        console.log(roomObject.teams);
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        const player = roomObject.playerDetails.find(p => p.name === playerName)
         io.to(socket.id).emit('team-score', team.score)
         io.to(socket.id).emit('team-messages', team.messages)
         io.to(socket.id).emit('team-players', team.teamMembers)
@@ -19,7 +17,6 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('typing-timer', roomObject.typingTimer)
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
-        io.to(socket.id).emit('player-details', player)
         io.to(socket.id).emit('team-disabled', team.isDisabled)
     }
 
@@ -39,40 +36,26 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
     }
 
-    const emotionGuessed = ({gameCode, teamName, emotion, playerName}) => {
-        console.log(teamName);
+    const emotionGuessed = ({gameCode, teamName, emotion}) => {
+        emotion = emotion.toUpperCase()
+        console.log(emotion);
         const roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        let tempEmotion = Emotions[0][1]
-        console.log(roomObject.emotion);
-        let guessedEmotion = Emotions.filter(e => console.log(e))
-        if(guessedEmotion.length > 1){
-            team.score += 2
-            }
-        else if(guessedEmotion.length === 1)
-        {
-            team.score += 1
+
+        let t = getRandomInt(0, team.teamMembers.length - 1)
+        while(t === team.randomIndex){
+            t = getRandomInt(0, team.teamMembers.length - 1)
         }
-        else if(guessedEmotion.length === 0){
-            let guessedCompoundEmotion = CompoundEmotions.find(e => e === tempEmotion)
-            if(guessedCompoundEmotion)
-                team.score += 3
-            else
-                team.score += 0
-        }
-    
+        team.teamMembers[t].isRandomlySelected = true
+        team.randomIndex = t
 
         for(let i = 0; i < team.teamMembers.length; i++){
-            team.teamMembers[i].isRandomlySelected = false
+            if(i !== team.randomIndex)
+                team.teamMembers[i].isRandomlySelected = false
         }
 
-        for(let i = 0; i < team.teamMembers.length; i++){
-            let t = getRandomInt(0, team.teamMembers.length - 1)
-            team.teamMembers[t].isRandomlySelected = true
-        }
-        console.log(team.teamMembers);
         team.roundNo += 1
-        team.emotionsGuessed.push(tempEmotion)
+        team.emotionsGuessed.push(emotion)
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
         team.isDisabled = false

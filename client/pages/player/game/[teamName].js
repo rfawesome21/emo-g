@@ -25,8 +25,8 @@ const game = () => {
     const [playerName, setPlayerName] = useState('')
     const [emotion, setEmotion] = useState('')
     const [isTimerOver, setIsTimerOver] = useState(false)
-    const [timeFormat, setTimeFormat] = useState('01:30')
-    const [timeGuesserFormat, setTimeGuesserFormat] = useState('03:00')
+    const [timeFormat, setTimeFormat] = useState('')
+    const [timeGuesserFormat, setTimeGuesserFormat] = useState('')
     const [active, setActive] = useState(false)
     const [counter, setCounter] = useState(90)
     const [guessCounter, setGuessCounter] = useState(180)
@@ -47,20 +47,6 @@ const game = () => {
 
         socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
 
-        socket.on('guessing-timer', guessingTimer => {
-            let arr = guessingTimer.split(':')
-            let totalTimer = Number(arr[0]) * 60 + Number(arr[1])
-            setGuessCounter(totalTimer)
-            setTimeGuesserFormat(guessingTimer)
-        })
-
-        socket.on('typing-timer', typingTimer => {
-            let arr = typingTimer.split(':')
-            let totalTimer = Number(arr[0]) * 60 + Number(arr[1])
-            setCounter(totalTimer)
-            setTimeFormat(typingTimer)
-        })
-
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
         socket.on('team-disabled', bool => setIsDisabled(bool))
         socket.on('team-scores', score => setScore(score))
@@ -71,18 +57,9 @@ const game = () => {
     }, [socket])
 
     useEffect(() => {
-        if(sessionStorage.getItem('time-format')){
-            setTimeFormat(sessionStorage.getItem('time-format'))
-            setCounter(Number(sessionStorage.getItem('counter-typing')))
-            if(sessionStorage.getItem('counter-guessing')){
-                console.log(sessionStorage.getItem('counter-guessing'));
-                if(Number(sessionStorage.getItem('counter-guessing')) >= 0)
-                    setGuessCounter(Number(sessionStorage.getItem('counter-guessing')))
-                setTimeGuesserFormat(sessionStorage.getItem('guessing-time-format'))
-                setIsTimerOver(JSON.parse(sessionStorage.getItem('is-time-over')))
-                setIsDisabled(JSON.parse(sessionStorage.getItem('is-disabled')))
-            }
-        }
+        
+        socket.on('typing-counter', counter => setCounter(counter))
+        socket.on('guessing-counter', counter => setGuessCounter(counter))
         
         if(!active)
         {
@@ -95,7 +72,9 @@ const game = () => {
                     setTimeFormat(computedMinute + ':' + computedSecond)
                     sessionStorage.setItem('time-format', computedMinute + ':' + computedSecond)
                     setCounter(counter => counter - 1);
-                    sessionStorage.setItem('counter-typing', counter - 1)
+                    const gameCode = sessionStorage.getItem('game-code')
+                    const counterT = counter - 1
+                    socket.emit('typing-time', {gameCode, teamName, counterT})
             }, 1000)
             }
             else{
@@ -110,9 +89,10 @@ const game = () => {
                     const computedSecond = String(secondCounter).length === 1 ? `0${secondCounter}`: secondCounter;
                     const computedMinute = String(minuteCounter).length === 1 ? `0${minuteCounter}`: minuteCounter;
                     setTimeGuesserFormat(computedMinute + ':' + computedSecond)
-                    sessionStorage.setItem('guessing-time-format', computedMinute + ':' + computedSecond)
                     setGuessCounter(counter => counter - 1);
-                    sessionStorage.setItem('counter-guessing', guessCounter - 1)
+                    const gameCode = sessionStorage.getItem('game-code')
+                    const counterG = guessCounter - 1
+                    socket.emit('guessing-time', {gameCode, teamName, counterG})
                     }, 1000)
                 }
                 else{
@@ -122,15 +102,13 @@ const game = () => {
                     clearInterval(timerRef.current)
                     setTimeGuesserFormat('00:00')
                     setGuessCounter(0)
-                    sessionStorage.setItem('guessing-time-format', '00:00')
-                    sessionStorage.setItem('counter-guessing', 0)
                 }
             }
         }
         return() => {
             clearInterval(timerRef.current)
         }
-    }, [counter, active, guessCounter])
+    }, [counter, active, guessCounter, socket])
 
     const guessEmotion = (e) => {
         setEmotion(e)
@@ -138,6 +116,12 @@ const game = () => {
 
     const clickHandler = () => {
         const gameCode = sessionStorage.getItem('game-code')
+        sessionStorage.removeItem('guessing-time-format')  
+        sessionStorage.removeItem('counter-guessing')
+        sessionStorage.removeItem('counter-typing')
+        sessionStorage.removeItem('time-format')
+        sessionStorage.removeItem('is-disabled')
+        sessionStorage.removeItem('is-time-over')
         socket.emit('guessed', {gameCode, teamName, emotion})
     }
 

@@ -68,7 +68,7 @@ const random = () => {
                     {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
-                    {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
+                    {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>
             <div className="text-center"><Button text = {'Start'} clickHandler = {() => clickHandler()} /></div>

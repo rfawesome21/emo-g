@@ -54,7 +54,7 @@ const choice = () => {
                     {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} player={true} />) : (null)}
                 </div>
                 <div className='w-3/12'>
-                {teams? <TeamPlayers teams = {teams.filter(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true} mode = {mode} /> : null}
+                {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true} mode = {mode} /> : null}
                 </div>
             </div>
             </div>

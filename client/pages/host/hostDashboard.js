@@ -9,29 +9,34 @@ import Scene from "../../components/Host/Scene"
 import Emotion from "../../components/Host/Emotion"
 import Scoring from "../../components/Host/Scoring"
 import Teams from "../../components/Host/Teams"
+import { SocketContext } from "../../context/socket/SocketContext"
 
 const hostDashboard = () => {
 
-    const [numberOfRounds, setNumberOfRounds] = useState('')
-    const [numberOfPlayers, setNumberOfPlayers] = useState(0)
-    const [gameCode, setGameCode] = useState("")
-    const [disabled, setDisabled] = useState(true)
+    const socket = useContext(SocketContext)
     const [guessingTime, setGuessingTime] = useState('')
     const [typingTime, setTypingTime] = useState('')
-    const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('')
-    const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
-    const [disableRounds, setDisableRounds] = useState(true)
-
+    const [scene, setScene] = useState('')
     const [selected, setSelected] = useState("emotion")
     const [emotionArray, setEmotionArray] = useState(["Hate", "Love", "Greed", "Jealous"])
-    const [playersWithoutTeams, setPlayers] = useState([{name: "Player 1"}, {name: "Player 2"}, {name: "Player 3"}, {name: "Player 4"}, {name: "Player 5"}, {name: "Player 6"}])
-    const [teams, setTeams] = useState([{teamName:"Team 01", call:true}, {teamName:"Team 02"}, {teamName:"Team 03"}])
-    const [players, setPlayer] = useState(["Player 1", "Player 2", "Player 3", "Player 4", "Player 5"])
-    const [roundResults, setRoundResult] = useState(["Angry", "Happy", "Annoyed", "Excited", "Cool", "", "", "", "", ""])
+    const [playersWithoutTeams, setPlayers] = useState([])
+    const [teams, setTeams] = useState([])
+    const [rounds, setMaxRounds] = useState(10)
+
+    useEffect(() => {
+           socket.emit('host-dashboard', sessionStorage.getItem('game-code'))
+           socket.on('team-details', teams => {setTeams(teams)})
+           socket.on('game-scenes', scene => setScene(scene))
+           socket.on('typing-timer', typingTimer => setTypingTime(typingTimer))
+           socket.on('guessing-timer', guessingTimer => setGuessingTime(guessingTimer))
+           socket.on('player-without-teams', players => setPlayers(players))
+           socket.on('emotions', emotions => setEmotionArray(emotions) )
+           socket.on('max-round', maxRound => setMaxRounds(maxRound))
+    },  [socket])
 
 
     return ( <div className="flex flex-row">
-        
+
         <Sidebar selected={selected} setSelected={setSelected}/>
 
         <RuleBook />
@@ -42,37 +47,23 @@ const hostDashboard = () => {
 
             {selected==="timeRound"?
 // timeround            
-            
-            
-            <TimeRound setDisabled={setDisabled} onChangeHandlerInMinutes={onChangeHandlerInMinutes} guessingTime={guessingTime} disabled={disabled} guessingTimeInSeconds={guessingTimeInSeconds} typingTime={typingTime} typingTimeInSeconds={typingTimeInSeconds} setDisableRounds={setDisableRounds} onChangeHandlerInSeconds={onChangeHandlerInSeconds} disableRounds={disableRounds} continueGame={continueGame}/>:
-
-
+            <TimeRound typingTime = {typingTime} guessingTime={guessingTime} MAX_ROUND = {rounds} />:
 
             selected==="scene"?
 // scene
-            <Scene />:
-
-
+            <Scene scene = {scene} />:
 
             selected==="emotion"?
 // emotion
             <Emotion emotionArray={emotionArray} Wheel={<Wheel />}/>:
 
-
             selected==="scoring"?
 // scoring 
-            
-            
             <Scoring />:
 
-
-
             selected==="teams"?
-// teams 
-            
-            
-            <Teams teams={teams} players={players} roundResults={roundResults}/>:
-
+// teams     
+            <Teams teams={teams} />:
 
 // lobby 
             <div className="flex justify-center items-center h-screen">

@@ -19,6 +19,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
+        io.in(gameCode).emit('team-details', roomObject.teams)
         io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
     }
 
@@ -112,6 +113,7 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
+        io.in(gameCode).emit('team-details', roomObject.teams)
     }
 
     const typingTimeDetails = ({gameCode, teamName, counterT}) => {
@@ -126,10 +128,22 @@ module.exports = (io, socket) => {
         team.guessingCounter = counterG
     }
 
+    const hostDashboard = (gameCode) => {
+        socket.join(gameCode)
+        const roomObject = roomArrayMap.get(gameCode)
+        io.to(socket.id).emit('team-details', roomObject.teams)
+        io.to(socket.id).emit('game-scenes', roomObject.scene)
+        io.to(socket.id).emit('typing-timer', roomObject.typingTimer)
+        io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
+        io.to(socket.id).emit('emotions', roomObject.emotion)
+        io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
+    }
+
     socket.on('submit-statement', addedMessage)
     socket.on('join-team-room', joinTeamRoom)
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
     socket.on('typing-time', typingTimeDetails)
     socket.on('guessing-time', guessingTimeDetails)
+    socket.on('host-dashboard', hostDashboard)
 }

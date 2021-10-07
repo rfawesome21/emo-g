@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react'
 import {SocketContext} from '../../context/socket/SocketContext'
 
-const PlayerComponent = ({players, width, largeWidth, teams, status, player}) => {
-    console.log(status);
+const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     const socket = useContext(SocketContext)
     const [menu, setMenu] = useState()
     const [moveTeams, setMoveTeams] = useState(false)
@@ -16,7 +15,6 @@ const PlayerComponent = ({players, width, largeWidth, teams, status, player}) =>
         socket.on('err', ({message}) => alert(message))
     }
     
-    console.log(players, 'in component');
     let compWidth
     let respWidth
     width === 'large'? compWidth = 'lg' : compWidth = 'xl'

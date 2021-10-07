@@ -178,8 +178,22 @@ module.exports = (io, socket) => {
         let roomObject = roomArrayMap.get(gameCode)
         let teamName = roomObject.teams.length + 1
         let teamMembers = []
-        let roundNo = 1
-        let team = { teamName, teamMembers, roundNo }
+        let arr = roomObject.guessingTimer.split(':')
+        let totalTimerG = Number(arr[0]) * 60 + Number(arr[1])
+        
+        let arr2 = roomObject.typingTimer.split(':')
+        let totalTimerT = Number(arr2[0]) * 60 + Number(arr2[1])
+
+        let roundNo = 1,
+            randomIndex = 0,
+            isDisabled = false,
+            messages = [roomObject.scene[0].statementOne, roomObject.scene[0].statementTwo]
+            score = 0,
+            typingTimer = totalTimerT,
+            guessingTimer = totalTimerG
+            emotionsGuessed = [],
+            previousSceneRole = ''
+        let team = { teamName, teamMembers, roundNo, randomIndex, isDisabled, messages, score, typingTimer, guessingTimer, emotionsGuessed, previousSceneRole }
         roomObject.teams.push(team)
 
         io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)

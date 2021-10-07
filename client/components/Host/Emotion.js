@@ -9,7 +9,7 @@ const Emotion = ({emotionArray, Wheel}) => {
                             <div className="font-bold mb-3 mt-2 align-center text-center text-xl">Set Emotions
                             </div>
                             <div className="grid grid-cols-2 grid-flow-row auto-rows-max gap-2">
-                                {emotionArray.map((emotion, index) => <div className="py-2 px-3 w-40 h-16 font-bold text-md bg-gray-50 text-center grid relative">Round{` ${index + 1}`}
+                                {emotionArray.map((emotion, index) => <div className="py-2 px-3 w-40 h-16 font-bold text-md bg-gray-50 text-center grid relative" key={index} >Round{` ${index + 1}`}
                                     <span className="capitalize">{emotion}</span>
                                     </div>)}
                             </div>

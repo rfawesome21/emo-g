@@ -146,7 +146,7 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen">
-            <div className="flex justify-end my-8">
+            <div className="flex justify-end py-2">
                 <div className="bg-gray-200 font-bold py-2 px-4 mx-2 cursor-pointer">
                     Call host
                 </div>
@@ -186,7 +186,7 @@ const game = () => {
                             {isTimerOver? timeGuesserFormat : timeFormat}
                         </div>
                     </div>
-                    <div className="flex flex-column-reverse overflow-y-auto" style={{flex:"9"}}>
+                    <div className="flex flex-column-reverse overflow-y-auto scl" style={{flex:"9"}}>
                             {player.name === playerName && player.isRandomlySelected?
                             <div className='flex flex-row justify-between'>
                                 
@@ -194,7 +194,7 @@ const game = () => {
                                 <button className='flex-1 h-full border-2 border-black' onClick = {onSubmit} disabled = {isDisabled? true: false} > Submit </button>
                             </div>
                                 : null}
-                        <div className="flex-1 ml-4 overflow-y-scroll">
+                        <div className="flex-1 ml-4 overflow-y-scroll scl">
                             <div className="inline-block w-full">
                                 {messages.map((message, index) => (
                                     index % 2 !== 0?

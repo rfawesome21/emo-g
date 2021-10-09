@@ -20,7 +20,7 @@ const scene = () => {
     }, [socket])
     return (
         <div className='flex flex-col items-center justify-center h-screen'>
-            <h1 className='font-bold text-2xl'>Scene</h1>
+            <h1 className='font-bold text-3xl'>Scene</h1>
             <h3>{scene[0] && scene[0].scene}</h3>
         </div>
     )

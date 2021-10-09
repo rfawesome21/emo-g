@@ -178,7 +178,7 @@ const game = () => {
                     ))}
                 </div>
                 <div className="flex flex-column bg-gray-200 mx-2" style={{flex:"4", height:"80vh"}}>
-                    <div className="font-bold flex justify-between bg-gray-300 text-xl px-8 py-4" style={{flex:"1"}}>
+                    <div className="font-bold flex justify-between bg-gray-300 text-lg px-8 py-4" style={{flex:"1"}}>
                         <div>
                             Round {roundNo}/{maxRounds}                            
                         </div>

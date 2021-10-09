@@ -1,11 +1,15 @@
 import { useState } from "react";
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import SettingsAndBack from "../../components/settingsAndBack";
+import { useRouter } from "next/router";
 
 const Scoring = () => {
 
     const [gameCode, setGameCode] = useState("696969")
     const [numberOfPlayers, setNumberOfPlayers] = useState(10)
+
+    const router = useRouter()
+
 
     const [otherCorrect, setOtherCorrect] = useState()
     const [otherIncorrect, setOtherInorrect] = useState()

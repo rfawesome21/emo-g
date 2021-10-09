@@ -82,7 +82,7 @@ const SelectScene = () => {
             </div>
             <div className="place-items-center justify-items-center mt-10">
                 <div className="bg-gray-200 p-10 ">
-                    <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
+                    <div className="font-bold mb-5 align-center text-center text-2xl">Choose a Scene
                     </div>
                     <div className="h-64 grid grid-flow-row lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto">
                         {scenes && scenes.map((scene, index) => {

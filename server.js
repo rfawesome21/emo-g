@@ -23,10 +23,17 @@ const io = require('socket.io')(httpServer, {
 
 const gameSetup = require('./game/GameSetup')
 const gameAuth = require('./game/GameAuth')
-  
+const gamePlay = require('./game/GamePlay')
+const gameScenes = require('./game/GameScenes')
+const gameTeams = require('./game/GameTeams')
+
+
 const onConnection = socket => {
   gameSetup(io, socket)
   gameAuth(io, socket)
+  gamePlay(io, socket)
+  gameScenes(io, socket)
+  gameTeams(io, socket)
 }
 
 io.on(

@@ -85,7 +85,7 @@ const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, st
                                 <option value="05">05</option>
                             </select>
                         </div>
-                        <div className="text-xl font-bold text-left flex flex-column justify-between h-3/4">
+                        <div className="text-lg font-bold text-left flex flex-column justify-between h-3/4">
                             <textarea className="w-3/4 h-2/5 p-2" placeholder="Angry father is very angry" value={nudgeStatement} onChange={(event) => setNudgeStatement(event.target.value)}/>
                             <div>Initial Statement</div>
                             <textarea placeholder="Initial statement 1" value = {initialStatementOne} className="w-3/4 p-2" onChange = {(e) => setInitialStatementOne(e.target.value)} />

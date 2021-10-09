@@ -40,6 +40,8 @@ io.on(
    'connection', onConnection 
 )
 
+console.log('Server');
+
 httpServer.listen(
   PORT,
   console.log(

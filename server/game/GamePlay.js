@@ -4,10 +4,10 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({gameCode, teamName}) => {
-        console.log('My team is ', teamName);
-        socket.join(`${gameCode}-${teamName}`)
-        const roomObject = roomArrayMap.get(gameCode)
+    const joinTeamRoom = ({code, teamName}) => {
+        console.log('My team is ', teamName)
+        socket.join(`${code}-${teamName}`)
+        const roomObject = roomArrayMap.get(code)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         io.to(socket.id).emit('team-score', team.score)
         io.to(socket.id).emit('team-messages', team.messages)
@@ -18,9 +18,9 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
-        io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
-        io.in(gameCode).emit('team-details', roomObject.teams)
-        io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
+        io.in(`${code}-${teamName}`).emit('typing-counter', team.typingCounter)
+        io.in(code).emit('team-details', roomObject.teams)
+        io.in(`${code}-${teamName}`).emit('guessing-counter', team.guessingCounter)
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {
@@ -63,6 +63,7 @@ module.exports = (io, socket) => {
             else if(!CompoundEmotions.includes(emotion)){
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
                 const allEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredEmotion)
+                try{
                 const correctColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).color
                 const colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
                 for(let i of allEmotionsOfThisColor){
@@ -74,6 +75,10 @@ module.exports = (io, socket) => {
                         team.score += 1
                         break
                     }
+                }
+            }
+                catch(e){
+                    console.log(e);
                 }
             }
         }
@@ -116,8 +121,8 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('team-details', roomObject.teams)
     }
 
-    const typingTimeDetails = ({gameCode, teamName, counterT}) => {
-        const roomObject = roomArrayMap.get(gameCode)
+    const typingTimeDetails = ({code, teamName, counterT}) => {
+        const roomObject = roomArrayMap.get(code)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.typingCounter = counterT
     }

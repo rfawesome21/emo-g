@@ -30,19 +30,22 @@ const game = () => {
     const [active, setActive] = useState(false)
     const [counter, setCounter] = useState(90)
     const [guessCounter, setGuessCounter] = useState(180)
+    const [gameCode, setGameCode] = useState('')
     const timerRef = useRef()
 
     useEffect(() => {
         setPlayerName(sessionStorage.getItem('player-name'))
-        const gameCode = sessionStorage.getItem('game-code')
         const teamName = sessionStorage.getItem('team-name')
-        
-        socket.emit('join-team-room', {gameCode, teamName })
+        const code = sessionStorage.getItem('game-code')
+        setGameCode(sessionStorage.getItem('game-code'))        
+        socket.emit('join-team-room', {code, teamName })
+
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    
             setPlayers(players)
             }
         )
+
         socket.on('team-round', roundNumber => setRoundNo(roundNumber))
 
         socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
@@ -62,7 +65,7 @@ const game = () => {
 
     useEffect(() => {
         
-        
+        const code = sessionStorage.getItem('game-code')
         if(!active)
         {
             if(counter !== 0){
@@ -74,9 +77,8 @@ const game = () => {
                     setTimeFormat(computedMinute + ':' + computedSecond)
                     sessionStorage.setItem('time-format', computedMinute + ':' + computedSecond)
                     setCounter(counter => counter - 1);
-                    const gameCode = sessionStorage.getItem('game-code')
                     const counterT = counter - 1
-                    socket.emit('typing-time', {gameCode, teamName, counterT})
+                    socket.emit('typing-time', {code, teamName, counterT})
             }, 1000)
             }
             else{
@@ -92,14 +94,12 @@ const game = () => {
                     const computedMinute = String(minuteCounter).length === 1 ? `0${minuteCounter}`: minuteCounter;
                     setTimeGuesserFormat(computedMinute + ':' + computedSecond)
                     setGuessCounter(counter => counter - 1);
-                    const gameCode = sessionStorage.getItem('game-code')
                     const counterG = guessCounter - 1
                     socket.emit('guessing-time', {gameCode, teamName, counterG})
                     }, 1000)
                 }
                 else{
-                    const gameCode = sessionStorage.getItem('game-code')
-                    const emotion = 'wrong emotion'
+                    const emotion = ''
                     socket.emit('guessed', {gameCode, teamName, emotion })
                     clearInterval(timerRef.current)
                     setTimeGuesserFormat('00:00')
@@ -133,14 +133,14 @@ const game = () => {
 
     const onSubmit = () => {
         setStatement('')
-        const gameCode = sessionStorage.getItem('game-code')
+        const code = sessionStorage.getItem('game-code')
         let message = messages.slice(0)
         message.push(statement)
         setIsTimerOver(true)
         setTimeFormat('0:00')
         setCounter(0)
         const counterT = 0
-        socket.emit('typing-time', {gameCode, teamName, counterT})
+        socket.emit('typing-time', {code, teamName, counterT})
         socket.emit('submit-statement', {gameCode, teamName, message})
     }
 

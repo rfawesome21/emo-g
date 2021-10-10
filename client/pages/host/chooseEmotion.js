@@ -7,10 +7,20 @@ import Wheel from "../../components/wheel";
 const chooseEmotions = () => {
 
 
+    const clickHandler = () => {
+        if(emotionArray.length < maxRound)
+        {
+            alert(`Please Select ${maxRound} emotions`)
+            return
+        }
+        socket.emit('send-emotions', {gameCode, emotionArray})
+        router.push('/host/scenes')
+    }
+
     const socket = useContext(SocketContext)
     const [gameCode, setGameCode] = useState('')
     const [numberOfPlayers, setNumberOfPlayers] = useState('')
-    const [scenes, setScenes] = useState(false)
+    const [maxRound, setMaxRoundNo] = useState(10)
     const [emotion, setEmotion] = useState('')
     const [emotionArray, setEmotionArray] = useState([])
     const [toBeEdited, setEdit] = useState()
@@ -20,15 +30,16 @@ const chooseEmotions = () => {
         if(toBeEdited===undefined){
             setEmotion(emotion)
             let arr = emotionArray.slice(0)
-            if (arr.length > 9) {
-                alert('Please Select only 10 Emotions')
+            if (arr.length >= maxRound) {
+                alert(`Please select only ${maxRound} emotions`)
                 return
             }
-            arr.push(emotion)
+            arr.push(emotion.toUpperCase())
             setEmotionArray(arr)
+            
         } else {
             const arr = emotionArray
-            arr[toBeEdited] = emotion
+            arr[toBeEdited] = emotion.toUpperCase()
             setEmotionArray([...arr])
             setEdit(undefined)
         }
@@ -41,11 +52,12 @@ const chooseEmotions = () => {
         let isMounted = true
         if (isMounted)
             setGameCode(sessionStorage.getItem('game-code'))
-        socket.emit('game-scenes', sessionStorage.getItem('game-code'))
+        socket.emit('game-emotions', sessionStorage.getItem('game-code'))
         socket.on('players', players => {
             if (isMounted)
                 setNumberOfPlayers(players.length)
         })
+        socket.on('max-round-no', maxRound => setMaxRoundNo(maxRound))
         return () => {
             isMounted = false
         }
@@ -56,7 +68,6 @@ const chooseEmotions = () => {
     function randomize(){
 
         const array = emotionArray;
-        console.log("Array ", array);
 
         for (var i = array.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
@@ -65,7 +76,6 @@ const chooseEmotions = () => {
             array[j] = temp;
         }
 
-        console.log("After", array);
 
         setEmotionArray([...array])
         console.log(emotionArray);
@@ -100,7 +110,7 @@ const chooseEmotions = () => {
                 </div>
             </div >
             <div className="text-center py-14">
-                <button onClick={() => router.push("/host/scenes")} className="bg-gray-200 border-2 mt-28 border-black rounded-md px-4 py-2 text-xl font-bold">Save</button>
+                <button onClick={() => clickHandler()} className="bg-gray-200 border-2 mt-28 border-black rounded-md px-4 py-2 text-xl font-bold">Save</button>
             </div>
         </div>
     );

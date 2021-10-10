@@ -12,13 +12,14 @@ const scenes = () => {
     const [gameCode, setGameCode] = useState('')
     const [numberOfPlayers, setNumberOfPlayers] = useState('')
     const [scenes, setScenes] = useState(false)
-    const [emotion, setEmotion] = useState(false)
     const [sceneClassName, setSceneClassName] = useState(false)
     const [emotionClassName,setEmotionClassName] = useState(false)
     useEffect(() => {
         if(sessionStorage.getItem('scene-class'))
             setSceneClassName(true)
-        
+        if(sessionStorage.getItem('emotion-class'))
+            setEmotionClassName(true)
+            
         let isMounted = true
         if (isMounted)
             setGameCode(sessionStorage.getItem('game-code'))
@@ -33,7 +34,10 @@ const scenes = () => {
                 sessionStorage.setItem('scene-class', true)
             }
         })
-        socket.on('received-emotions', (bool) => setEmotionClassName(bool))
+        socket.on('received-emotions', (bool) => {
+            setEmotionClassName(bool)
+            sessionStorage.setItem('emotion-class', true)
+        })
         return () => {
             isMounted = false
         }

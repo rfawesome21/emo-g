@@ -26,6 +26,7 @@ const gameAuth = require('./game/GameAuth')
 const gamePlay = require('./game/GamePlay')
 const gameScenes = require('./game/GameScenes')
 const gameTeams = require('./game/GameTeams')
+const gameEmotions = require('./game/GameEmotions')
 
 
 const onConnection = socket => {
@@ -34,6 +35,7 @@ const onConnection = socket => {
   gamePlay(io, socket)
   gameScenes(io, socket)
   gameTeams(io, socket)
+  gameEmotions(io, socket)
 }
 
 io.on(

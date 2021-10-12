@@ -47,7 +47,7 @@ const choice = () => {
 
     return ( 
         <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
-            <SettingsAndBack link = {'/host/teams'} />
+            <SettingsAndBack link = {'/host/teams'} player={true}/>
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
             </div>

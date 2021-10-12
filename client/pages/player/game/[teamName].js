@@ -55,6 +55,9 @@ const game = () => {
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
+            else if(roundNumber > maxRounds){
+                router.push('/play')
+            }
             setRoundNo(roundNumber)
         })
 

@@ -18,6 +18,8 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
+        io.to(socket.id).emit('typing-counter', team.typingCounter)
+        io.to(socket.id).emit('guessing-counter', team.guessingCounter)
         io.in(code).emit('team-details', roomObject.teams)
     }
 

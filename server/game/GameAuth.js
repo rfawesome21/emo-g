@@ -82,7 +82,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
         Password.push(code)
-        let number = getRandomInt(0, GameScenes.length - 1)
+        let number = getRandomInt(0, 9)
         let sceneObj = {
             id : GameScenes[number].id,
             scene : GameScenes[number].scene,
@@ -141,7 +141,12 @@ module.exports = (io, socket) => {
             emotion : myEmotionData,
             mode : '',
             manuallySetScene : false,
-            manuallySetEmotion : false
+            manuallySetEmotion : false,
+            otherCorrect : 2,
+            otherIncorrect : 0,
+            compoundCorrect : 3,
+            compoundIncorrect : 0,
+            adjacent : 1
         })
         
         console.log(roomArrayMap.get(code).emotion);

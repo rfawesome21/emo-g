@@ -72,9 +72,11 @@ module.exports = (io, socket) => {
         console.log(roomArrayMap.get(gameCode).teams);
         io.in(gameCode).emit('come-to-teams')
         io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
+        io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }
 
     const manualTeamDivision = (gameCode) => {
+        io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
         let roomObject = roomArrayMap.get(gameCode)
         io.to(socket.id).emit('teams', roomObject.teams)
     }
@@ -109,6 +111,7 @@ module.exports = (io, socket) => {
         io.to(gameCode).emit('teams', roomObject.teams)
         const playersWithoutTeams = roomObject.playerDetails.filter(p => p.join === false)
         io.to(gameCode).emit('players-without-teams', playersWithoutTeams)
+        io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }   
 
     const changeTeam = ({team, player, gameCode}) => {

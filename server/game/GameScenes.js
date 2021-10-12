@@ -8,7 +8,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }
 
-    const editScenes = ({sceneID, scene, gameCode}) => {
+    const editScenes = ({sceneID, scene, gameCode, nudgeRole1, nudgeRole2, nudgeStatement, initialStatementOne, initialStatementTwo}) => {
         let roomObject = roomArrayMap.get(gameCode)
         let sceneIndex
         console.log(roomObject.scene);
@@ -19,7 +19,19 @@ module.exports = (io, socket) => {
         }    
         if(sceneIndex){           
             roomObject.scene[sceneIndex].scene = scene
+            roomObject.scene[sceneIndex].roleOne = nudgeRole1
+            roomObject.scene[sceneIndex].roleTwo = nudgeRole2
+            roomObject.scene[sceneIndex].statementOne = initialStatementOne
+            roomObject.scene[sceneIndex].statementTwo = initialStatementTwo
+            roomObject.scene[sceneIndex].nudge = nudgeStatement
+            
             roomObject.GAME_SCENES[sceneIndex].scene = scene
+            roomObject.GAME_SCENES[sceneIndex].roleOne = nudgeRole1
+            roomObject.GAME_SCENES[sceneIndex].roleTwo = nudgeRole2
+            roomObject.GAME_SCENES[sceneIndex].statementOne = initialStatementOne
+            roomObject.GAME_SCENES[sceneIndex].statementTwo = initialStatementTwo
+            roomObject.GAME_SCENES[sceneIndex].nudge = nudgeStatement
+
         }
         io.to(socket.id).emit('updated-scenes', roomObject.GAME_SCENES)
     }
@@ -29,23 +41,25 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('players',roomArrayMap.get(gameCode).players)
     }
 
-    const addScene = ({scene, nudge, role1, role2, gameCode, initialStatementOne, initialStatementTwo}) => {
+    const addScene = ({scene, nudgeStatement, nudgeRole1, nudgeRole2, gameCode, initialStatementOne, initialStatementTwo}) => {
+        console.log(initialStatementOne);
+        console.log(initialStatementTwo);
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene.splice(1, 0,{
             id: roomObject.scene.length + 1,
             scene : scene,
-            nudge : nudge,
-            roleOne : role1,
-            roleTwo : role2,
+            nudge : nudgeStatement,
+            roleOne : nudgeRole1,
+            roleTwo : nudgeRole2,
             statementOne : initialStatementOne,
             statementTwo : initialStatementTwo
         })
         roomObject.GAME_SCENES.splice(1 ,0,{
             id : roomObject.scene.length + 1,
             scene : scene,
-            nudge : nudge,
-            roleOne : role1,
-            roleTwo : role2,
+            nudge : nudgeStatement,
+            roleOne : nudgeRole1,
+            roleTwo : nudgeRole2,
             statementOne : initialStatementOne,
             statementTwo : initialStatementTwo
         })
@@ -57,7 +71,6 @@ module.exports = (io, socket) => {
         roomObject.scene = addScenesToGame
         roomObject.manuallySetScene = true
         io.to(socket.id).emit('received-scenes', roomObject.manuallySetScene)
-
     }
 
     const sendGameScene = (gameCode) => {

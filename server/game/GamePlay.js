@@ -4,10 +4,10 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({gameCode, teamName}) => {
-        console.log('My team is ', teamName);
-        socket.join(`${gameCode}-${teamName}`)
-        const roomObject = roomArrayMap.get(gameCode)
+    const joinTeamRoom = ({code, teamName}) => {
+        console.log('My team is ', teamName)
+        socket.join(`${code}-${teamName}`)
+        const roomObject = roomArrayMap.get(code)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         io.to(socket.id).emit('team-score', team.score)
         io.to(socket.id).emit('team-messages', team.messages)
@@ -18,9 +18,10 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
-        io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
-        io.in(gameCode).emit('team-details', roomObject.teams)
-        io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
+        io.to(socket.id).emit('typing-counter', team.typingCounter)
+        io.to(socket.id).emit('guessing-counter', team.guessingCounter)
+        io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.in(code).emit('team-details', roomObject.teams)
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {
@@ -34,11 +35,9 @@ module.exports = (io, socket) => {
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.messages = message
         team.isDisabled = true
-        io.to(socket.id).emit('team-disabled', team.isDisabled)
+        io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', '')
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
-        io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
-        io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
     }
 
     const emotionGuessed = ({gameCode, teamName, emotion}) => {
@@ -54,26 +53,31 @@ module.exports = (io, socket) => {
                 console.log('Yes');
                 let emotionRow = Emotions.filter(row => row.find(e => e === emotion))
                 if(emotionRow.length >= 1){
-                    team.score += 2
+                    team.score += roomObject.otherCorrect
                 }
                 let compoundEmotionRow = CompoundEmotions.find(e => e === emotion)
                 if(compoundEmotionRow)
-                    team.score += 3
+                    team.score += roomObject.compoundCorrect
             }
             else if(!CompoundEmotions.includes(emotion)){
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
                 const allEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredEmotion)
+                try{
                 const correctColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).color
                 const colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
                 for(let i of allEmotionsOfThisColor){
                     if(i.color === correctColoredEmotion){
-                        team.score += 1
+                        team.score += roomObject.adjacent
                         break
                     }
                     else if(i.colorTwo === colorTwoCorrectColoredEmotion){
-                        team.score += 1
+                        team.score += roomObject.adjacent
                         break
                     }
+                }
+            }
+                catch(e){
+                    console.log(e);
                 }
             }
         }
@@ -113,19 +117,8 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
+        io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(gameCode).emit('team-details', roomObject.teams)
-    }
-
-    const typingTimeDetails = ({gameCode, teamName, counterT}) => {
-        const roomObject = roomArrayMap.get(gameCode)
-        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        team.typingCounter = counterT
-    }
-
-    const guessingTimeDetails = ({gameCode, teamName, counterG}) => {
-        const roomObject = roomArrayMap.get(gameCode)
-        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        team.guessingCounter = counterG
     }
 
     const hostDashboard = (gameCode) => {
@@ -137,13 +130,16 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('emotions', roomObject.emotion)
         io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
+        io.to(socket.id).emit('compound-correct', roomObject.compoundCorrect)
+        io.to(socket.id).emit('compound-incorrect', roomObject.compoundIncorrect)
+        io.to(socket.id).emit('adjacent', roomObject.adjacent)
+        io.to(socket.id).emit('other-correct', roomObject.otherCorrect)
+        io.to(socket.id).emit('other-incorrect', roomObject.otherIncorrect)
     }
 
     socket.on('submit-statement', addedMessage)
     socket.on('join-team-room', joinTeamRoom)
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
-    socket.on('typing-time', typingTimeDetails)
-    socket.on('guessing-time', guessingTimeDetails)
     socket.on('host-dashboard', hostDashboard)
 }

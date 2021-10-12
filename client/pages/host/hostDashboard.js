@@ -22,6 +22,12 @@ const hostDashboard = () => {
     const [playersWithoutTeams, setPlayers] = useState([])
     const [teams, setTeams] = useState([])
     const [rounds, setMaxRounds] = useState(10)
+    
+    const [otherCorrect, setOtherCorrect] = useState(2)
+    const [otherIncorrect, setOtherIncorrect] = useState(0)
+    const [otherAdjacent, setOtherAdjacent] = useState(1)
+    const [compoundCorrect, setCompoundCorrect] = useState(3)
+    const [compoundIncorrect, setCompoundIncorrect] = useState(0)
 
     useEffect(() => {
            socket.emit('host-dashboard', sessionStorage.getItem('game-code'))
@@ -32,6 +38,11 @@ const hostDashboard = () => {
            socket.on('player-without-teams', players => setPlayers(players))
            socket.on('emotions', emotions => setEmotionArray(emotions) )
            socket.on('max-round', maxRound => setMaxRounds(maxRound))
+           socket.on('compound-correct', compoundCorrect => setCompoundCorrect(compoundCorrect))
+           socket.on('compound-incorrect', compoundIncorrect => setCompoundIncorrect(compoundIncorrect))
+           socket.on('adjacent', otherAdjacent => setOtherAdjacent(otherAdjacent))
+           socket.on('otherCorrect', otherCorrect => setOtherCorrect(otherCorrect))
+           socket.on('otherIncorrect', otherIncorrect => setOtherIncorrect(otherIncorrect))
     },  [socket])
 
 
@@ -59,7 +70,13 @@ const hostDashboard = () => {
 
             selected==="scoring"?
 // scoring 
-            <Scoring />:
+            <Scoring 
+            otherAdjacent = {otherAdjacent}
+            otherCorrect = {otherCorrect}
+            otherIncorrect = {otherIncorrect}
+            compoundCorrect = {compoundCorrect}
+            compoundIncorrect = {compoundIncorrect}
+            />:
 
             selected==="teams"?
 // teams     

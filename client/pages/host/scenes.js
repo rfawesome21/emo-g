@@ -64,7 +64,7 @@ const scenes = () => {
                     </div>
                 </div>
 
-                <div className="text-center"><button onClick={() => router.push("/host/teams")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center"><button onClick={() => router.push("/host/scoring")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
             </div>
             {
                 scenes ?

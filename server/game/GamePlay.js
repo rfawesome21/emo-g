@@ -53,11 +53,11 @@ module.exports = (io, socket) => {
                 console.log('Yes');
                 let emotionRow = Emotions.filter(row => row.find(e => e === emotion))
                 if(emotionRow.length >= 1){
-                    team.score += 2
+                    team.score += roomObject.otherCorrect
                 }
                 let compoundEmotionRow = CompoundEmotions.find(e => e === emotion)
                 if(compoundEmotionRow)
-                    team.score += 3
+                    team.score += roomObject.compoundCorrect
             }
             else if(!CompoundEmotions.includes(emotion)){
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
@@ -67,11 +67,11 @@ module.exports = (io, socket) => {
                 const colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
                 for(let i of allEmotionsOfThisColor){
                     if(i.color === correctColoredEmotion){
-                        team.score += 1
+                        team.score += roomObject.adjacent
                         break
                     }
                     else if(i.colorTwo === colorTwoCorrectColoredEmotion){
-                        team.score += 1
+                        team.score += roomObject.adjacent
                         break
                     }
                 }
@@ -130,6 +130,11 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('emotions', roomObject.emotion)
         io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
+        io.to(socket.id).emit('compound-correct', roomObject.compoundCorrect)
+        io.to(socket.id).emit('compound-incorrect', roomObject.compoundIncorrect)
+        io.to(socket.id).emit('adjacent', roomObject.adjacent)
+        io.to(socket.id).emit('other-correct', roomObject.otherCorrect)
+        io.to(socket.id).emit('other-incorrect', roomObject.otherIncorrect)
     }
 
     socket.on('submit-statement', addedMessage)

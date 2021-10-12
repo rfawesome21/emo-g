@@ -141,7 +141,12 @@ module.exports = (io, socket) => {
             emotion : myEmotionData,
             mode : '',
             manuallySetScene : false,
-            manuallySetEmotion : false
+            manuallySetEmotion : false,
+            otherCorrect : 2,
+            otherIncorrect : 0,
+            compoundCorrect : 3,
+            compoundIncorrect : 0,
+            adjacent : 1
         })
         
         console.log(roomArrayMap.get(code).emotion);

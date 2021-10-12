@@ -47,8 +47,11 @@ const game = () => {
         )
 
         socket.on('team-round', roundNumber => {
-            sessionStorage.removeItem('type-counter')
-            sessionStorage.removeItem('guess-counter')
+            if(roundNumber > roundNo)
+            {    
+                sessionStorage.removeItem('type-counter')
+                sessionStorage.removeItem('guess-counter')
+            }
             setRoundNo(roundNumber)
         })
 
@@ -59,25 +62,31 @@ const game = () => {
         socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
-        socket.on('typing-counter', counter => setCounter(counter))
-        socket.on('guessing-counter', counter => setGuessCounter(counter))
-
-    }, [socket])
-
-    useEffect(() => {
-
+        socket.on('typing-counter', counter => {
+            if(!sessionStorage.getItem('type-counter')){
+                console.log(counter);
+                setCounter(counter)}})
+        socket.on('guessing-counter', counter => {
+            if(!sessionStorage.getItem('guess-counter'))
+            setGuessCounter(counter)})
         socket.on('team-disabled', bool => {
-            console.log('Disable');
             setIsTimerOver(bool)
             if(bool)
                 setCounter(0)
             setIsDisabled(bool)
         })
 
+    }, [socket])
+
+    useEffect(() => {
+
+        
+
         if(sessionStorage.getItem('guess-counter'))
             setGuessCounter(Number(sessionStorage.getItem('guess-counter')))
-        if(sessionStorage.getItem('type-counter'))
+        if(sessionStorage.getItem('type-counter')){
             setCounter(Number(sessionStorage.getItem('type-counter')))
+        }
         if(!active)
         {
             if(counter !== 0){
@@ -232,7 +241,7 @@ const game = () => {
                     <div className="font-bold px-8 py-4 bg-gray-400 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    <Wheel emotionFunction = {guessEmotion} />
+                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center font-bold text-2xl'>Emotion</div> : <Wheel emotionFunction = {guessEmotion} /> }
                 </div>
                 <div className="flex flex-column mx-2" style={{flex:"1", height:"80vh"}}>
                     <div className="font-bold px-8 py-9 bg-gray-300 text-lg">

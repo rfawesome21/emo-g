@@ -32,6 +32,7 @@ const game = () => {
     const [guessCounter, setGuessCounter] = useState(180)
     const [gameCode, setGameCode] = useState('')
     const timerRef = useRef()
+    const [currentRoundEmotion, setCurrentRoundEmotion] = useState('')
 
     useEffect(() => {
         setPlayerName(sessionStorage.getItem('player-name'))
@@ -45,6 +46,8 @@ const game = () => {
             setPlayers(players)
             }
         )
+
+        socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
             if(roundNumber > roundNo)
@@ -241,7 +244,7 @@ const game = () => {
                     <div className="font-bold px-8 py-4 bg-gray-400 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center font-bold text-2xl'>Emotion</div> : <Wheel emotionFunction = {guessEmotion} /> }
+                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center font-bold text-2xl'>{currentRoundEmotion}</div> : <Wheel emotionFunction = {guessEmotion} /> }
                 </div>
                 <div className="flex flex-column mx-2" style={{flex:"1", height:"80vh"}}>
                     <div className="font-bold px-8 py-9 bg-gray-300 text-lg">

@@ -64,8 +64,10 @@ const game = () => {
     }, [socket])
 
     useEffect(() => {
-        
-        const code = sessionStorage.getItem('game-code')
+        if(sessionStorage.getItem('guess-counter'))
+            setGuessCounter(Number(sessionStorage.getItem('guess-counter')))
+        if(sessionStorage.getItem('type-counter'))
+            setCounter(Number(sessionStorage.getItem('type-counter')))
         if(!active)
         {
             if(counter !== 0){
@@ -77,11 +79,11 @@ const game = () => {
                     setTimeFormat(computedMinute + ':' + computedSecond)
                     sessionStorage.setItem('time-format', computedMinute + ':' + computedSecond)
                     setCounter(counter => counter - 1);
-                    const counterT = counter - 1
-                    socket.emit('typing-time', {code, teamName, counterT})
+                    sessionStorage.setItem('type-counter', counter - 1)
             }, 1000)
             }
             else{
+                sessionStorage.setItem('type-counter', 0)
                 setIsDisabled(true)
                 sessionStorage.setItem('is-disabled', JSON.stringify(true))
                 setIsTimerOver(true)
@@ -94,8 +96,7 @@ const game = () => {
                     const computedMinute = String(minuteCounter).length === 1 ? `0${minuteCounter}`: minuteCounter;
                     setTimeGuesserFormat(computedMinute + ':' + computedSecond)
                     setGuessCounter(counter => counter - 1);
-                    const counterG = guessCounter - 1
-                    socket.emit('guessing-time', {gameCode, teamName, counterG})
+                    sessionStorage.setItem('guess-counter', guessCounter - 1)
                     }, 1000)
                 }
                 else{
@@ -104,6 +105,7 @@ const game = () => {
                     clearInterval(timerRef.current)
                     setTimeGuesserFormat('00:00')
                     setGuessCounter(0)
+                    sessionStorage.setItem('guess-counter', 0)
                 }
             }
         }
@@ -133,14 +135,12 @@ const game = () => {
 
     const onSubmit = () => {
         setStatement('')
-        const code = sessionStorage.getItem('game-code')
         let message = messages.slice(0)
         message.push(statement)
         setIsTimerOver(true)
         setTimeFormat('0:00')
         setCounter(0)
-        const counterT = 0
-        socket.emit('typing-time', {code, teamName, counterT})
+        sessionStorage.setItem('type-counter', 0)
         socket.emit('submit-statement', {gameCode, teamName, message})
     }
 

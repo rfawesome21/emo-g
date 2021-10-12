@@ -17,9 +17,6 @@ const TeamPlayers = ({teams, allTeams, player, mode, status}) => {
         socket.emit('choice',{gameCode, playerName, teamName})
     }
 
-    console.log(teams);
-    if(teams)
-        console.log(teams.teamMembers);
     return (
         <div className={'flex flex-col bg-gray-200 mt-5 w-full px-10 py-2'} style={{minHeight:"50vh"}}>
             <div className='font-bold text-xl flex justify-between'>

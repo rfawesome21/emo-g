@@ -18,9 +18,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
         io.to(socket.id).emit('scene', roomObject.scene[0])
         io.to(socket.id).emit('team-disabled', team.isDisabled)
-        io.in(`${code}-${teamName}`).emit('typing-counter', team.typingCounter)
         io.in(code).emit('team-details', roomObject.teams)
-        io.in(`${code}-${teamName}`).emit('guessing-counter', team.guessingCounter)
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {
@@ -34,11 +32,9 @@ module.exports = (io, socket) => {
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.messages = message
         team.isDisabled = true
-        io.to(socket.id).emit('team-disabled', team.isDisabled)
+        io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', '')
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
-        io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
-        io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
     }
 
     const emotionGuessed = ({gameCode, teamName, emotion}) => {
@@ -121,18 +117,6 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('team-details', roomObject.teams)
     }
 
-    const typingTimeDetails = ({code, teamName, counterT}) => {
-        const roomObject = roomArrayMap.get(code)
-        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        team.typingCounter = counterT
-    }
-
-    const guessingTimeDetails = ({gameCode, teamName, counterG}) => {
-        const roomObject = roomArrayMap.get(gameCode)
-        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
-        team.guessingCounter = counterG
-    }
-
     const hostDashboard = (gameCode) => {
         socket.join(gameCode)
         const roomObject = roomArrayMap.get(gameCode)
@@ -148,7 +132,5 @@ module.exports = (io, socket) => {
     socket.on('join-team-room', joinTeamRoom)
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
-    socket.on('typing-time', typingTimeDetails)
-    socket.on('guessing-time', guessingTimeDetails)
     socket.on('host-dashboard', hostDashboard)
 }

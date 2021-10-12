@@ -27,7 +27,7 @@ const choice = () => {
             console.log('pop ',teams);
             const myTeam  = teams.find(t => t.teamMembers.find(p => p.name === sessionStorage.getItem('player-name')));
             if(myTeam)
-                sessionStorage.setItem('team-name', myTeam)
+                sessionStorage.setItem('team-name', myTeam.teamName)
             setMode(mode)
             setTeams(teams)})
         socket.on('teams', teams => {

@@ -46,15 +46,16 @@ const game = () => {
             }
         )
 
-        socket.on('team-round', roundNumber => setRoundNo(roundNumber))
+        socket.on('team-round', roundNumber => {
+            sessionStorage.removeItem('type-counter')
+            sessionStorage.removeItem('guess-counter')
+            setRoundNo(roundNumber)
+        })
 
         socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
-        socket.on('team-disabled', bool => {
-            setIsTimerOver(bool)
-            setIsDisabled(bool)
-        })
+        
         socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
@@ -64,6 +65,15 @@ const game = () => {
     }, [socket])
 
     useEffect(() => {
+
+        socket.on('team-disabled', bool => {
+            console.log('Disable');
+            setIsTimerOver(bool)
+            if(bool)
+                setCounter(0)
+            setIsDisabled(bool)
+        })
+
         if(sessionStorage.getItem('guess-counter'))
             setGuessCounter(Number(sessionStorage.getItem('guess-counter')))
         if(sessionStorage.getItem('type-counter'))
@@ -119,10 +129,12 @@ const game = () => {
     }
 
     const clickHandler = () => {
-        console.log('Hello');
         const gameCode = sessionStorage.getItem('game-code')
         sessionStorage.removeItem('is-disabled')
         sessionStorage.removeItem('is-time-over')
+        sessionStorage.removeItem('type-counter')
+        sessionStorage.removeItem('guess-counter')
+        setIsTimerOver(false)
         socket.emit('guessed', {gameCode, teamName, emotion})
     }
 

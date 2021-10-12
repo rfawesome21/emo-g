@@ -43,6 +43,8 @@ module.exports = (io, socket) => {
                 typingTimer : roomObject.typingTimer,
                 score : 0,
                 randomIndex : 0,
+                typingCounter : totalTimerT,
+                guessingCounter : totalTimerG
             })
         }
 

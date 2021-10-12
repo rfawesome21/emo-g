@@ -41,8 +41,8 @@ const hostDashboard = () => {
            socket.on('compound-correct', compoundCorrect => setCompoundCorrect(compoundCorrect))
            socket.on('compound-incorrect', compoundIncorrect => setCompoundIncorrect(compoundIncorrect))
            socket.on('adjacent', otherAdjacent => setOtherAdjacent(otherAdjacent))
-           socket.on('otherCorrect', otherCorrect => setOtherCorrect(otherCorrect))
-           socket.on('otherIncorrect', otherIncorrect => setOtherIncorrect(otherIncorrect))
+           socket.on('other-correct', otherCorrect => setOtherCorrect(otherCorrect))
+           socket.on('other-incorrect', otherIncorrect => setOtherIncorrect(otherIncorrect))
     },  [socket])
 
 

@@ -36,7 +36,7 @@ const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, st
     }
 
     const editScene = () => {
-        socket.emit('edit-scenes', {sceneID, scene, gameCode})
+        socket.emit('edit-scenes', {sceneID, scene, gameCode, nudgeRole1, nudgeRole2, initialStatementTwo, initialStatementOne, nudgeStatement})
         closeButton()
     }
 

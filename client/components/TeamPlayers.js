@@ -25,7 +25,7 @@ const TeamPlayers = ({teams, allTeams, player, mode, status}) => {
             <div className='font-bold text-xl flex justify-between'>
                 <div>{teams? `Team ${teams.teamName}` : null}</div>
                 {player && mode==='choice'?
-                <button className="bg-green-800 font-normal text-base px-2 py-1 cursor-pointer" onClick={() => joinTeam(teams[0].teamName)} style={{color:"white"}}>{player?"JOIN":""}</button>
+                <button className="bg-green-800 font-normal text-base px-2 py-1 cursor-pointer" onClick={() => joinTeam(teams.teamName)} style={{color:"white"}}>{player?"JOIN":""}</button>
                 :null}
             </div>
             <div className='font-bold text-lg py-4'>

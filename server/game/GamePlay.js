@@ -7,7 +7,6 @@ module.exports = (io, socket) => {
     const joinTeamRoom = ({code, teamName}) => {
         console.log('My team is ', teamName)
         socket.join(`${code}-${teamName}`)
-        console.log(`${code} sucks`);
         const roomObject = roomArrayMap.get(code)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         io.to(socket.id).emit('team-score', team.score)

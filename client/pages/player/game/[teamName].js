@@ -4,7 +4,7 @@ import ExitGame from "../../../components/exitGame";
 import { SocketContext } from "../../../context/socket/SocketContext";
 import Button from '../../../components/Button'
 import Wheel from '../../../components/wheel'
-const game = () => {
+const Game = () => {
 
     const router = useRouter()
     const { teamName } = router.query
@@ -267,4 +267,4 @@ const game = () => {
      );
 }
 
-export default game;
+export default Game;

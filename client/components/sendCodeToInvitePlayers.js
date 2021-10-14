@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { createPopper } from '@popperjs/core';
 import tippy from 'tippy.js';
-import 'tippy.js/themes/light-border.css';
 import {roundArrow} from 'tippy.js';
 import 'tippy.js/dist/svg-arrow.css';
 

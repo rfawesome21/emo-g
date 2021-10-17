@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
 import Wheel from "../../components/wheel";
-const chooseEmotions = () => {
+const ChooseEmotions = () => {
 
 
     const clickHandler = () => {
@@ -116,4 +116,4 @@ const chooseEmotions = () => {
     );
 }
 
-export default chooseEmotions;
+export default ChooseEmotions;

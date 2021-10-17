@@ -1,5 +1,237 @@
 import React from 'react'
+import tippy from 'tippy.js';
+import {roundArrow} from 'tippy.js';
+import 'tippy.js/dist/svg-arrow.css';
+import { useEffect } from 'react';
+
 const Wheel = ({ emotionFunction }) => {
+
+    useEffect(() => {
+            tippy('#ecstacy', {
+                content: 'Xtacy definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#admiration_x0D_', {
+                content: 'admiration_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#sadness', {
+                content: 'sadness definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#pensiveness', {
+                content: 'pensiveness definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#joy_x0D_', {
+                content: 'joy_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#serenity', {
+                content: 'serenity definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#acceptance', {
+                content: 'acceptance definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#trust', {
+                content: 'trust definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#anticipation', {
+                content: 'anticipation definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#anger', {
+                content: 'anger definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#disgust', {
+                content: 'disgust definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#surprise', {
+                content: 'surprise definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#distraction', {
+                content: 'distraction definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#boredom', {
+                content: 'boredom definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#fear', {
+                content: 'fear definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#apprehension', {
+                content: 'apprehension definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#annoyance', {
+                content: 'annoyance definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#interest', {
+                content: 'interest definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#terror_x0D_', {
+                content: 'terror_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#amazement_x0D_', {
+                content: 'amazement_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#grief_x0D_', {
+                content: 'grief_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#loathing_x0D_', {
+                content: 'loathing_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#rage_x0D_', {
+                content: 'rage_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#vigilance', {
+                content: 'vigilance definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#love', {
+                content: 'love definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#submission', {
+                content: 'submission definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#awe', {
+                content: 'awe definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#disapproval', {
+                content: 'disapproval definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#remorse', {
+                content: 'remorse definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#contempt_x0D_', {
+                content: 'contempt_x0D_ definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#aggressiveness', {
+                content: 'aggressiveness definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+              tippy('#optimism', {
+                content: 'optimism definition',
+                inertia: true, 
+                placement: 'bottom-end',
+                arrow: roundArrow,
+                theme:"tomato"
+              });
+    }, [])
 
     return (
 

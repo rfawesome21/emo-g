@@ -69,7 +69,6 @@ module.exports = (io, socket) => {
     }
 
     const randomTeamDivision = (gameCode) => {
-        console.log(roomArrayMap.get(gameCode).teams);
         io.in(gameCode).emit('come-to-teams')
         io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
         io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
@@ -163,9 +162,11 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('teams', roomObject.teams)
     }
 
-    const choiceOfPlayers = (gameCode) => {
+    const choiceOfPlayers = ({gameCode, playerName}) => {
         const teams = roomArrayMap.get(gameCode).teams
         const mode = roomArrayMap.get(gameCode).mode
+        socket.join(`${gameCode}-${playerName}`)
+        io.to(socket.id).emit('teams', roomArrayMap.get(gameCode).teams)
         io.to(socket.id).emit('player-teams', {teams, mode})
         io.to(socket.id).emit('max-players', roomArrayMap.get(gameCode).MAX_PLAYERS_PER_TEAM)
     }
@@ -210,6 +211,24 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('choice-teams', roomArrayMap.get(gameCode).teams)
     }
 
+    const removePlayer = ({gameCode, playerName}) => {
+        console.log(playerName, ' has to be removed!');
+        let roomObject = roomArrayMap.get(gameCode)
+        roomObject.playerDetails = roomObject.playerDetails.filter(p => p.name !== playerName)
+        roomObject.players = roomObject.players.filter(p => p !== playerName)
+        io.in(`${gameCode}-${playerName}`).emit('removed')
+        for(let i = 0; i < roomObject.teams.length; i ++){
+            for(let j = 0; j < roomObject.teams[i].teamMembers.length; j++){
+                if(roomObject.teams[i].teamMembers[j].name === playerName)
+                    roomObject.teams[i].teamMembers =  roomObject.teams[i].teamMembers.filter(p => p.name !== playerName)            
+            }
+        }
+        io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
+        io.to(socket.id).emit('manual-teams', roomArrayMap.get(gameCode).teams)
+        io.to(socket.id).emit('choice-teams', roomArrayMap.get(gameCode).teams)
+        io.in(gameCode).emit('teams', roomArrayMap.get(gameCode).teams)
+    }
+
     socket.on('create-team', createTeam)
     socket.on('get-players-no-teams', getPlayers)
     socket.on('player-in-teams', choiceOfPlayers)
@@ -221,4 +240,5 @@ module.exports = (io, socket) => {
     socket.on('manual-division', manualTeamDivision)
     socket.on('choice', letPlayerChoose)
     socket.on('players-choice', playersChoice)
+    socket.on('remove-player', removePlayer)
 }

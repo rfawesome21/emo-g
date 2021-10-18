@@ -14,6 +14,12 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
         socket.emit('change-team', {team, player, gameCode})
         socket.on('err', ({message}) => alert(message))
     }
+
+    const removePlayer = () => {
+        const gameCode = sessionStorage.getItem('game-code')
+        const playerName = menu.player.name
+        socket.emit('remove-player', {gameCode, playerName})
+    }
     
     let compWidth
     let respWidth
@@ -37,7 +43,7 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
                     <div className="flex flex-row" style={{position:"absolute", top:menu.y, left:menu.x, zIndex:2}}>
                         <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">
                             <div onClick={(event) => {setMoveTeams(!moveTeams); event.stopPropagation()}}>Move</div>
-                            <div>Remove</div>
+                            <div onClick={() => removePlayer()}>Remove</div>
                         </div>
                         {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer max-h-32 overflow-y-auto">
                             {teams?teams.map((team) => <div className='w-auto px-2' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}

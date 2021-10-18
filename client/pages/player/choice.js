@@ -13,7 +13,7 @@ const choice = () => {
     const router = useRouter()
 
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
-    const [gameCode, setGameCode] = useState("")
+    const [gameCodeZ, setGameCode] = useState("")
     const socket = useContext(SocketContext)
     const [playerMax, setPlayerMax] = useState()
     const [teams, setTeams] = useState([])
@@ -22,7 +22,10 @@ const choice = () => {
     useEffect(() => {
         setGameCode(sessionStorage.getItem('game-code'))
         socket.on('players', players => setNumberOfPlayers(players.length))
-        socket.emit('player-in-teams', sessionStorage.getItem('game-code'))
+        socket.on('removed', () => window.location.href = '/play')
+        const playerName = sessionStorage.getItem('player-name')
+        const gameCode = sessionStorage.getItem('game-code')
+        socket.emit('player-in-teams', {gameCode, playerName})
         socket.on('player-teams', ({teams,mode}) => {
             console.log('pop ',teams);
             const myTeam  = teams.find(t => t.teamMembers.find(p => p.name === sessionStorage.getItem('player-name')));
@@ -49,7 +52,7 @@ const choice = () => {
         <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
             <SettingsAndBack link = {'/host/teams'} player = {true} />
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
+                <SendCodeToInvitePlayers gameCode={gameCodeZ} numberOfPlayers={numberOfPlayers}/>
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>

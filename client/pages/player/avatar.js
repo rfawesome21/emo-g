@@ -16,7 +16,8 @@ const avatar = () => {
 
     useEffect(() => {
         const gameCode = sessionStorage.getItem('game-code')
-        socket.emit('join-avatar', {gameCode})
+        const playerName = sessionStorage.getItem('player-name')
+        socket.emit('join-avatar', {gameCode, playerName})
         socket.on('players', players => {
             setNumberOfPlayers(players.length)
             setPlayers(players)

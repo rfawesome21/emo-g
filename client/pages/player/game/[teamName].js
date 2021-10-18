@@ -50,12 +50,16 @@ const game = () => {
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
+            console.log(roundNumber);
+            console.log(maxRounds);
+            console.log(typeof(maxRounds));
             if(roundNumber > roundNo)
             {    
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
-            else if(roundNumber > maxRounds){
+            if(roundNumber > maxRounds){
+                console.log(roundNumber);
                 router.push('/play')
             }
             setRoundNo(roundNumber)

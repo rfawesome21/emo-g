@@ -10,7 +10,7 @@ const DashboardTeamPlayers = ({activeTeam}) => {
             <div className='text-lg font-light py-5'>
                 {activeTeam && activeTeam.teamMembers.length} player(s)
             </div>
-            <div className='flex flex-row h-full'>
+            <div className='flex flex-row h-full overflow-y-auto'>
             <div className='flex flex-col justify-start items-start bg-gray-300 h-full px-2 pt-2 overflow-y-auto'>
                 {activeTeam && activeTeam.teamMembers.map((player, index) => 
                     <div style={{zIndex:2, textAlign:"center"}} key = {index}>

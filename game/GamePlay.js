@@ -63,8 +63,8 @@ module.exports = (io, socket) => {
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
                 const allEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredEmotion)
                 try{
-                const correctColoredEmotion = ''
-                const colorTwoCorrectColoredEmotion = ''
+                let correctColoredEmotion = ''
+                let colorTwoCorrectColoredEmotion = ''
                 if(!CompoundEmotions.includes(roomObject.emotion[team.roundNo - 1])){
                     correctColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).color
                     colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo

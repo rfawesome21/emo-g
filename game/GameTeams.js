@@ -167,6 +167,7 @@ module.exports = (io, socket) => {
         const mode = roomArrayMap.get(gameCode).mode
         socket.join(`${gameCode}-${playerName}`)
         io.to(socket.id).emit('teams', roomArrayMap.get(gameCode).teams)
+        io.to(socket.id).emit('players', roomArrayMap.get(gameCode).playerDetails)
         io.to(socket.id).emit('player-teams', {teams, mode})
         io.to(socket.id).emit('max-players', roomArrayMap.get(gameCode).MAX_PLAYERS_PER_TEAM)
     }
@@ -208,6 +209,7 @@ module.exports = (io, socket) => {
 
     const playersChoice = (gameCode) => {
         socket.join(gameCode)
+        io.in(gameCode).emit('players', roomArrayMap.get(gameCode).playerDetails)
         io.to(socket.id).emit('choice-teams', roomArrayMap.get(gameCode).teams)
     }
 

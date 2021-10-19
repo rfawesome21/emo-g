@@ -57,7 +57,7 @@ const avatar = () => {
                 <div className="flex flex-column">
                     <div className="text-center font-bold text-2xl pb-16">Waiting for host to start game ...</div>
                         <div className="flex flex-row justify-evenly">
-                            <div className="border-2 py-2 px-4 border-black rounded-md font-bold text-xl mt-2">
+                            <div className="border-2 py-2 px-4 border-black rounded-md font-bold text-lg mt-2">
                                 {numberOfPlayers} Joined
                             </div>
                         </div>

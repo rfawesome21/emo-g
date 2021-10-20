@@ -3,8 +3,7 @@ import SettingsAndBack from "../../components/settingsAndBack";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
-// import Wheel from "../../components/wheel";
-import WheelTwo from "../../components/wheel2";
+import Wheel from "../../components/wheel";
 const ChooseEmotions = () => {
 
 
@@ -44,10 +43,6 @@ const ChooseEmotions = () => {
             setEmotionArray([...arr])
             setEdit(undefined)
         }
-    }
-    const myStyle = {
-        overflowY: "auto",
-        scrollBehavior: "smooth"
     }
     useEffect(() => {
         let isMounted = true
@@ -90,14 +85,14 @@ const ChooseEmotions = () => {
                 <div className="grid grid-col justify-evenly align-center ">
                     <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
                 </div>
-                <div className="h-80 grid grid-col-1 grid-flow-col  place-items-center ">
-                    <div style={myStyle} className="bg-gray-300 h-96 w-96 p-3 scl">
+                <div className="h-80 grid grid-col-1 grid-flow-col place-items-center ">
+                    <div className="bg-gray-300 h-96 w-96 p-3 scl">
                         <div className="font-bold mb-3 mt-2 align-center text-center text-xl">Set Emotions
                             <button className="ml-4" onClick={randomize}>Randomize</button>
                             <button className="ml-4" onClick={() => setEmotionArray([])}>Clear</button>
                         </div>
 
-                        <div className="grid grid-cols-2 grid-flow-row auto-rows-max gap-2">
+                        <div className="grid grid-cols-2 grid-flow-row h-3/4 scl auto-rows-max gap-2 overflow-y-auto">
                             {emotionArray.map((emotion, index) => <div className="py-2 px-3 w-40 h-16 font-bold text-md bg-gray-50 text-center grid relative" key={index} >Round{` ${index + 1}`}
                                 <span className="capitalize ">{emotion}</span>
                                 <span className="absolute top-0 right-0 cursor-pointer" onClick={() => setEdit(index)}>E</span></div>)}
@@ -105,7 +100,7 @@ const ChooseEmotions = () => {
                     </div>
                     <div className=" ">
                         <div className="">
-                            <WheelTwo emotionFunction={emotionFunction} />
+                            <Wheel emotionFunction={emotionFunction} />
                         </div>
                     </div>
                 </div>

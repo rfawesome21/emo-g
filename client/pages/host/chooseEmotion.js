@@ -79,12 +79,10 @@ const ChooseEmotions = () => {
     }
 
     return (
-        <div style={{ height: "100vh" }}>
+        <div style={{ height: "100vh" }} className="flex flex-column justify-center">
             <div className="justify-center align-center text-center flex flex-col container px-10" >
                 <SettingsAndBack link='/host/scenes' />
-                <div className="grid grid-col justify-evenly align-center ">
-                    <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
-                </div>
+                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
                 <div className="h-80 grid grid-col-1 grid-flow-col place-items-center ">
                     <div className="bg-gray-300 h-96 w-96 p-3 scl">
                         <div className="font-bold mb-3 mt-2 align-center text-center text-xl">Set Emotions

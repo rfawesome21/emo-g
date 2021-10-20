@@ -52,6 +52,7 @@ body {
 }
 .st10 {
   font-family: "CenturyGothic-Bold";
+  font-size: 0.8rem;
 }
 .st11 {
   font-size: 73px;
@@ -62,6 +63,7 @@ body {
 .st13 {
   font-size: 73.9758px;
 }
+
 a {
   color: inherit;
   text-decoration: none;
@@ -143,3 +145,5 @@ r 2
 [joy]
 
 */
+
+/* NEW WHEEL CSS */

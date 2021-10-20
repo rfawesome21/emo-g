@@ -136,3 +136,205 @@ text {
   color: white;
   padding: 4px 8px;
 }
+
+/* NEW WHEEL CSS */
+
+.cls-1 {
+  fill: #d1e2af;
+}
+.cls-2 {
+  fill: #fff;
+}
+.cls-3 {
+  fill: #bad786;
+}
+.cls-10,
+.cls-12,
+.cls-13,
+.cls-15,
+.cls-16,
+.cls-18,
+.cls-19,
+.cls-21,
+.cls-22,
+.cls-24,
+.cls-25,
+.cls-26,
+.cls-27,
+.cls-28,
+.cls-29,
+.cls-3,
+.cls-30,
+.cls-31,
+.cls-32,
+.cls-33,
+.cls-4,
+.cls-6,
+.cls-7,
+.cls-9 {
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  stroke-width: 2px;
+}
+.cls-4 {
+  fill: #a1c75d;
+}
+.cls-5 {
+  fill: #ffe6c2;
+}
+.cls-6 {
+  fill: #f4c985;
+}
+.cls-7 {
+  fill: #f1b150;
+}
+.cls-8 {
+  fill: #f7b192;
+}
+.cls-9 {
+  fill: #f99d75;
+}
+.cls-10 {
+  fill: #f17b3d;
+}
+.cls-11 {
+  fill: #a2dbcc;
+}
+.cls-12 {
+  fill: #38a88a;
+}
+.cls-13 {
+  fill: #6dccb1;
+}
+.cls-14 {
+  fill: #94d1d4;
+}
+.cls-15 {
+  fill: #27a3ad;
+}
+.cls-16 {
+  fill: #5ebac2;
+}
+.cls-17 {
+  fill: #d2a7d8;
+}
+.cls-18 {
+  fill: #7b2584;
+}
+.cls-19 {
+  fill: #a566a8;
+}
+.cls-20 {
+  fill: #e8cae7;
+}
+.cls-21 {
+  fill: #b980ba;
+}
+.cls-22 {
+  fill: #cca6cc;
+}
+.cls-23 {
+  fill: #e79eae;
+}
+.cls-24 {
+  fill: #cb2947;
+}
+.cls-25 {
+  fill: #db6a7e;
+}
+.cls-26 {
+  fill: #e2d1a1;
+}
+.cls-26,
+.cls-27,
+.cls-28,
+.cls-29,
+.cls-30,
+.cls-31,
+.cls-32,
+.cls-33 {
+  fill-rule: evenodd;
+}
+.cls-27 {
+  fill: #f8c6bd;
+}
+.cls-28 {
+  fill: #deb3d1;
+}
+.cls-29 {
+  fill: #c3c7e4;
+}
+.cls-30 {
+  fill: #c5dfe0;
+}
+.cls-31 {
+  fill: #cfe5bf;
+}
+.cls-32 {
+  fill: #dfebbb;
+}
+.cls-33 {
+  fill: #f2f2b4;
+}
+.cls-34 {
+  font-size: 16px;
+}
+.cls-34,
+.cls-51 {
+  font-family: Calibri-Bold, Calibri;
+  font-weight: 700;
+}
+.cls-35 {
+  letter-spacing: -0.01em;
+}
+.cls-36 {
+  letter-spacing: -0.01em;
+}
+.cls-37 {
+  letter-spacing: -0.08em;
+}
+.cls-38 {
+  letter-spacing: -0.01em;
+}
+.cls-39 {
+  letter-spacing: -0.08em;
+}
+.cls-40 {
+  letter-spacing: 0em;
+}
+.cls-41 {
+  letter-spacing: -0.02em;
+}
+.cls-42 {
+  letter-spacing: -0.02em;
+}
+.cls-43 {
+  letter-spacing: -0.04em;
+}
+.cls-44 {
+  letter-spacing: -0.01em;
+}
+.cls-45 {
+  letter-spacing: -0.05em;
+}
+.cls-46 {
+  letter-spacing: -0.01em;
+}
+.cls-47 {
+  letter-spacing: -0.01em;
+}
+.cls-48 {
+  letter-spacing: -0.03em;
+}
+.cls-49 {
+  letter-spacing: 0em;
+}
+.cls-50 {
+  letter-spacing: -0.09em;
+}
+.cls-51 {
+  font-size: 14px;
+}
+.cls-52 {
+  letter-spacing: -0.07em;
+}

@@ -3,7 +3,8 @@ import SettingsAndBack from "../../components/settingsAndBack";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
-import Wheel from "../../components/wheel";
+// import Wheel from "../../components/wheel";
+import WheelTwo from "../../components/wheel2";
 const ChooseEmotions = () => {
 
 
@@ -104,7 +105,7 @@ const ChooseEmotions = () => {
                     </div>
                     <div className=" ">
                         <div className="">
-                            <Wheel emotionFunction={emotionFunction} />
+                            <WheelTwo emotionFunction={emotionFunction} />
                         </div>
                     </div>
                 </div>

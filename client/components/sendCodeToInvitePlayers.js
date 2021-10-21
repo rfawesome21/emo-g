@@ -38,7 +38,7 @@ const sendCodeToInvitePlayers = (props) => {
                         </svg>
                     </span>
                 </div>
-                <div className="border-2 py-2 px-4 border-black rounded-md font-bold text-xl">
+                <div className="border-2 py-2 px-4 border-black rounded-md font-bold text-lg">
                     {props.numberOfPlayers} Joined
                 </div>
             </div>

@@ -176,6 +176,46 @@ text {
   stroke-miterlimit: 10;
   stroke-width: 2px;
 }
+
+.cls-1:hover,
+.cls-2:hover,
+.cls-3:hover,
+.cls-4:hover,
+.cls-5:hover,
+.cls-6:hover,
+.cls-7:hover,
+.cls-8:hover,
+.cls-9:hover,
+.cls-10:hover,
+.cls-11:hover,
+.cls-12:hover,
+.cls-13:hover,
+.cls-14:hover,
+.cls-15:hover,
+.cls-16:hover,
+.cls-17:hover,
+.cls-18:hover,
+.cls-19:hover,
+.cls-20:hover,
+.cls-21:hover,
+.cls-22:hover,
+.cls-23:hover,
+.cls-24:hover,
+.cls-25:hover,
+.cls-26:hover,
+.cls-27:hover,
+.cls-28:hover,
+.cls-29:hover,
+.cls-30:hover,
+.cls-31:hover,
+.cls-32:hover,
+.cls-33:hover {
+  stroke: #000;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 69;
+  stroke-width: 5px;
+}
+
 .cls-4 {
   fill: #a1c75d;
 }
@@ -337,4 +377,17 @@ text {
 }
 .cls-52 {
   letter-spacing: -0.07em;
+}
+
+/* GLOBALS */
+
+.buttonNew {
+  background-color: #fffaee;
+  border: 2px solid #eba282;
+  color: #eba282;
+}
+
+.buttonNew:hover {
+  background-color: #eba282;
+  color: #fffaee;
 }

@@ -80,7 +80,7 @@ const ChooseEmotions = () => {
 
     return (
         <div style={{ height: "100vh" }} className="flex flex-column justify-center">
-            <div className="justify-center align-center text-center flex flex-col container px-10" >
+            <div className="text-center container px-10" >
                 <SettingsAndBack link='/host/scenes' />
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
                 <div className="h-80 grid grid-col-1 grid-flow-col place-items-center ">
@@ -102,10 +102,8 @@ const ChooseEmotions = () => {
                         </div>
                     </div>
                 </div>
+                <button onClick={() => clickHandler()} className="bg-gray-200 border-2 mt-36 border-black rounded-md px-4 py-2 text-xl font-bold">Save</button>
             </div >
-            <div className="text-center py-14">
-                <button onClick={() => clickHandler()} className="bg-gray-200 border-2 mt-28 border-black rounded-md px-4 py-2 text-xl font-bold">Save</button>
-            </div>
         </div>
     );
 }

@@ -14,10 +14,9 @@ export default function Home() {
         <meta name="description" content="Emo-G" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <p className={styles.heading}>E<span className={styles.m}>M</span><span className={styles.o}>O</span><span className = {styles.dash}>-</span><span className = {styles.g}>G</span></p>
       <Link href= '/play'>
-        <button className='bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold'>
-          Start
+        <button className='rounded-md px-4 py-2 text-2xl font-bold buttonNew startButton absolute bottom-24'>
+          PLAY
         </button>
       </Link>
     </div>

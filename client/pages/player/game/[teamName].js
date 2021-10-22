@@ -42,7 +42,8 @@ const game = () => {
         setStatus(sessionStorage.getItem('status'))
         setPlayerName(sessionStorage.getItem('player-name'))
         const code = sessionStorage.getItem('game-code')
-        setGameCode(sessionStorage.getItem('game-code'))        
+        setGameCode(sessionStorage.getItem('game-code'))  
+        const teamName = sessionStorage.getItem('team-name')      
         socket.emit('join-team-room', {code, teamName })
 
         socket.on('team-players', players => {

@@ -384,6 +384,7 @@ text {
   background-color: #fffaee;
   border: 2px solid #eba282;
   color: #eba282;
+  cursor: pointer;
 }
 
 .buttonNew:hover {

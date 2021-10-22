@@ -407,6 +407,11 @@ text {
   background-color: #fff;
 }
 
+.counterInput {
+  border-radius: 0.4rem;
+  border: 1px solid #da764b;
+}
+
 .tabs {
   color: white !important;
   background-color: transparent !important;
@@ -432,4 +437,17 @@ text {
 .bgNormal {
   background-image: url("https://i.imgur.com/Dwo61Fu.png");
   background-size: cover;
+}
+
+.endGame {
+  background-color: #f55a5a;
+  border: 2px solid #fffaee;
+  border-radius: 0.4rem;
+  color: #fffaee;
+}
+
+.endGame:hover {
+  background-color: #fffaee;
+  color: #f55a5a;
+  border: 2px solid #f55a5a;
 }

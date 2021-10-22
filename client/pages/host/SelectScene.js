@@ -75,21 +75,21 @@ const SelectScene = () => {
 
 
     return (
-        <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
-            {/* <SettingsAndBack link = {'/host/scenes'}  />
+        <div className="justify-center items-center text-center flex flex-col px-10 h-screen bgNormal">
+            <SettingsAndBack link = {'/host/scenes'}  />
             <div className="grid grid-cols-1 justify-center self-center w-1/2 align-center ">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={playerLength}/>
-            </div> */}
-            <div className="place-items-center justify-items-center mt-10 w-3/4">
-                <div className="bg-gray-200 p-10 ">
+            </div>
+            <div className="mt-10 w-3/4 heading">
+                <div className="p-10 ">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
                     </div>
-                    <div className="h-64 grid grid-flow-row lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto">
+                    <div className="h-64 grid grid-flow-row lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto scl">
                         {scenes && scenes.map((scene, index) => {
                             if(index > 0){
                                 return(
-                                <div className={selectedItem.includes(index)? 'border-2 border-red-500' : ''} key = {index*100}>
-                                    <button className="py-2 lg:px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded"
+                                <div className={selectedItem.includes(index)? 'border-2 border-gray-900' : 'border-2 border-red-400'} key = {index*100}>
+                                    <button className="py-2 lg:px-4 font-bold text-lg h-28 w-full bg-gray-50 rounded"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
                                         setSceneID(scene.id)

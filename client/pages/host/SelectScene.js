@@ -75,12 +75,12 @@ const SelectScene = () => {
 
 
     return (
-        <div className="justify-center align-center text-center flex flex-col container px-10" style={{ height: "100vh" }}>
-            <SettingsAndBack link = {'/host/scenes'}  />
-            <div className="grid grid-cols-1 justify-center self-center w-full align-center ">
+        <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
+            {/* <SettingsAndBack link = {'/host/scenes'}  />
+            <div className="grid grid-cols-1 justify-center self-center w-1/2 align-center ">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={playerLength}/>
-            </div>
-            <div className="place-items-center justify-items-center mt-10">
+            </div> */}
+            <div className="place-items-center justify-items-center mt-10 w-3/4">
                 <div className="bg-gray-200 p-10 ">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
                     </div>
@@ -89,7 +89,7 @@ const SelectScene = () => {
                             if(index > 0){
                                 return(
                                 <div className={selectedItem.includes(index)? 'border-2 border-red-500' : ''} key = {index*100}>
-                                    <button className="py-2 lg:px-4 font-bold text-lg h-28 lg:w-96 md:w-96 bg-gray-50 rounded"
+                                    <button className="py-2 lg:px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
                                         setSceneID(scene.id)
@@ -117,7 +117,7 @@ const SelectScene = () => {
                             else{
                                 return(
                                 <div key = {index}>
-                                    <button className="py-2 px-4 font-bold text-lg h-28 w-96 bg-gray-50 rounded" key = {index}
+                                    <button className="py-2 px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded" key = {index}
                                     onClick = {() => {
                                         setEditSceneText('')
                                         setNudge('')

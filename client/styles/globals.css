@@ -452,3 +452,9 @@ text {
   color: #f55a5a;
   border: 2px solid #f55a5a;
 }
+
+.hostSelectEmo {
+  background-color: #da764b;
+  color: #fffaee;
+  box-shadow: 2px 2px 5px #da764b;
+}

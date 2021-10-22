@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import SelectScene from "./SelectScene";
 import { SocketContext } from "../../context/socket/SocketContext";
+import EndGame from "../../components/endGame";
 
 const scenes = () => {
 
@@ -46,25 +47,33 @@ const scenes = () => {
     const router = useRouter()
 
     return (
-        <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack link='/host/settings' />
-
+        <div className="flex flex-row justify-center h-screen bgNormal">
+            {/* <SettingsAndBack link='/host/settings' /> */}
+            <EndGame />
+            
             <div className="flex flex-col justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />
 
                 <div className="flex flex-row justify-between">
-                    <div className={sceneClassName? "flex flex-col justify-evenly align-center bg-green-200 p-8 mx-4" :  "flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4"}>
-                        <div className="font-bold text-xl">Set the Scene</div>
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2"
-                            onClick={() => router.push('/host/SelectScene')}>Choose Existing</button>
+                    <div className={sceneClassName? "hostSelectEmo cursor-pointer p-2 rounded-lg mx-4" : "heading p-2 cursor-pointer rounded-lg mx-4"}>
+                        <div className="font-bold text-xl" onClick={() => router.push('/host/SelectScene')}>
+                            {sceneClassName?<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mr-2 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>:<></>}
+                            Set the Scene
+                        </div>
                     </div>
-                    <div className={emotionClassName? "flex flex-col justify-evenly align-center bg-green-200 p-8 mx-4" :  "flex flex-col justify-evenly align-center bg-gray-200 p-8 mx-4"}>
-                        <div className="font-bold text-xl">Set Emotions</div>
-                        <button className="bg-gray-100 border-2 border-black border-opacity-50 mt-2" onClick={() => router.push('/host/chooseEmotion')}>Choose Existing</button>
+                    <div className={emotionClassName? "hostSelectEmo cursor-pointer p-2 rounded-lg mx-4" : "heading p-2 cursor-pointer rounded-lg mx-4"}>
+                        <div className="font-bold text-xl"  onClick={() => router.push('/host/chooseEmotion')}>
+                            {emotionClassName?<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mr-2 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>:<></>}
+                            Set Emotions
+                        </div>
                     </div>
                 </div>
 
-                <div className="text-center"><button onClick={() => router.push("/host/scoring")} className="bg-gray-200 border-2 border-black rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
+                <div className="text-center"><button onClick={() => router.push("/host/scoring")} className=" buttonNew rounded-md px-4 py-2 text-xl font-bold">Continue</button></div>
             </div>
             {
                 scenes ?

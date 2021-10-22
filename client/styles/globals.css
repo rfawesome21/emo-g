@@ -143,7 +143,8 @@ text {
   fill: #d1e2af;
 }
 .cls-2 {
-  fill: #fff;
+  fill: none;
+  stroke: 0;
 }
 .cls-3 {
   fill: #bad786;
@@ -173,8 +174,8 @@ text {
 .cls-7,
 .cls-9 {
   stroke: #fff;
-  stroke-miterlimit: 10;
-  stroke-width: 2px;
+  stroke-miterlimit: 1;
+  stroke-width: 0px;
 }
 
 .cls-1:hover,
@@ -211,11 +212,9 @@ text {
 .cls-32:hover,
 .cls-33:hover {
   stroke: #000;
-  background-color: rgba(0, 0, 0, 0.5);
   z-index: 69;
-  stroke-width: 5px;
+  stroke-width: 3.5px;
 }
-
 .cls-4 {
   fill: #a1c75d;
 }

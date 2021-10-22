@@ -1,11 +1,9 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
-  /* display: flex;
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center; */
-  text-align: center;
+  /* align-items: center;  */
   height: 100vh;
   background-image: url("https://lh3.googleusercontent.com/pw/AM-JKLXVR0uDmP0XGih1MwOUF_InBuAnNvO17fKDzcnVjE0ZSaV4y1VbIcOQx3BUeh_2ORyaKG0hnqOtb0z0zx126r76BHHEDOQxeZehNBC9EjWGFpPcfd6XU1CbwXlwOI4CsrV8YKo7RLu-FmdsJDe3oO4J=w1690-h950-no?authuser=0");
   background-size: 100vw 100vh;

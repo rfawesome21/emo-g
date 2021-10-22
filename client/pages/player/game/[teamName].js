@@ -5,6 +5,7 @@ import { SocketContext } from "../../../context/socket/SocketContext";
 import Button from '../../../components/Button'
 import Wheel from '../../../components/wheel'
 import SettingsAndBack from "../../../components/settingsAndBack";
+import ConfirmLifeline from "../../../components/Players/confirmLifeline";
 const game = () => {
 
     const router = useRouter()
@@ -35,6 +36,7 @@ const game = () => {
     const timerRef = useRef()
     const [currentRoundEmotion, setCurrentRoundEmotion] = useState('')
     const [status, setStatus] = useState('')
+    const [confirmLifeline, setConfirmLifeline] = useState()
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
@@ -261,9 +263,9 @@ const game = () => {
                         {score}
                     </div>
                     <div className="h-full flex flex-column">
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold">This or That</div>
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold">Delete a row</div>
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold">Call the bot</div>
+                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>
+                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("Delete a row")}>Delete a row</div>
+                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("Call the bot")}>Call the bot</div>
                     </div>
                     {player.name === playerName && player.isRandomlySelected? null:
                     <button className='bg-gray-200 border-2 border-black rounded-md px-2 py-1 mt-3 w-auto text-lg font-bold self-center'
@@ -272,7 +274,7 @@ const game = () => {
             </div>
 
             {settingsPressed?<ExitGame cancelPress={setSettingsPressed}/>:<></>}
-
+            {confirmLifeline?<ConfirmLifeline setConfirmLifeline={setConfirmLifeline} lifeLine={confirmLifeline}/>:<></>}
         </div>
      );
 }

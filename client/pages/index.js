@@ -15,7 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href= '/play'>
-        <button className='rounded-md px-4 py-2 text-2xl font-bold buttonNew startButton absolute bottom-24'>
+        <button className='rounded-md px-4 py-2 text-2xl font-bold buttonNew startButton absolute bottom-32'>
           PLAY
         </button>
       </Link>

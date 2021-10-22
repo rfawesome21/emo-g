@@ -7,9 +7,10 @@ const Host = () => {
     
     return (
         <div className='h-full flex flex-col'>
-            <input className='bg-gray-300 rounded-md p-2 text-black text-center' placeholder='Username' />
-            <input className='bg-gray-300 rounded-md p-2 mt-3 text-black text-center' placeholder='Password' />
-            <Button text = {'Login'} clickHandler = {() => router.push('/host/settings')} />
+            <br/>
+            <input className='inputs rounded-md p-2 text-black text-center' placeholder='Username' />
+            <input className='inputs rounded-md p-2 mt-3 text-black text-center' placeholder='Password' />
+            <div className="absolute bottom-36 left-0 flex justify-center w-100"><Button text = {'Login'} clickHandler = {() => router.push('/host/settings')} /></div>
         </div>
     )
 }

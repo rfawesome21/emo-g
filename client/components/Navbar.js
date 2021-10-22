@@ -8,10 +8,10 @@ import Button from './Button'
 const Navbar = () => {
     return (
         <NavComponent>
-            <Tab eventKey="home" title="Join" tabClassName = {'ml-5'}>
+            <Tab eventKey="home" title="Join" tabClassName = {'ml-5 tabs'}>
                 <Join />
             </Tab>
-            <Tab eventKey="profile" title="Host" tabClassName = {'ml-5'}>
+            <Tab eventKey="profile" title="Host" tabClassName = {'ml-5 tabs'}>
                 <Host />
             </Tab>
         </NavComponent>

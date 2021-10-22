@@ -69,8 +69,8 @@ const settings = () => {
     }
 
     return ( 
-        <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack link = '/play' />
+        <div className="flex flex-row justify-center h-screen w-screen bgNormal">
+            {/* <SettingsAndBack link = '/play' /> */}
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
                 <div className="flex flex-row justify-between bg-gray-200 px-4 py-4">

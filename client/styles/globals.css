@@ -390,3 +390,46 @@ text {
   background-color: #eba282;
   color: #fffaee;
 }
+
+.heading {
+  background-color: #fffaee;
+  color: #da764b;
+  box-shadow: 2px 2px 5px #da764b;
+}
+
+.bg-brown {
+  background-color: #eba282;
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
+.inputs {
+  background-color: #fff;
+}
+
+.tabs {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+.nav-tabs {
+  border: none !important;
+}
+
+.nav-item .active {
+  background-color: #eba282 !important;
+  color: white !important;
+  border-radius: 0.4rem !important;
+}
+
+.loginGradient {
+  background-image: linear-gradient(
+    rgba(251, 195, 176, 255),
+    rgba(242, 171, 146, 255)
+  );
+}
+
+.bgNormal {
+  background-image: url("https://i.imgur.com/Dwo61Fu.png");
+  background-size: cover;
+}

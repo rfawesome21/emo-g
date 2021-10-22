@@ -34,9 +34,10 @@ const Join = () => {
 
     return (
         <div className='h-full flex flex-col'>
-            <input name = 'name' className='bg-gray-300 rounded-md p-2 text-black text-center' placeholder='Enter Name' value = {name} onChange = {e => onChangeHandler(e)} />
-            <input name = 'code' className='bg-gray-300 rounded-md p-2 mt-3 text-black text-center' placeholder='Enter Code' value = {code} onChange = {e => onChangeHandler(e)} />
-            <Button text = {'Join'} clickHandler = {clickHandler} />
+            <br/>
+            <input name = 'name' className='inputs rounded-md p-2 text-black text-center' placeholder='Enter Name' value = {name} onChange = {e => onChangeHandler(e)} />
+            <input name = 'code' className='inputs rounded-md p-2 mt-3 text-black text-center' placeholder='Enter Code' value = {code} onChange = {e => onChangeHandler(e)} />
+            <div className="absolute bottom-36 left-0 flex justify-center w-100"><Button text = {'Join'} clickHandler = {clickHandler} /></div>
         </div>
     )
 }

@@ -90,7 +90,8 @@ module.exports = (io, socket) => {
             roleTwo : GameScenes[number].roleTwo,
             nudge : GameScenes[number].nudge,
             statementOne : GameScenes[number].statementOne,
-            statementTwo : GameScenes[number].statementTwo
+            statementTwo : GameScenes[number].statementTwo,
+            nudgeRoundNo : GameScenes[number].nudgeRoundNo
         }
         
         let myData = []
@@ -102,7 +103,8 @@ module.exports = (io, socket) => {
             roleTwo : sceneObj.roleTwo,
             nudge : sceneObj.nudge,
             statementOne : sceneObj.statementOne,
-            statementTwo : sceneObj.statementTwo
+            statementTwo : sceneObj.statementTwo,
+            nudgeRoundNo : sceneObj.nudgeRoundNo
         })
 
 

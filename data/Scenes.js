@@ -10,7 +10,8 @@ const Scenes = [
     roleOne : 'Myself',
     roleTwo : 'Everyone',
     statementOne : "I don't like being alone",
-    statementTwo : "I miss my friends"
+    statementTwo : "I miss my friends",
+    nudgeRoundNo : 4
 },
 {
     id : 2,
@@ -19,7 +20,8 @@ const Scenes = [
     roleOne : 'He',
     roleTwo : 'OnLookers',
     statementOne : "Money can buy happiness",
-    statementTwo : "I am starving mate"
+    statementTwo : "I am starving mate",
+    nudgeRoundNo : 4
 },
 {
     id  : 3,
@@ -28,7 +30,8 @@ const Scenes = [
     roleOne : 'Children',
     roleTwo : 'Parents',
     statementOne : 'I wish we never had kids',
-    statementTwo : "Omg they're so adorable"
+    statementTwo : "Omg they're so adorable",
+    nudgeRoundNo : 4
 },
 {
     id : 4,
@@ -37,7 +40,8 @@ const Scenes = [
     roleOne : 'Uncle',
     roleTwo : 'Us',
     statementOne : 'I hate weddings',
-    statementTwo : 'It feels so uncomfortable everyone asking me to get married'
+    statementTwo : 'It feels so uncomfortable everyone asking me to get married',
+    nudgeRoundNo : 4
 },
 {
     id : 5,
@@ -46,7 +50,8 @@ const Scenes = [
     roleOne : 'Book',
     roleTwo : 'Me',
     statementOne : 'Books provide us with general knowledge',
-    statementTwo : "I feel so stupid because I don't read"
+    statementTwo : "I feel so stupid because I don't read",
+    nudgeRoundNo : 4
 },
 {
     id : 6,
@@ -55,7 +60,8 @@ const Scenes = [
     roleOne : 'Traffic cone',
     roleTwo : 'Joe',
     statementOne : 'Joe failed his math class',
-    statementTwo : 'Joe was always looked down on by his parents'
+    statementTwo : 'Joe was always looked down on by his parents',
+    nudgeRoundNo : 4
 },
 {
     id : 7,
@@ -64,7 +70,8 @@ const Scenes = [
     roleOne : 'Parents',
     roleTwo : 'Children',
     statementOne : "Stupid kids don't eat their vegetables",
-    statementTwo : 'One of our children is obese and diabetic'
+    statementTwo : 'One of our children is obese and diabetic',
+    nudgeRoundNo : 4
 },
 {
     id : 8,
@@ -73,7 +80,8 @@ const Scenes = [
     roleOne : 'Boy',
     roleTwo : 'Ciggarate',
     statementOne : 'He later found out he had lung cancer',
-    statementTwo : 'He used up all his money in buying more cigars after that discovery'
+    statementTwo : 'He used up all his money in buying more cigars after that discovery',
+    nudgeRoundNo : 4
 },
 {
     id : 9,
@@ -82,7 +90,8 @@ const Scenes = [
     roleOne : 'Girl',
     roleTwo : 'Sugar',
     statementOne : 'This girl was very kind',
-    statementTwo : 'This girl cared deeply for her friends'
+    statementTwo : 'This girl cared deeply for her friends',
+    nudgeRoundNo : 4
 },
 {
     id : 10,
@@ -91,7 +100,8 @@ const Scenes = [
     roleOne : 'Girl',
     roleTwo : 'Ice Cream',
     statementOne : 'Her mouth smelled all the time',
-    statementTwo : 'None of her friends liked her'
+    statementTwo : 'None of her friends liked her',
+    nudgeRoundNo : 4
 }]
 
 module.exports = {Scenes}

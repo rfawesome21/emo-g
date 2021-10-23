@@ -34,6 +34,11 @@ module.exports = (io, socket) => {
         const roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.messages = message
+        console.log(team.roundNo);
+        console.log(roomObject.scene.nudgeRoundNo);
+        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
+            team.messages.push(roomObject.scene[0].nudge)
+        }
         team.isDisabled = true
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', '')

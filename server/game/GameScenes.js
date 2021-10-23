@@ -8,30 +8,29 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }
 
-    const editScenes = ({sceneID, scene, gameCode, nudgeRole1, nudgeRole2, nudgeStatement, initialStatementOne, initialStatementTwo}) => {
+    const editScenes = ({sceneID, scene, gameCode, nudgeRole1, nudgeRole2, nudgeStatement, initialStatementOne, initialStatementTwo, nudgeRoundNo}) => {
         let roomObject = roomArrayMap.get(gameCode)
         let sceneIndex
-        console.log(roomObject.scene);
-        for(let j = 0; j < roomObject.scene.length; j++){
+        for(let j = 0; j < roomObject.GAME_SCENES.length; j++){
             if(roomObject.GAME_SCENES[j].id === sceneID){
                 sceneIndex = j
             }
         }    
         if(sceneIndex){           
-            roomObject.scene[sceneIndex].scene = scene
-            roomObject.scene[sceneIndex].roleOne = nudgeRole1
-            roomObject.scene[sceneIndex].roleTwo = nudgeRole2
-            roomObject.scene[sceneIndex].statementOne = initialStatementOne
-            roomObject.scene[sceneIndex].statementTwo = initialStatementTwo
-            roomObject.scene[sceneIndex].nudge = nudgeStatement
-            
+            roomObject.scene.scene = scene
+            roomObject.scene.roleOne = nudgeRole1
+            roomObject.scene.roleTwo = nudgeRole2
+            roomObject.scene.statementOne = initialStatementOne
+            roomObject.scene.statementTwo = initialStatementTwo
+            roomObject.scene.nudge = nudgeStatement
+            roomObject.scene.nudgeRoundNo = nudgeRoundNo
             roomObject.GAME_SCENES[sceneIndex].scene = scene
             roomObject.GAME_SCENES[sceneIndex].roleOne = nudgeRole1
             roomObject.GAME_SCENES[sceneIndex].roleTwo = nudgeRole2
             roomObject.GAME_SCENES[sceneIndex].statementOne = initialStatementOne
             roomObject.GAME_SCENES[sceneIndex].statementTwo = initialStatementTwo
             roomObject.GAME_SCENES[sceneIndex].nudge = nudgeStatement
-
+            roomObject.GAME_SCENES[sceneIndex].nudgeRoundNo = nudgeRoundNo
         }
         io.to(socket.id).emit('updated-scenes', roomObject.GAME_SCENES)
     }
@@ -41,7 +40,7 @@ module.exports = (io, socket) => {
         io.in(gameCode).emit('players',roomArrayMap.get(gameCode).players)
     }
 
-    const addScene = ({scene, nudgeStatement, nudgeRole1, nudgeRole2, gameCode, initialStatementOne, initialStatementTwo}) => {
+    const addScene = ({scene, nudgeStatement, nudgeRole1, nudgeRole2, gameCode, initialStatementOne, initialStatementTwo, nudgeRoundNo}) => {
         console.log(initialStatementOne);
         console.log(initialStatementTwo);
         let roomObject = roomArrayMap.get(gameCode)
@@ -52,7 +51,8 @@ module.exports = (io, socket) => {
             roleOne : nudgeRole1,
             roleTwo : nudgeRole2,
             statementOne : initialStatementOne,
-            statementTwo : initialStatementTwo
+            statementTwo : initialStatementTwo,
+            nudgeRoundNo : nudgeRoundNo
         })
         roomObject.GAME_SCENES.splice(1 ,0,{
             id : roomObject.scene.length + 1,
@@ -61,7 +61,8 @@ module.exports = (io, socket) => {
             roleOne : nudgeRole1,
             roleTwo : nudgeRole2,
             statementOne : initialStatementOne,
-            statementTwo : initialStatementTwo
+            statementTwo : initialStatementTwo,
+            nudgeRoundNo : nudgeRoundNo
         })
         io.to(socket.id).emit('scenes',roomObject.GAME_SCENES)
     }
@@ -69,6 +70,7 @@ module.exports = (io, socket) => {
     const addNewScenes = ({addScenesToGame, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene = addScenesToGame
+        console.log(addScenesToGame);
         roomObject.manuallySetScene = true
         io.to(socket.id).emit('received-scenes', roomObject.manuallySetScene)
     }
@@ -96,6 +98,11 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('scene-page')
     }
 
+    const getMaxRounds = (gameCode) => {
+        let roomObject = roomArrayMap.get(gameCode)
+        io.to(socket.id).emit('sent-max-rounds', roomObject.MAX_ROUNDS)
+    }
+
     socket.on('come-to-scene', comeToScene)
     socket.on('edit-scenes', editScenes)
     socket.on('game-scenes', gameScenes)
@@ -103,4 +110,5 @@ module.exports = (io, socket) => {
     socket.on('new-scenes', addNewScenes)
     socket.on('add-scene', addScene)
     socket.on('get-game-scene', sendGameScene)
+    socket.on('get-max-rounds', getMaxRounds)
 }

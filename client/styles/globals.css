@@ -462,3 +462,16 @@ text {
 .burlywoodBorder {
   border: 2px solid #da764b;
 }
+
+.burlywoodText {
+  color: #da764b;
+}
+
+.burlywoodText::placeholder {
+  color: #da764b;
+  font-style: italic;
+}
+
+.beigeBg {
+  background-color: #fffaee;
+}

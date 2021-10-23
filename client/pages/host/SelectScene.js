@@ -21,6 +21,7 @@ const SelectScene = () => {
     const [statementOne, setStatementOne] = useState('')
     const [statementTwo, setStatementTwo] = useState('')
     const [sceneID, setSceneID] = useState()
+    const [nudgeRoundNo, setNudgeRoundNo] = useState(4)
 
     const router = useRouter()
 
@@ -31,7 +32,8 @@ const SelectScene = () => {
             roleOne : scene.roleOne,
             roleTwo : scene.roleTwo,
             statementOne : scene.statementOne,
-            statementTwo : scene.statementTwo
+            statementTwo : scene.statementTwo,
+            nudgeRoundNo : scene.nudgeRoundNo
         }
         let arr = addScenesToGame.slice(0)
         arr.length = 0
@@ -111,7 +113,7 @@ const SelectScene = () => {
                         {scenes && scenes.map((scene, index) => {
                             if(index > 0){
                                 return(
-                                <div className={selectedItem.includes(index)? 'border-2 rounded border-red-500' : 'burlywoodBorder rounded'} key = {index*100}>
+                                <div className={selectedItem.includes(index)? 'border-2 rounded border-black' : 'burlywoodBorder rounded'} key = {index*100}>
                                     <button className="py-2 lg:px-4 text-left h-32 w-100 bg-gray-50 rounded overflow-y-auto scl"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
@@ -130,6 +132,7 @@ const SelectScene = () => {
                                         setRoleTwo(scene.roleTwo)
                                         setStatementOne(scene.statementOne)
                                         setStatementTwo(scene.statementTwo)
+                                        setNudgeRoundNo(scene.nudgeRoundNo)
                                         setCreateScenes(true)}}
                                     >
                                         <div className="font-bold text-lg">
@@ -156,6 +159,7 @@ const SelectScene = () => {
                             statementOne = {statementOne}
                             statementTwo = {statementTwo}
                             sceneID = {sceneID}
+                            nudgeRoundNumber = {nudgeRoundNo}
                              /> : null}
         </div>
     )

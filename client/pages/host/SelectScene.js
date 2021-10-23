@@ -45,6 +45,10 @@ const SelectScene = () => {
 
     const clickHandler = () => {
         setSelectedItem([])
+        if(addScenesToGame.length === 0){
+            alert('Please Select a scene before proceeding')
+            return
+        }
         socket.emit('new-scenes', {addScenesToGame, gameCode})
         router.push('/host/scenes')
     }

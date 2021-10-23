@@ -76,20 +76,34 @@ const SelectScene = () => {
 
     return (
         <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
-            {/* <SettingsAndBack link = {'/host/scenes'}  />
-            <div className="grid grid-cols-1 justify-center self-center w-1/2 align-center ">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={playerLength}/>
-            </div> */}
-            <div className="place-items-center justify-items-center mt-10 w-3/4">
-                <div className="bg-gray-200 p-10 ">
+            <div className="flex justify-center mt-10">
+                <div className="rounded p-10 w-3/4 heading">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
-                    <div className="h-64 grid grid-flow-row lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto">
+                    <div className="flex items-center justify-between px-3 pb-4">
+                        <div>
+                            <input placeholder="Search"/>
+                        </div>
+                        <div className="float-right">
+                            <button className="buttonNew rounded px-3 py-2 text-lg font-bold" onClick = {() => {
+                                        setEditSceneText('')
+                                        setNudge('')
+                                        setRoleTwo('')
+                                        setRoleOne('')
+                                        setStatementTwo('')
+                                        setStatementOne('')
+                                        setCreateScenes(true)}}>Create Scene</button>
+                        </div>
+                    </div>
+                    <div className="h-64 w-full grid grid-flow-row lg:grid-cols-2 px-1 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto scl">
                         {scenes && scenes.map((scene, index) => {
                             if(index > 0){
                                 return(
-                                <div className={selectedItem.includes(index)? 'border-2 border-red-500' : ''} key = {index*100}>
-                                    <button className="py-2 lg:px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded"
+                                <div className={selectedItem.includes(index)? 'border-2 border-red-500' : 'burlywoodBorder rounded'} key = {index*100}>
+                                    <button className="py-2 lg:px-4 text-left h-32 w-100 bg-gray-50 rounded overflow-y-auto scl"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
                                         setSceneID(scene.id)
@@ -109,27 +123,33 @@ const SelectScene = () => {
                                         setStatementTwo(scene.statementTwo)
                                         setCreateScenes(true)}}
                                     >
-                                        {scene.scene}
+                                        <div className="font-bold text-lg">
+                                            Scene {index}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div className="text-base">{scene.scene}</div>
                                     </button> 
                                 </div>
                                 )
                             }
-                            else{
-                                return(
-                                <div key = {index}>
-                                    <button className="py-2 px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded" key = {index}
-                                    onClick = {() => {
-                                        setEditSceneText('')
-                                        setNudge('')
-                                        setRoleTwo('')
-                                        setRoleOne('')
-                                        setStatementTwo('')
-                                        setStatementOne('')
-                                        setCreateScenes(true)}}
-                                    >+ Create Scene</button> 
-                                </div>
-                                )
-                            }
+                            // else{
+                            //     return(
+                            //     <div key = {index}>
+                            //         <button className="py-2 px-4 font-bold text-lg h-28 w-80 bg-gray-50 rounded" key = {index}
+                            //         onClick = {() => {
+                            //             setEditSceneText('')
+                            //             setNudge('')
+                            //             setRoleTwo('')
+                            //             setRoleOne('')
+                            //             setStatementTwo('')
+                            //             setStatementOne('')
+                            //             setCreateScenes(true)}}
+                            //         >+ Create Scene</button> 
+                            //     </div>
+                            //     )
+                            // }
                         })}
                     </div>
                 </div>

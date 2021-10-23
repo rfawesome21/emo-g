@@ -395,7 +395,7 @@ text {
 .heading {
   background-color: #fffaee;
   color: #da764b;
-  box-shadow: 2px 2px 5px #da764b;
+  box-shadow: 4px 4px 12px rgba(255, 101, 67, 0.25);
 }
 
 .bg-brown {
@@ -457,4 +457,8 @@ text {
   background-color: #da764b;
   color: #fffaee;
   box-shadow: 2px 2px 5px #da764b;
+}
+
+.burlywoodBorder {
+  border: 2px solid #da764b;
 }

@@ -30,8 +30,7 @@ const Scoring = () => {
 
 
     return ( 
-        <div className="flex flex-row justify-center h-screen">
-            <SettingsAndBack link='/host/settings' />
+        <div className="flex flex-row bgNormal justify-center h-screen">
 
             <div className="flex flex-col justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />

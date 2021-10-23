@@ -3,21 +3,34 @@ import Button from './Button'
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/socket/SocketContext";
 
-const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, statementOne, statementTwo}) => {
+const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, statementOne, statementTwo, nudgeRoundNumber}) => {
     const [scene, setScene] = useState(text)
     const [gameCode, setGameCode] = useState(0)
 
-    const [nudgeRoundNumber, setNudgeRoundNumber] = useState(nudge)
-    const [nudgeStatement, setNudgeStatement] = useState("")
+    const [nudgeRoundNo, setNudgeRoundNumber] = useState(nudgeRoundNumber)
+    const [nudgeStatement, setNudgeStatement] = useState(nudge)
     const [nudgeRole1, setNudgeRole1] = useState(roleOne)
     const [nudgeRole2, setNudgeRole2] = useState(roleTwo)
     const [initialStatementOne, setInitialStatementOne] = useState(statementOne)
     const [initialStatementTwo, setInitialStatementTwo] = useState(statementTwo)
+    const [maxRounds, setMaxRounds] = useState(10)
+    const [rounds, setRounds] = useState([])
+    const socket = useContext(SocketContext)
 
     useEffect(() => {
         let isMounted = true
+        socket.emit('get-max-rounds', sessionStorage.getItem('game-code'))
+        socket.on('sent-max-rounds', maxRounds => {
+            console.log(maxRounds);
+            setMaxRounds(maxRounds)
+        })
         if(isMounted){
             setGameCode(sessionStorage.getItem('game-code'))
+            let k = rounds.slice(0)
+            for(let i = 1; i <= maxRounds; i ++){
+                k.push(i)
+                setRounds(k)
+            }
         }
 
         return () => {
@@ -25,18 +38,19 @@ const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, st
         }
     },[nudge, roleOne, roleTwo, statementTwo, statementOne])
 
-    const socket = useContext(SocketContext)
+
+
     const onChangeHandler = (e) => {
         setScene(e.target.value)
     }
 
     const addScene = () => {
-        socket.emit('add-scene', {gameCode,scene, nudgeRole1, nudgeRole2, initialStatementTwo, initialStatementOne, nudgeStatement})
+        socket.emit('add-scene', {gameCode,scene, nudgeRole1, nudgeRole2, initialStatementTwo, initialStatementOne, nudgeStatement, nudgeRoundNo})
         closeButton()
     }
 
     const editScene = () => {
-        socket.emit('edit-scenes', {sceneID, scene, gameCode, nudgeRole1, nudgeRole2, initialStatementTwo, initialStatementOne, nudgeStatement})
+        socket.emit('edit-scenes', {sceneID, scene, gameCode, nudgeRole1, nudgeRole2, initialStatementTwo, initialStatementOne, nudgeStatement, nudgeRoundNo})
         closeButton()
     }
 
@@ -77,12 +91,12 @@ const CreateNewScene = ({closeButton, text, sceneID, nudge, roleOne, roleTwo, st
                                 Nudge
                             </div>
                             <div className="ml-12 mr-4">Round No. </div>
-                            <select className="w-16 pl-2 font-bold" value={nudgeRoundNumber} onChange={(event) => setNudgeRoundNumber(event.target.value)} list="rounds" name="Rounds">
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
+                            <select className="w-16 pl-2 font-bold" value={nudgeRoundNo} onChange={(event) => setNudgeRoundNumber(event.target.value)} list="rounds" name="Rounds">
+                                {console.log(rounds)}
+                                {rounds.map((r, index) => 
+                                <option key={index}>
+                                    {r}
+                                </option>)}
                             </select>
                         </div>
                         <div className="text-xl font-bold text-left flex flex-column justify-between h-3/4">

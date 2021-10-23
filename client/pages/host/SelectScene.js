@@ -20,18 +20,21 @@ const SelectScene = () => {
     const [roleTwo, setRoleTwo] = useState('')
     const [statementOne, setStatementOne] = useState('')
     const [statementTwo, setStatementTwo] = useState('')
+    const [nudgeRoundNo, setNudgeRoundNo] = useState(4)
     const [sceneID, setSceneID] = useState()
 
     const router = useRouter()
 
     const addScenes = (scene) => {
+
         const newScene = {
             scene : scene.scene,
             nudge : scene.nudge,
             roleOne : scene.roleOne,
             roleTwo : scene.roleTwo,
             statementOne : scene.statementOne,
-            statementTwo : scene.statementTwo
+            statementTwo : scene.statementTwo,
+            nudgeRoundNo : scene.nudgeRoundNo
         }
         let arr = addScenesToGame.slice(0)
         arr.length = 0
@@ -100,9 +103,11 @@ const SelectScene = () => {
                                         addScenes(scene)}}
                             
                                     onDoubleClick = {() => {
-                                        setAddScenesToGame(addScenesToGame.filter(a => a !== scene.scene))
+                                        setAddScenesToGame(addScenesToGame.filter(a => a !== scene))
+                                        setSelectedItem([])
                                         setEditSceneText(scene.scene)
                                         setNudge(scene.nudge)
+                                        setNudgeRoundNo(scene.nudgeRoundNo)
                                         setRoleOne(scene.roleOne)
                                         setRoleTwo(scene.roleTwo)
                                         setStatementOne(scene.statementOne)
@@ -125,6 +130,7 @@ const SelectScene = () => {
                                         setRoleOne('')
                                         setStatementTwo('')
                                         setStatementOne('')
+                                        setNudgeRoundNo(4)
                                         setCreateScenes(true)}}
                                     >+ Create Scene</button> 
                                 </div>
@@ -143,6 +149,7 @@ const SelectScene = () => {
                             statementOne = {statementOne}
                             statementTwo = {statementTwo}
                             sceneID = {sceneID}
+                            nudgeRoundNumber = {nudgeRoundNo}
                              /> : null}
         </div>
     )

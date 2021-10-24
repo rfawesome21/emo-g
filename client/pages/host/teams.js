@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import PlayerComponent from "../../components/Host/PlayerComponent";
 import {SocketContext} from '../../context/socket/SocketContext'
 import Button from '../../components/Button'
-// import styles from "../css/hostScreen.module.css"
+import EndGame from "../../components/endGame"
 
 const teams = () => {
 
@@ -56,27 +56,33 @@ const teams = () => {
     }
 
     return ( 
-        <div className="flex flex-row justify-center" style={{height:"100vh"}}>
-            <SettingsAndBack link = {'/host/scenes'} />
+        <div className="flex flex-row justify-center h-screen bgNormal">
             <div className="flex flex-column justify-evenly">
-                <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>
+                <div className="w-screen flex justify-center">
+                    <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>
+                </div>
 
-                <div className="flex flex-row justify-center items-center w-screen">
-                    <div className="bg-gray-200 px-16 py-4 flex flex-column justify-evenly">
-                        <div className="font-bold text-xl">Divide players into Teams</div>
-                        <div className="font-bold text-xl mt-5">Players per team:  <input type="number" min="2" max = "10"  style={{width:"4rem"}}
+                <div className="flex flex-row justify-between items-center container">
+                    <div className="heading rounded-xl px-12 py-8 mr-12 flex flex-column justify-evenly" style={{flex:4}}>
+                        <div className="font-bold text-xl mt-1">Divide players into Teams</div>
+                        <div className="text-xl mt-4 flex justify-between">Players per team:  <input type="number" min="2" max = "10" className="w-16 burlywoodBorder rounded pl-2"
                         value = {playersPerTeam}
                         onChange = {(e) => onChangeHandler(e)}
                         /></div>
-                        <div className="text-xl font-semibold mt-5"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>
-                        <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('manual')} /> Manual  </div>
-                        <div className="text-xl font-semibold"> <input type="radio" name = 'option' onClick = {() => setMode('choice')} /> Player's choice  </div>
+                        <div className="text-xl mt-1 flex justify-between">No of Teams:  <input type="number" className="w-16 burlywoodBorder rounded pl-2"
+                        value = {Math.ceil(numberOfPlayers/playersPerTeam)}
+                        /></div>
+                        <div className="text-xl mt-4"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>
+                        <div className="text-xl"> <input type="radio" name = 'option' onClick = {() => setMode('manual')} /> Manual  </div>
+                        <div className="text-xl mb-1"> <input type="radio" name = 'option' onClick = {() => setMode('choice')} /> Player's choice  </div>
                     
                     </div>
-                    {players.length > 0?   
-                    <PlayerComponent players = {players} width = {'large'} largeWidth = {'md'} />
-                    : null
-                }
+                    <div className="ml-28 heading rounded-xl" style={{flex:9}}>
+                        {players.length > 0?   
+                        <PlayerComponent players = {players} width = {'large'} largeWidth = {'md'} />
+                        : null
+                        }
+                    </div>
                 </div>
 
                 <div className="text-center">
@@ -91,6 +97,8 @@ const teams = () => {
                     <div onClick={() => deletePlayer(undefined)}>Back</div>  
                 </div>:<></>}
             </div>
+
+            <EndGame />
         </div>
      )
 }

@@ -56,7 +56,7 @@ const random = () => {
     }
 
     return ( 
-        <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
+        <div className="flex flex-col justify-center items-center h-screen">
             <SettingsAndBack link = {'/host/teams'} />
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers} />

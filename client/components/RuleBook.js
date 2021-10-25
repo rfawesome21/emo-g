@@ -5,7 +5,7 @@ const RuleBook = () => {
 
     return ( 
         <>
-        <div className="px-4 py-2 buttonNew absolute top-8 right-8 rounded text-lg font-bold cursor-pointer" onClick={() => ruleBookClicked(true)}>
+        <div className="px-4 py-2 buttonNew absolute top-8 right-8 rounded-lg text-lg font-bold cursor-pointer" onClick={() => ruleBookClicked(true)}>
             Rule Book
         </div>  
         {ruleBook?

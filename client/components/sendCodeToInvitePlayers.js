@@ -25,7 +25,7 @@ const sendCodeToInvitePlayers = (props) => {
 
     return ( 
         <div>
-            <div className="text-center font-bold text-xl heading rounded-xl py-2">Send code to invite players</div>
+            <div className="text-center font-bold text-xl heading rounded-xl py-2">{props.text?props.text:"Send code to invite players"}</div>
             <br />
             <div className="flex flex-row justify-evenly">
                 <div id="copy" className="heading cursor-pointer rounded-md flex justify-between" onClick={() => {

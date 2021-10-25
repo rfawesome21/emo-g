@@ -18,7 +18,7 @@ const TeamPlayers = ({teams, allTeams, player, mode, status}) => {
     }
 
     return (
-        <div className={'flex flex-col bg-gray-200 mt-5 w-full py-2'} style={{minHeight:"50vh"}}>
+        <div className={'flex flex-col heading rounded-xl mt-5 w-full py-2'} style={{minHeight:"50vh"}}>
             <div className='font-bold text-xl flex justify-between'>
                 <div className="pl-8 pt-4">{teams? `Team ${teams.teamName}` : null}</div>
                 {player && mode==='choice'?

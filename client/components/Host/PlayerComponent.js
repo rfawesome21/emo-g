@@ -33,12 +33,12 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     width === 'large'? compWidth = 'lg' : compWidth = 'xl'
     largeWidth === 'md' ? respWidth = 'md' : respWidth = 'xs'
     return (
-        <div className="flex items-center"> 
+        <div className="flex items-center w-100"> 
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+Math.ceil(players.length/sliderPlayers)-1)%(Math.ceil(players.length/sliderPlayers)))}>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
 
-            <div className={`flex flex-row flex-wrap h-72 w-full items-center overflow-y-auto scl`} id="players" >
+            <div className={`flex flex-row flex-wrap h-72 w-full justify-evenly items-center overflow-y-auto scl`} id="players" >
                         {players && players.length > 0? players.map((player, index) => (
                             <>{index>=sliderPlayers*slideIndex && index<sliderPlayers*(slideIndex+1)?<div className="z-10 text-center" key = {index} onClick={event => setMenu({x: event.clientX, y: event.clientY, player: player})}>
                                 <div className="mx-7">

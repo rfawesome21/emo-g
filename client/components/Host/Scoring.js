@@ -1,20 +1,38 @@
 const Scoring = ({compoundCorrect, compoundIncorrect, otherCorrect, otherIncorrect, otherAdjacent}) => {
     return ( 
         <div className="flex justify-center items-center h-screen">
-                <div className="bg-gray-200 flex justify-around items-center h-1/2 w-1/2">
-                    <div>
-                        <div className="text-2xl mb-8 font-bold">Other Emotion</div>
-                        <div className="text-2xl">Correct Guess: {otherCorrect}</div>
-                        <div className="text-2xl">Adjacent Cell: {otherAdjacent}</div>
-                        <div className="text-2xl">Incorrect Guess: {otherIncorrect}</div>
+            <div className="heading rounded-xl flex justify-around items-center h-1/2" style={{width:"50vw"}}>
+                <div>
+                    <div className="text-2xl mb-8 font-bold">Other Emotion</div>
+                    <div className="text-2xl flex justify-between">
+                        <div>Correct Guess:</div>
+                        <input type="number" value={otherCorrect} disabled={true} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
                     </div>
-                    <div>
-                        <div className="text-2xl mb-8 font-bold">Compound Emotion</div>
-                        <div className="text-2xl">Correct Guess: {compoundCorrect}</div>
-                        <div className="text-2xl">Incorrect Guess: {compoundIncorrect}</div>
+                    <br/>
+                    <div className="text-2xl flex justify-between">
+                        <div>Adjacent Cell:</div>
+                        <input type="number" value={otherAdjacent} disabled={true} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                    </div>
+                    <br/>
+                    <div className="text-2xl flex justify-between">
+                        <div>Incorrect Guess:</div>
+                        <input type="number" value={otherIncorrect} disabled={true} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
                     </div>
                 </div>
-            </div>
+                <div>
+                    <div className="text-2xl mb-8 font-bold">Compound Emotion</div>
+                    <div className="text-2xl flex justify-between">
+                        <div>Correct Guess:</div>
+                        <input type="number" value={compoundCorrect} disabled={true} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                    </div>
+                    <br/>
+                    <div className="text-2xl flex justify-between">
+                        <div>Incorrect Guess:</div>
+                        <input type="number" value={compoundIncorrect} disabled={true} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                    </div>
+                </div>
+            </div>        
+        </div>
      );
 }
  

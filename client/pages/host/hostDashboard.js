@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react"
 import PlayerComponent from "../../components/Host/PlayerComponent"
-import RuleBook from "../../components/RuleBook"
-import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers"
 import Sidebar from "../../components/Host/Sidebar"
 import Wheel from "../../components/wheel"
 import TimeRound from "../../components/Host/Timeround"
-import Scene from "../../components/Host/Scene"
+// import Scene from "../../components/Host/Scene"
+import DashboardScene from "../../components/Host/dashboardScene"
 import Emotion from "../../components/Host/Emotion"
 import Scoring from "../../components/Host/Scoring"
 import Teams from "../../components/Host/Teams"
@@ -46,13 +45,11 @@ const hostDashboard = () => {
     },  [socket])
 
 
-    return ( <div className="flex flex-row">
+    return ( <div className="flex flex-row bgNormal">
 
         <Sidebar selected={selected} setSelected={setSelected}/>
-
-        <RuleBook />
          
-        <div style={{flex:9}}>
+        <div style={{flex:10}}>
 
 
 
@@ -62,7 +59,8 @@ const hostDashboard = () => {
 
             selected==="scene"?
 // scene
-            <Scene scene = {scene} />:
+            // <Scene scene = {scene} />:
+            <DashboardScene scene = {scene[0]} />:
 
             selected==="emotion"?
 // emotion

@@ -487,3 +487,11 @@ text {
 .ebaBg {
   background-color: #eba282;
 }
+
+.ebaBorder {
+  border: 2px solid #eba282;
+}
+
+.beigeBgTransparent {
+  background-color: rgba(255, 250, 238, 0.7);
+}

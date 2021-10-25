@@ -38,8 +38,8 @@ const DashboardScene = ({scene}) => {
                                 Nudge
                             </div>
                             <div>
-                                <div className="ml-12 mr-4 inline-block">Round No </div>
-                                <input className="w-16 pl-2 float-right font-bold rounded burlywoodText ebaBorder" value={5} disabled={true} list="rounds" name="Rounds">
+                                <div className="ml-8 mr-4 inline-block">Round No </div>
+                                <input className="w-8 pl-2 float-right font-bold rounded burlywoodText ebaBorder" value={5} disabled={true} list="rounds" name="Rounds">
                                 </input>
                             </div>
                         </div>

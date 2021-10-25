@@ -64,7 +64,7 @@ const random = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeTeam={activeTeam} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
                     {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}

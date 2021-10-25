@@ -53,12 +53,12 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
                 menu && !player?
                 <div className="h-screen w-screen absolute top-0 left-0" onClick={() => {setMenu(undefined); setMoveTeams(false)}} onMouseOver={() => console.log("in")}>
                     <div className="flex flex-row absolute z-10" style={{top:menu.y, left:menu.x}}>
-                        <div className="bg-gray-200 border-2 border-black cursor-pointer h-full">
-                            <div onClick={(event) => {setMoveTeams(!moveTeams); event.stopPropagation()}}>Move</div>
-                            <div onClick={() => removePlayer()}>Remove</div>
+                        <div className="cursor-pointer h-full">
+                            <div className={moveTeams?"burlywoodBg px-2 border-2 whiteText border-white":"ebaBg px-2 border-2 whiteText border-white"} onClick={(event) => {setMoveTeams(!moveTeams); event.stopPropagation()}}>Move</div>
+                            <div className="ebaBg px-2 border-2 whiteText border-white " onClick={() => removePlayer()}>Remove</div>
                         </div>
-                        {moveTeams?<div className="bg-gray-200 border-2 border-black cursor-pointer max-h-32 overflow-y-auto">
-                            {teams?teams.map((team) => <div className='w-auto px-2' onClickCapture = {() => clickHandler(team.teamName)}>Team {team.teamName}</div>):<></>}
+                        {moveTeams?<div className="scl cursor-pointer max-h-32 overflow-y-auto">
+                            {teams?teams.map((team) => <div className='w-auto px-2 ebaBg border-2 whiteText border-white ' onClickCapture = {() => {setMoveTeams(false);clickHandler(team.teamName)}}>Team {team.teamName}</div>):<></>}
                         </div>:<></>}
                     </div>
                 </div>:<></>}

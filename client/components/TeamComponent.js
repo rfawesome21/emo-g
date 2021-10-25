@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SocketContext } from '../context/socket/SocketContext';
 import PlayerComponent from './Host/PlayerComponent';
 
-const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
+const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTeam}) => {
     console.log(playersWithoutTeams);
     const [display, setDisplay] = useState("teams")    
     const [players, setPlayers] = useState(playersWithoutTeams)
@@ -27,7 +27,7 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
     return (
         <div className="heading rounded-xl px-12 py-8 mt-5 overflow-y-hidden scl" style={{minHeight:"50vh", maxHeight:"26rem"}}>
             <div className='flex flex-row justify-between items-center'>
-                <div  className='flex flex-row'>
+                <div  className='flex flex-row items-center'>
                     <div className='text-lg' onClick={() => setDisplay("teams")}>
                         <div className={display==="teams"?"burlywoodBg whiteText rounded-xl flex flex-col justify-between mb-3 px-3 cursor-pointer pt-2 pb-2 ml-2":"heading rounded-xl flex flex-col justify-between mb-3 px-3 cursor-pointer pt-2 pb-2 ml-2"}>
                             <div className='self-start font-bold'>
@@ -54,14 +54,14 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams}) => {
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 -mt-0.5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
-                        New Scene
+                        New Team
                     </button>:<></>}
             </div>
             <div className='flex max-h-64 justify-between scl flex-row flex-wrap overflow-y-auto'>
                 {display==="teams"?teams.map((team, index) => {
                     return(
                         <div className='text-lg' key = {index} onClick={(event) => console.log(event, "click")}>
-                            <div className='flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap' onClick = {() => activeIcon(team.teamName)}>
+                            <div className={team.teamName===activeTeam?'flex w-40 h-24 inputs flex-col items-start justify-around whiteText rounded-lg ebaBg mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':"flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap"} onClick = {() => activeIcon(team.teamName)}>
                                 <div className='self-start font-bold flex-wrap'>
                                     {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
                                 </div>

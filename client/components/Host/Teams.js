@@ -8,7 +8,7 @@ const Teams = ({teams}) => {
 
     return ( 
         <div className="flex justify-center items-center h-screen">
-            <div className="bg-gray-200 h-2/3 w-4/5 flex">
+            <div className=" h-2/3 w-4/5 flex">
                 <div className="px-4 py-2" style={{flex:6}}>
                     <div className="my-2 px-4 py-2 font-bold text-xl bg-gray-400 flex justify-between items-center">
                         <div className='text-gray-500'>Team</div>

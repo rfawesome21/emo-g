@@ -5,7 +5,7 @@ const DashboardTeamPlayers = ({activeTeam}) => {
     const router = useRouter()
     console.log(activeTeam);
     return (
-        <div className=' pt-4 flex flex-col justify-start items-start bg-gray-400'>
+        <div className=' pt-4 flex flex-col justify-start items-start bg-gray-400' style={{flex:4}}>
             <div className='text-xl font-semibold flex justify-between'>
                 Team {activeTeam && activeTeam.teamName}
                 <button className="bg-green-800 font-normal text-base px-2 py-1 cursor-pointer" onClick={() => router.push(`/player/game/${activeTeam.teamName}`)} style={{color:"white"}}>JOIN</button>

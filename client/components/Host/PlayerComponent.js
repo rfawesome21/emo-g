@@ -62,6 +62,7 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
                         </div>:<></>}
                     </div>
                 </div>:<></>}
+                {/* <div className="invisible">MADIEE is awesome</div> */}
             </div>
 
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+1)%(Math.ceil(players.length/sliderPlayers)))}>

@@ -49,10 +49,11 @@ const choice = () => {
     }
 
     return ( 
-        <div className="flex flex-col justify-center items-center" style={{height:"100vh"}}>
-            <SettingsAndBack link = {'/host/teams'} player = {true} />
+        <div className="flex flex-col justify-center items-center bgNormal h-screen">
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
-                <SendCodeToInvitePlayers gameCode={gameCodeZ} numberOfPlayers={numberOfPlayers}/>
+                <div className="w-screen flex justify-center">
+                    <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>
+                </div>
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>

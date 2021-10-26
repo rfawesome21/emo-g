@@ -181,13 +181,13 @@ const game = () => {
     }
 
     return ( 
-        <div className="flex flex-column h-screen">
+        <div className="flex flex-column h-screen bgNormal">
             {status === '1' ? <SettingsAndBack link = '/host/hostDashboard' /> : null}
             <div className="flex justify-end my-8">
-                <div className="bg-gray-200 font-bold py-2 px-4 mx-2 cursor-pointer">
+                <div className="buttonNew font-bold py-2 px-4 mx-2 cursor-pointer">
                     Call host
                 </div>
-                <div className="bg-gray-200 font-bold py-2 px-4 mx-2 cursor-pointer">
+                <div className="buttonNew font-bold py-2 px-4 mx-2 cursor-pointer">
                     Rule Book
                 </div>
                 <div className="py-2 px-4 cursor-pointer mr-8">
@@ -200,7 +200,7 @@ const game = () => {
                 </div>
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
-                <div className="flex bg-gray-200 mx-2 flex-column items-center" style={{flex:"1", height:"80vh"}}>
+                <div className="flex heading rounded mx-2 flex-column items-center" style={{flex:"1", height:"80vh"}}>
                     {players.map((player, index) => (
                         <div className="mt-4" key = {index}>
                             <div>

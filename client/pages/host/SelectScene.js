@@ -107,8 +107,8 @@ const SelectScene = () => {
                         {scenes && scenes.map((scene, index) => {
                             if(index > 0){
                                 return(
-                                <div className={selectedItem.includes(index)? 'border-2 rounded border-red-500' : 'burlywoodBorder rounded'} key = {index*100}>
-                                    <button className="py-2 lg:px-4 text-left h-32 w-100 bg-gray-50 rounded overflow-y-auto scl"
+                                <div className={selectedItem.includes(index)? 'border-2 rounded ebaBorder ebaBg whiteText' : 'burlywoodBorder rounded'} key = {index*100}>
+                                    <button className="py-2 lg:px-4 text-left h-32 w-100 rounded overflow-y-auto scl"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)
                                         setSceneID(scene.id)

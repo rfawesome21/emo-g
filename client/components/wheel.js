@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 
 const Wheel = ({ emotionFunction, currentRoundEmotion }) => {
 
-  console.log(currentRoundEmotion);
 
     useEffect(() => {
             tippy('#ecstacy', {

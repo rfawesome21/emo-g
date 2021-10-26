@@ -57,10 +57,7 @@ const game = () => {
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
-            console.log(roundNumber);
-            console.log(maxRounds);
-            console.log(typeof(maxRounds));
-            if(roundNumber > roundNo)
+            if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
             {    
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
@@ -69,6 +66,8 @@ const game = () => {
                 console.log(roundNumber);
                 router.push('/play')
             }
+            console.log('I hope you');
+            sessionStorage.setItem('round-no-team', roundNumber)
             setRoundNo(roundNumber)
         })
 
@@ -217,8 +216,8 @@ const game = () => {
                                 
                                 <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input font-normal pl-2 border-2 rounded-lg ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
                                 <button className='flex-1 ebaText h-full' onClick = {onSubmit} disabled = {isDisabled? true: false} > 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
                                     </svg>
                                 </button>
                             </div>
@@ -254,7 +253,7 @@ const game = () => {
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(0,1):"0"}</div>
-                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}{console.log(score)}</div>
+                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
                         <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>

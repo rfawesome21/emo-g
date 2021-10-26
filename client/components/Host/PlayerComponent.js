@@ -5,7 +5,6 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     const socket = useContext(SocketContext)
     const [menu, setMenu] = useState()
     const [moveTeams, setMoveTeams] = useState(false)
-    console.log(players);
 
     const [sliderPlayers, setSliderPlayers] = useState(4);
     const [slideIndex, setSlideIndex] = useState(0)
@@ -34,8 +33,8 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     largeWidth === 'md' ? respWidth = 'md' : respWidth = 'xs'
     return (
         <div className="flex items-center w-100"> 
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+Math.ceil(players.length/sliderPlayers)-1)%(Math.ceil(players.length/sliderPlayers)))}>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+Math.ceil(players.length/sliderPlayers)-1)%(Math.ceil(players.length/sliderPlayers)))}>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
 
             <div className={`flex flex-row flex-wrap h-72 w-full justify-evenly items-center overflow-y-auto scl`} id="players" >
@@ -65,8 +64,8 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
                 {/* <div className="invisible">MADIEE is awesome</div> */}
             </div>
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+1)%(Math.ceil(players.length/sliderPlayers)))}>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+1)%(Math.ceil(players.length/sliderPlayers)))}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
 
 

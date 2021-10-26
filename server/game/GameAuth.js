@@ -82,7 +82,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
         Password.push(code)
-        let number = getRandomInt(0, 9)
+        let number = getRandomInt(1, Scenes.length)
         let sceneObj = {
             id : GameScenes[number].id,
             scene : GameScenes[number].scene,

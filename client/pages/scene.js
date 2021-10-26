@@ -19,9 +19,11 @@ const scene = () => {
             setTimeout(() => router.push(`/player/game/${sessionStorage.getItem('team-name')}`), 4000)
     }, [socket])
     return (
-        <div className='flex flex-col items-center justify-center h-screen'>
-            <h1 className='font-bold text-2xl'>Scene</h1>
-            <h3>{scene[0] && scene[0].scene}</h3>
+        <div className='flex flex-col items-center justify-center h-screen bgNormal'>
+            <div className="heading rounded-xl w-2/5 text-center px-8 py-4">
+                <h1 className='font-bold text-2xl'>Scene</h1>
+                <div className="text-xl ebaText">{scene[0] && scene[0].scene}</div>
+            </div>
         </div>
     )
 }

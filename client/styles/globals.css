@@ -10,6 +10,11 @@ body {
   font-family: "Rubik", sans-serif;
   /* overflow: hidden; */
 }
+
+* {
+  font-family: "Rubik", sans-serif;
+}
+
 .st0 {
   display: inline;
   fill: #ffffff;
@@ -104,22 +109,25 @@ input[type="time"]::-webkit-inner-spin-button {
 }
 
 .scl::-webkit-scrollbar-track {
-  background: rgb(209, 213, 219);
+  /* background: rgb(209, 213, 219); */
   border-radius: 10px;
 }
 
 .scl::-webkit-scrollbar-thumb {
-  background: rgb(136, 136, 136);
+  /* background: rgb(136, 136, 136); */
+  background: #eba282;
   border-radius: 10px;
 }
 
 .scl::-webkit-scrollbar-thumb:hover {
-  background: rgb(100, 100, 100);
+  /* background: rgb(100, 100, 100); */
+  background: #da764b;
   border-radius: 10px;
 }
 
 .scl::-webkit-scrollbar-thumb:active {
-  background: rgb(68, 68, 68);
+  /* background: rgb(68, 68, 68); */
+  background: #da764b;
   border-radius: 10px;
 }
 text {
@@ -486,4 +494,37 @@ text {
 
 .ebaBg {
   background-color: #eba282;
+}
+
+.ebaBorder {
+  border: 2px solid #eba282;
+}
+
+.ebaText {
+  color: #eba282;
+}
+
+.beigeBgTransparent {
+  background-color: rgba(255, 250, 238, 0.7);
+}
+
+.input::placeholder {
+  color: white;
+  font-style: italic;
+}
+
+.buttonLifeline {
+  background-color: #fffaee;
+  border: 2px solid #da764b;
+  color: #da764b;
+  cursor: pointer;
+}
+
+.buttonLifeline:hover {
+  background-color: #da764b;
+  color: white;
+}
+
+.burlywoodOverlay {
+  background-color: rgba(218, 118, 75, 0.5);
 }

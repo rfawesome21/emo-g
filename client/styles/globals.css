@@ -504,3 +504,7 @@ text {
 .beigeBgTransparent {
   background-color: rgba(255, 250, 238, 0.7);
 }
+
+.input::placeholder {
+  color: white;
+}

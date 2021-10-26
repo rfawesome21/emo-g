@@ -184,10 +184,10 @@ const game = () => {
         <div className="flex flex-column h-screen bgNormal">
             {status === '1' ? <SettingsAndBack link = '/host/hostDashboard' /> : null}
             <div className="flex justify-end my-8">
-                <div className="buttonNew font-bold py-2 px-4 mx-2 cursor-pointer">
+                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
                     Call host
                 </div>
-                <div className="buttonNew font-bold py-2 px-4 mx-2 cursor-pointer">
+                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
                     Rule Book
                 </div>
                 <div className="py-2 px-4 cursor-pointer mr-8">
@@ -200,11 +200,11 @@ const game = () => {
                 </div>
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
-                <div className="flex heading rounded mx-2 flex-column items-center" style={{flex:"1", height:"80vh"}}>
+                <div className="flex heading rounded-xl mx-2 flex-column items-center flex-1" style={{height:"80vh"}}>
                     {players.map((player, index) => (
-                        <div className="mt-4" key = {index}>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke={player.name === activePlayer? "#dd6127" : "currentColor"}>
+                        <div className={player.name===activePlayer?"mt-4 p-2 burlywoodBorder rounded-lg":"mt-4 p-2"} key = {index}>
+                            <div className="flex justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke={player.name === activePlayer? "#dd6127" : "currentColor"}>
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
@@ -214,8 +214,8 @@ const game = () => {
                         </div>
                     ))}
                 </div>
-                <div className="flex flex-column bg-gray-200 mx-2" style={{flex:"4", height:"80vh"}}>
-                    <div className="font-bold flex justify-between bg-gray-300 text-lg px-8 py-4" style={{flex:"1"}}>
+                <div className="flex flex-column heading rounded-xl mx-2" style={{flex:"4", height:"80vh"}}>
+                    <div className="flex justify-between rounded-t-xl ebaBg whiteText text-xl px-8 pt-4 flex-1">
                         <div>
                             Round {roundNo}/{maxRounds}                            
                         </div>
@@ -225,26 +225,26 @@ const game = () => {
                     </div>
                     <div className="flex flex-column-reverse overflow-y-auto" style={{flex:"9"}}>
                             {player.name === playerName && player.isRandomlySelected?
-                            <div className='flex flex-row justify-between'>
+                            <div className='flex flex-row justify-between py-2 px-3'>
                                 
-                                <input placeholder='Be Careful! You can only submit one statement in a round.' className="bg-transparent w-full border-2 border-gray-700 " value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
+                                <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input border-2 ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
                                 <button className='flex-1 h-full border-2 border-black' onClick = {onSubmit} disabled = {isDisabled? true: false} > Submit </button>
                             </div>
                                 : null}
-                        <div className="flex-1 ml-4 overflow-y-scroll">
+                        <div className="flex-1 ml-4 overflow-y-auto scl pr-2">
                             <div className="inline-block w-full">
                                 {messages.map((message, index) => (
                                     index % 2 !== 0?
                                         <div className="text-left my-1" key={index}>
                                             <h6 className='text-sm'>{scene.roleOne}</h6>
-                                            <div className="mr-8 bg-gray-400 inline-block px-4 py-2 rounded-t-md rounded-r-md">
+                                            <div className="mr-8 ebaBg whiteText inline-block px-4 py-2 rounded-t-md rounded-r-md">
                                                 {message}
                                             </div>
                                         </div>
                                     :
                                         <div className="text-right my-1" key={index}>
                                             <h6 className='text-sm'>{scene.roleTwo}</h6>
-                                            <div className="ml-8 bg-gray-400 inline-block px-4 py-2 rounded-t-md rounded-l-md">
+                                            <div className="ml-8 ebaBg whiteText inline-block px-4 py-2 rounded-t-md rounded-l-md">
                                                 {message}
                                             </div>
                                         </div>

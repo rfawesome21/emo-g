@@ -39,6 +39,9 @@ const game = () => {
     const [currentRoundEmotion, setCurrentRoundEmotion] = useState('')
     const [status, setStatus] = useState('')
     const [confirmLifeline, setConfirmLifeline] = useState()
+    const [correctEmotion, setCorrectEmotion] = useState('')
+    const [otherEmotion, setOtherEmotion] = useState('')
+    const [thirdEmotion, setThirdEmotion] = useState('')
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
@@ -53,6 +56,15 @@ const game = () => {
             setPlayers(players)
             }
         )
+
+        // socket.on('your-choices', ({correctEmotion, otherEmotion, thirdEmotion}) => {
+        //     console.log(correctEmotion);
+        //     console.log(otherEmotion);
+        //     console.log(thirdEmotion);
+        //     setCorrectEmotion(correctEmotion)
+        //     setOtherEmotion(otherEmotion)
+        //     setThirdEmotion(thirdEmotion)
+        // })
 
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
@@ -153,6 +165,16 @@ const game = () => {
         setEmotion(e)
     }
 
+    const confirmTheLifeline = (text) => {
+        setConfirmLifeline(text)
+
+        switch(text){
+            case 'This or That':
+                socket.emit('this-or-that', {gameCode, teamName})
+                break
+        }
+    }
+
     const clickHandler = () => {
         const gameCode = sessionStorage.getItem('game-code')
         sessionStorage.removeItem('is-disabled')
@@ -191,9 +213,7 @@ const game = () => {
                     {players.map((player, index) => (
                         <div className={player.name===activePlayer?"mt-4 p-2 burlywoodBorder rounded-lg":"mt-4 p-2"} key = {index}>
                             <div className="flex justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke={player.name === activePlayer? "#dd6127" : "currentColor"}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <img src = {player.avatar} alt = 'avatar' className='h-20 w-20' />
                             </div>
                             <div className="text-center">
                                 {player.name}
@@ -256,9 +276,9 @@ const game = () => {
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Delete a row")}>Delete a row</div>
-                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Call the bot")}>Call the bot</div>
+                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")}>This or That</div>
+                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")}>Delete a row</div>
+                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the bot")}>Call the bot</div>
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}

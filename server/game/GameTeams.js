@@ -83,13 +83,13 @@ module.exports = (io, socket) => {
     const letPlayerChoose = ({gameCode, playerName, teamName}) => {
         socket.join(gameCode)
         let roomObject = roomArrayMap.get(gameCode)
-        let team = roomObject.teams.filter(t => t.teamName === teamName)
-        let player = roomObject.playerDetails.filter(p => p.name === playerName)
-        if(!player[0].join){
-            if(team[0].teamMembers.length < roomObject.MAX_PLAYERS_PER_TEAM){
-                player[0].join = true
+        let team = roomObject.teams.find(t => t.teamName === teamName)
+        let player = roomObject.playerDetails.find(p => p.name === playerName)
+        if(!player.join){
+            if(team.teamMembers.length < roomObject.MAX_PLAYERS_PER_TEAM){
+                player.join = true
                 console.log('The player chose a team');
-                team[0].teamMembers.push(player[0])
+                team.teamMembers.push(player[0])
             }
             else
                 io.to(socket.id).emit('err', {message : 'This team is full. Please join another team'})
@@ -99,7 +99,7 @@ module.exports = (io, socket) => {
                 for(let  j = 0; j < roomObject.teams[i].teamMembers.length; j++){
                     if(roomObject.teams[i].teamMembers[j].name === playerName)
                         roomObject.teams[i].teamMembers = roomObject.teams[i].teamMembers.filter(p => p.name !== playerName)
-                        team[0].teamMembers.push(player[0])
+                        team.teamMembers.push(player)
                         io.to(gameCode).emit('teams', roomObject.teams)
                         const playersWithoutTeams = roomObject.playerDetails.filter(p => p.join === false)
                         io.to(gameCode).emit('players-without-teams', playersWithoutTeams)

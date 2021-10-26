@@ -6,12 +6,14 @@ import Button from '../../../components/Button'
 import Wheel from '../../../components/wheel'
 import SettingsAndBack from "../../../components/settingsAndBack";
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
+
 const game = () => {
 
     const router = useRouter()
     const { teamName } = router.query
 
 
+    const [ruleBook, ruleBookClicked] = useState(false)
     const [settingsPressed, setSettingsPressed] = useState(false)
     const [players, setPlayers] = useState([])
     const [roundNo, setRoundNo] = useState(1)
@@ -182,22 +184,8 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen bgNormal">
-            {status === '1' ? <SettingsAndBack link = '/host/hostDashboard' /> : null}
             <div className="flex justify-end my-8">
-                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
-                    Call host
-                </div>
-                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
-                    Rule Book
-                </div>
-                <div className="py-2 px-4 cursor-pointer mr-8">
-                    {status !== '1'?<div onClick={() => setSettingsPressed(true)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg> 
-                    </div> : null}
-                </div>
+                
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
                 <div className="flex heading rounded-xl mx-2 flex-column items-center flex-1" style={{height:"80vh"}}>
@@ -227,8 +215,12 @@ const game = () => {
                             {player.name === playerName && player.isRandomlySelected?
                             <div className='flex flex-row justify-between py-2 px-3'>
                                 
-                                <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input border-2 ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
-                                <button className='flex-1 h-full border-2 border-black' onClick = {onSubmit} disabled = {isDisabled? true: false} > Submit </button>
+                                <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input font-normal pl-2 border-2 rounded-lg ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
+                                <button className='flex-1 ebaText h-full' onClick = {onSubmit} disabled = {isDisabled? true: false} > 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
                             </div>
                                 : null}
                         <div className="flex-1 ml-4 overflow-y-auto scl pr-2">
@@ -254,27 +246,53 @@ const game = () => {
                     </div>
                 </div>
                 <div className="flex flex-column mx-2 items-center" style={{flex:"4", height:"80vh"}}>
-                    <div className="font-bold px-8 py-4 bg-gray-400 text-lg">
+                    <div className="font-bold px-8 py-4 heading rounded-xl w-3/4 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center font-bold text-2xl'>{currentRoundEmotion}</div> : <Wheel emotionFunction = {guessEmotion} /> }
+                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center  text-lg'>{currentRoundEmotion}</div> : <Wheel emotionFunction = {guessEmotion} /> }
                 </div>
-                <div className="flex flex-column mx-2" style={{flex:"1", height:"80vh"}}>
-                    <div className="font-bold px-8 py-9 bg-gray-300 text-lg">
-                        {score}
+                <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
+                    <div className="font-bold flex p-2 heading rounded-lg text-lg">
+                        {console.log(score)}
+                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(0,1):"0"}</div>
+                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().slice(1,2)}</div>
                     </div>
-                    <div className="h-full flex flex-column">
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("Delete a row")}>Delete a row</div>
-                        <div className="bg-gray-200 border-2 border-black text-sm my-3 rounded-xl px-4 py-3 text-center font-bold cursor-pointer" onClick={() => setConfirmLifeline("Call the bot")}>Call the bot</div>
+                    <div className="h-full flex flex-column pt-2">
+                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>
+                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Delete a row")}>Delete a row</div>
+                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Call the bot")}>Call the bot</div>
+                        {player.name === playerName && player.isRandomlySelected? null:
+                        <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
+                        onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}
+                        <div className="flex-1 heading rounded-xl pt-3">
+                            <div className="text-center">Game Log</div>
+                            <div className="scl overscroll-y-auto px-1 py-1">
+                                {/* Put the logs here */}
+                            </div>
+                        </div>
                     </div>
-                    {player.name === playerName && player.isRandomlySelected? null:
-                    <button className='bg-gray-200 border-2 border-black rounded-md px-2 py-1 mt-3 w-auto text-lg font-bold self-center'
-                    onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}
                 </div>
             </div>
 
-            {settingsPressed?<ExitGame cancelPress={setSettingsPressed}/>:<></>}
+            <div className="flex justify-end absolute bottom-4 right-0">
+                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
+                    Call host
+                </div>
+                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer" onClick={() => ruleBookClicked(true)}>
+                    Rule Book
+                </div>
+                <div className="py-2 px-3 cursor-pointer">
+                </div>
+            </div>
+
+            {ruleBook?
+            <div className="flex justify-center h-screen w-screen burlywoodOverlay bg-opacity-50 overflow-hidden items-center absolute top-0 left-0 z-50">
+                <div className="heading rounded-xl h-4/5 w-4/5 relative">
+                    <div className="text-3xl cursor-pointer absolute top-6 right-8" onClick={() => ruleBookClicked(false)}>&times;</div>
+                    <div className="text-center font-bold text-2xl mt-4">RULE BOOK</div>
+                </div>
+            </div>:<></>}
+
             {confirmLifeline?<ConfirmLifeline setConfirmLifeline={setConfirmLifeline} lifeLine={confirmLifeline}/>:<></>}
         </div>
      );

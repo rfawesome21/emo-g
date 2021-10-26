@@ -241,6 +241,9 @@ text {
 .cls-9 {
   fill: #f99d75;
 }
+.disabled {
+  fill: gray;
+}
 .cls-10 {
   fill: #f17b3d;
 }

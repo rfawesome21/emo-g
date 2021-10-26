@@ -4,8 +4,7 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({code, teamName, host}) => {
-        if(teamName){
+    const joinTeamRoom = ({code, teamName}) => {
         console.log('My team is ', teamName)
         socket.join(`${code}-${teamName}`)
         const roomObject = roomArrayMap.get(code)
@@ -23,26 +22,6 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('guessing-counter', team.guessingCounter)
         io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(code).emit('team-details', roomObject.teams)
-        }
-        else{
-            console.log('My team is ', host)
-            socket.join(`${code}-${host}`)
-            const roomObject = roomArrayMap.get(code)
-            const team = roomObject.teams.find(t => t.teamName === Number(host))
-            io.to(socket.id).emit('team-score', team.score)
-            io.to(socket.id).emit('team-messages', team.messages)
-            io.to(socket.id).emit('team-players', team.teamMembers)
-            io.to(socket.id).emit('team-round', team.roundNo)
-            io.to(socket.id).emit('max-rounds', roomObject.MAX_ROUNDS)
-            io.to(socket.id).emit('typing-timer', roomObject.typingTimer)
-            io.to(socket.id).emit('guessing-timer', roomObject.guessingTimer)
-            io.to(socket.id).emit('scene', roomObject.scene[0])
-            io.to(socket.id).emit('team-disabled', team.isDisabled)
-            io.to(socket.id).emit('typing-counter', team.typingCounter)
-            io.to(socket.id).emit('guessing-counter', team.guessingCounter)
-            io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
-            io.in(code).emit('team-details', roomObject.teams)
-        }
     }
 
     const isTyping = ({gameCode, teamName, playerName}) => {

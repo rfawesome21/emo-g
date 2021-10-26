@@ -46,9 +46,7 @@ const game = () => {
         const code = sessionStorage.getItem('game-code')
         setGameCode(sessionStorage.getItem('game-code'))  
         let teamName = sessionStorage.getItem('team-name')
-        const { host } = router.query
-        console.log(host);      
-        socket.emit('join-team-room', {code, teamName, host })
+        socket.emit('join-team-room', {code, teamName })
 
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    
@@ -255,7 +253,6 @@ const game = () => {
                 </div>
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">
-                        {console.log(score)}
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(0,1):"0"}</div>
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().slice(1,2)}</div>
                     </div>

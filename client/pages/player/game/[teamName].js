@@ -249,13 +249,12 @@ const game = () => {
                     <div className="font-bold px-8 py-4 heading rounded-xl w-3/4 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    {player.isRandomlySelected && player.name === playerName? <div className='border-1 border-gray-500 rounded-full bg-gray-400 h-full w-full flex justify-center items-center  text-lg'>{currentRoundEmotion}</div> : <Wheel emotionFunction = {guessEmotion} /> }
+                    {player.isRandomlySelected && player.name === playerName? <Wheel emotionFunction = {guessEmotion} currentRoundEmotion={currentRoundEmotion} /> : <Wheel emotionFunction = {guessEmotion} /> }
                 </div>
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">
-                        {console.log(score)}
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(0,1):"0"}</div>
-                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().slice(1,2)}</div>
+                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}{console.log(score)}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
                         <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>

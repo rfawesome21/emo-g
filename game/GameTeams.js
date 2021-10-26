@@ -2,6 +2,7 @@ const { getRandomInt } = require('./GameFunctions')
 // let {roomSpecificGamePlay, Password} = require('./GameVariables')
 
 const { roomArrayMap } = require("./GameVariables")
+const colors = ["https://i.imgur.com/Lh9JoJn.png", "https://i.imgur.com/9nKWnVE.png", "https://i.imgur.com/hYZIEEV.png","https://i.imgur.com/02wPaiQ.png","https://i.imgur.com/h1fCyBi.png", "https://i.imgur.com/SkvFWSY.png", "https://i.imgur.com/LptRaIW.png", "https://i.imgur.com/0EkGcud.png", "https://i.imgur.com/8pfgcFz.png"]
 
 
 module.exports = (io, socket) => {
@@ -16,7 +17,6 @@ module.exports = (io, socket) => {
         roomArrayMap.get(gameCode).MAX_PLAYERS_PER_TEAM = playersPerTeam
         io.in(gameCode).emit('come-to-teams')
     }
-
 
     const selectAMode = ({gameCode, mode}) => {
         let roomObject = roomArrayMap.get(gameCode)
@@ -70,6 +70,13 @@ module.exports = (io, socket) => {
 
     const randomTeamDivision = (gameCode) => {
         io.in(gameCode).emit('come-to-teams')
+        for(var i of roomArrayMap.get(gameCode).playerDetails){
+            if(i.avatar === '')
+            {
+                let j = getRandomInt(0, colors.length - 1)
+                i.avatar = colors[j]
+            }
+        }
         io.to(socket.id).emit('random-teams', roomArrayMap.get(gameCode).teams)
         io.to(socket.id).emit('players', roomArrayMap.get(gameCode).players)
     }

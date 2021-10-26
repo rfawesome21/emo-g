@@ -45,8 +45,10 @@ const game = () => {
         setPlayerName(sessionStorage.getItem('player-name'))
         const code = sessionStorage.getItem('game-code')
         setGameCode(sessionStorage.getItem('game-code'))  
-        const teamName = sessionStorage.getItem('team-name')      
-        socket.emit('join-team-room', {code, teamName })
+        let teamName = sessionStorage.getItem('team-name')
+        const { host } = router.query
+        console.log(host);      
+        socket.emit('join-team-room', {code, teamName, host })
 
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    

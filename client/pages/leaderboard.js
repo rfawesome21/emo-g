@@ -21,7 +21,7 @@ const leaderboard = () => {
                 <div className="h-5/6 overflow-y-auto scl pr-1 mt-2">
                     {teams.map((team,index) => 
                     <div className="w-full flex mt-2" key = {index}>
-                        <div className="ebaBg p-2 whiteText rounded-lg w-16 h-16 text-4xl flex justify-center items-center">0{index}</div>
+                        <div className="ebaBg p-2 whiteText rounded-lg w-16 h-16 text-4xl flex justify-center items-center">0{index + 1}</div>
                         <div className="ebaBg p-2 whiteText rounded-lg mx-2 w-60 h-16 text-4xl flex flex-1 items-center">Team {team.teamName}</div>
                         <div className="ebaBg p-2 whiteText rounded-lg w-16 h-16 text-5xl flex justify-center items-center">{team.score.toString().length>1?team.score.toString().slice(0, 1):"0"}</div>
                         <div className="ebaBg ml-1 p-2 whiteText rounded-lg w-16 h-16 text-5xl flex justify-center items-center">{team.score.toString().length>1?team.score.toString().slice(1, 2):team.score}</div>

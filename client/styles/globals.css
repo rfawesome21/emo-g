@@ -523,6 +523,13 @@ text {
   cursor: pointer;
 }
 
+.buttonLifeline:disabled {
+  background: gray;
+  border: 2px solid #fffaee;
+  color: white;
+  cursor: default;
+}
+
 .buttonLifeline:hover {
   background-color: #da764b;
   color: white;

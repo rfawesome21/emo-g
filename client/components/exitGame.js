@@ -9,17 +9,17 @@ const exitGame = (props) => {
     const [confirmExit, setConfirmExit] = useState(false)
 
     return ( 
-        <Modal>
+        <div className="burlywoodOverlay h-screen w-screen absolute top-0 left-0 flex justify-center items-center">
             
-            <div className="px-12 py-4 text-xl font-bold bg-gray-200 border-2 border-black">
-                <div>Do you want to exit the game?</div>
+            <div className="px-12 py-4 text-xl font-bold heading rounded-xl">
+                <div>Do you want to leave the game?</div>
                 <br/>
                 <div className="flex justify-evenly">
                     <div className="cursor-pointer" onClick={() => router.push("/")}>Yes</div>
                     <div className="cursor-pointer" onClick={() => props.cancelPress(false)}>No</div>
                 </div>
             </div>
-        </Modal>
+        </div>
      );
 }
  

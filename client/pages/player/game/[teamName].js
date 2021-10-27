@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "../../../context/socket/SocketContext";
 import Wheel from '../../../components/wheel'
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
+import SettingsAndBack from "../../../components/settingsAndBack"
 
 const game = () => {
 
@@ -37,10 +38,16 @@ const game = () => {
     const [status, setStatus] = useState('')
     const [confirmLifeline, setConfirmLifeline] = useState()
     const [thisOrThatBool, setThisOrThatBool] = useState(false)
+
+    // call bot
     const [correctEmotion, setCorrectEmotion] = useState('')
     const [otherEmotion, setOtherEmotion] = useState('')
     const [thirdEmotion, setThirdEmotion] = useState('')
+
+    // delete row
     const [deletedRow, setDeletedRow] = useState([])
+
+    
     const [guessedEmotions, setGuessedEmotions] = useState([])
     const [gameLog, setGameLog] = useState([])
 
@@ -69,18 +76,15 @@ const game = () => {
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
-            console.log(roundNumber);
             if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
             {    
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
             if(roundNumber > maxRounds.current){
-                console.log(roundNumber);
                 router.push('/leaderboard')
             }
             setGuessedEmotions([])
-            console.log('I hope you');
             sessionStorage.setItem('round-no-team', roundNumber)
             setRoundNo(roundNumber)
         })
@@ -90,7 +94,6 @@ const game = () => {
         socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
 
         socket.on('game-log', gameLog => {
-            console.log(gameLog);
             setGameLog(gameLog)})
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
@@ -99,7 +102,6 @@ const game = () => {
         socket.on('team-messages', messages => setMessages(messages))
         socket.on('typing-counter', counter => {
             if(!sessionStorage.getItem('type-counter')){
-                console.log(counter);
                 setCounter(counter)}})
         socket.on('guessing-counter', counter => {
             if(!sessionStorage.getItem('guess-counter'))
@@ -245,7 +247,7 @@ const game = () => {
     return ( 
         <div className="flex flex-column h-screen bgNormal">
             <div className="flex justify-end my-8">
-                
+                {status === '1' ? <SettingsAndBack link = '/host/hostDashboard' /> : null}
             </div>
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
                 <div className="flex heading rounded-xl mx-2 flex-column items-center flex-1" style={{height:"80vh"}}>
@@ -315,9 +317,17 @@ const game = () => {
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
-                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat} >This or That</button>
-                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow} >Delete a row</button>
-                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot} >Call the bot</button>
+
+                        {console.log(confirmLifeline)}
+                        {console.log(emotion)}
+
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat || (player.isRandomlySelected && player.name === playerName)} >This or That</button>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow || (player.isRandomlySelected && player.name === playerName)} >Delete a row</button>
+
+                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot || (player.isRandomlySelected && player.name === playerName)} >Call the bot</button>
+
+
+
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}

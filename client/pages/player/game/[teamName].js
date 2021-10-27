@@ -239,7 +239,7 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen bgNormal">
-            {console.log("TEam", team)}
+            {console.log("emotion", emotion)}
             <div className="flex justify-end my-8">
                 
             </div>

@@ -1,13 +1,10 @@
-import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
-import SettingsAndBack from "../../components/settingsAndBack";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
 import Wheel from "../../components/wheel";
 const ChooseEmotions = () => {
 
-    const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOME','ADMIRATION','TRUST','ACCEPTANCE','TERROR', 'FEAR','APPREHENSION','AMAZEMENT','SURPRISE','GRIEF','SADNESS','PENSIVENESS','VIGILANCE','ANTICIPATION', 'INTEREST','ECSTACY','JOY','SERENITY', 'AGGRESSIVENESS','CONTEMPT','REMORSE','DISAPPROVAL','AWE','LOVE','SUBMISSION','OPTIMISM']
-
+    const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOM','ADMIRATION','TRUST','ACCEPTANCE','TERROR', 'FEAR','APPREHENSION','AMAZEMENT','SURPRISE','GRIEF','SADNESS','PENSIVENESS','VIGILANCE','ANTICIPATION', 'INTEREST','ECSTACY','JOY','SERENITY', 'AGGRESSIVENESS','CONTEMPT','REMORSE','DISAPPROVAL','AWE','LOVE','SUBMISSION','OPTIMISM']
 
     const clickHandler = () => {
         if(emotionArray.length < maxRound)

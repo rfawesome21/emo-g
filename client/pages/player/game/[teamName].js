@@ -1,10 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
-import ExitGame from "../../../components/exitGame";
 import { SocketContext } from "../../../context/socket/SocketContext";
-import Button from '../../../components/Button'
 import Wheel from '../../../components/wheel'
-import SettingsAndBack from "../../../components/settingsAndBack";
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
 
 const game = () => {
@@ -14,10 +11,9 @@ const game = () => {
 
 
     const [ruleBook, ruleBookClicked] = useState(false)
-    const [settingsPressed, setSettingsPressed] = useState(false)
     const [players, setPlayers] = useState([])
     const [roundNo, setRoundNo] = useState(1)
-    const [maxRounds, setMaxRounds] = useState(10)
+    const maxRounds = useRef(10)
     const [scene, setScene] = useState('')
     const [messages, setMessages] = useState([])
     const socket = useContext(SocketContext)
@@ -39,9 +35,12 @@ const game = () => {
     const [currentRoundEmotion, setCurrentRoundEmotion] = useState('')
     const [status, setStatus] = useState('')
     const [confirmLifeline, setConfirmLifeline] = useState()
+    const [thisOrThatBool, setThisOrThatBool] = useState(false)
     const [correctEmotion, setCorrectEmotion] = useState('')
     const [otherEmotion, setOtherEmotion] = useState('')
     const [thirdEmotion, setThirdEmotion] = useState('')
+    const [deletedRow, setDeletedRow] = useState([])
+    const [guessedEmotions, setGuessedEmotions] = useState([])
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
@@ -49,7 +48,9 @@ const game = () => {
         const code = sessionStorage.getItem('game-code')
         setGameCode(sessionStorage.getItem('game-code'))  
         let teamName = sessionStorage.getItem('team-name')
-        socket.emit('join-team-room', {code, teamName })
+        let isMounted = true
+        if(isMounted)
+            socket.emit('join-team-room', {code, teamName })
 
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    
@@ -57,33 +58,28 @@ const game = () => {
             }
         )
 
-        // socket.on('your-choices', ({correctEmotion, otherEmotion, thirdEmotion}) => {
-        //     console.log(correctEmotion);
-        //     console.log(otherEmotion);
-        //     console.log(thirdEmotion);
-        //     setCorrectEmotion(correctEmotion)
-        //     setOtherEmotion(otherEmotion)
-        //     setThirdEmotion(thirdEmotion)
-        // })
-
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
+            console.log(roundNumber);
             if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
             {    
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
-            if(roundNumber > maxRounds){
+            if(roundNumber > maxRounds.current){
                 console.log(roundNumber);
-                router.push('/play')
+                router.push('/leaderboard')
             }
+            setGuessedEmotions([])
             console.log('I hope you');
             sessionStorage.setItem('round-no-team', roundNumber)
             setRoundNo(roundNumber)
         })
 
-        socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
+        socket.on('set-this-to-true', bool => setThisOrThatBool(bool))
+
+        socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
         
@@ -109,6 +105,16 @@ const game = () => {
     useEffect(() => {
 
         
+        socket.on('your-three-choices', ({correctEmotion, otherEmotion, thirdEmotion}) => {
+            setCorrectEmotion(correctEmotion)
+            setOtherEmotion(otherEmotion)
+            setThirdEmotion(thirdEmotion)
+        })
+
+        socket.on('deleted-row', ({deletedRow}) => {
+            setDeletedRow(deletedRow)
+        })
+
 
         if(sessionStorage.getItem('guess-counter'))
             setGuessCounter(Number(sessionStorage.getItem('guess-counter')))
@@ -162,7 +168,11 @@ const game = () => {
     }, [counter, active, guessCounter, socket])
 
     const guessEmotion = (e) => {
-        setEmotion(e)
+        if(guessedEmotions.length >= 2){
+            alert('You guessed two emotions already!')
+            return
+        }
+        thisOrThatBool? guessedEmotions.push(e) : setEmotion(e)
     }
 
     const confirmTheLifeline = (text) => {
@@ -171,6 +181,12 @@ const game = () => {
         switch(text){
             case 'This or That':
                 socket.emit('this-or-that', {gameCode, teamName})
+                break
+            case 'Call The Bot':
+                socket.emit('call-the-bot', {gameCode, teamName})
+                break
+            case 'Delete a row':
+                socket.emit('delete-a-row', {gameCode, teamName})
                 break
         }
     }
@@ -182,6 +198,18 @@ const game = () => {
         sessionStorage.removeItem('type-counter')
         sessionStorage.removeItem('guess-counter')
         setIsTimerOver(false)
+        if(!thisOrThatBool && emotion === '')
+        {
+            alert('Please select an emotion')
+            return
+        }
+        if(thisOrThatBool && guessedEmotions.length < 2){
+            alert('Please select at least two emotions')
+            return
+        }
+        thisOrThatBool?
+        socket.emit('guessed-array', {gameCode, teamName, guessedEmotions})
+        :
         socket.emit('guessed', {gameCode, teamName, emotion})
     }
 
@@ -224,7 +252,7 @@ const game = () => {
                 <div className="flex flex-column heading rounded-xl mx-2" style={{flex:"4", height:"80vh"}}>
                     <div className="flex justify-between rounded-t-xl ebaBg whiteText text-xl px-8 pt-4 flex-1">
                         <div>
-                            Round {roundNo}/{maxRounds}                            
+                            Round {roundNo}/{maxRounds.current}                            
                         </div>
                         <div>
                             {isTimerOver? timeGuesserFormat : timeFormat}
@@ -278,7 +306,7 @@ const game = () => {
                     <div className="h-full flex flex-column pt-2">
                         <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")}>This or That</div>
                         <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")}>Delete a row</div>
-                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the bot")}>Call the bot</div>
+                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")}>Call the bot</div>
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}

@@ -1,4 +1,4 @@
-const { Emotions, CompoundEmotions, EmotionsAccordingToColor } = require("../data/Emotions");
+const { Emotions, CompoundEmotions, EmotionsAccordingToColor, EmotionsAccordingToColorSeparatedInArray } = require("../data/Emotions");
 const { roomArrayMap } = require("./GameVariables")
 const { getRandomInt } = require('./GameFunctions')
 
@@ -35,10 +35,6 @@ module.exports = (io, socket) => {
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.messages = message
         console.log(team.roundNo);
-        console.log(roomObject.scene.nudgeRoundNo);
-        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
-            team.messages.push(roomObject.scene[0].nudge)
-        }
         team.isDisabled = true
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', '')
@@ -67,7 +63,6 @@ module.exports = (io, socket) => {
             else if(!CompoundEmotions.includes(emotion)){
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
                 const allEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredEmotion)
-                try{
                 let correctColoredEmotion = ''
                 let colorTwoCorrectColoredEmotion = ''
                 if(!CompoundEmotions.includes(roomObject.emotion[team.roundNo - 1])){
@@ -85,9 +80,8 @@ module.exports = (io, socket) => {
                     }
                 }
             }
-                catch(e){
-                    console.log(e);
-                }
+            else{
+                team.score += roomObject.otherIncorrect
             }
         }
         
@@ -120,6 +114,74 @@ module.exports = (io, socket) => {
         team.typingCounter = totalTimerT
         team.guessingCounter = totalTimerG
 
+        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
+            team.messages.push(roomObject.scene[0].nudge)
+        }
+
+        
+        io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
+        io.in(`${gameCode}-${teamName}`).emit('active-player', '')
+        io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
+        io.in(`${gameCode}-${teamName}`).emit('team-round', team.roundNo)
+        io.in(`${gameCode}-${teamName}`).emit('team-players', team.teamMembers)
+        io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
+        io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
+        io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
+        io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
+        io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.in(gameCode).emit('team-details', roomObject.teams)
+    }
+
+    const emotionGuessedArray = ({gameCode, teamName, guessedEmotions}) => {
+        console.log(guessedEmotions);
+        const roomObject = roomArrayMap.get(gameCode)
+        guessedEmotions = guessedEmotions.map(g => g.toUpperCase())
+        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        if(guessedEmotions.includes(roomObject.emotion[team.roundNo - 1])){
+            console.log(roomObject.emotion[team.roundNo - 1]);
+            team.score += roomObject.otherCorrect
+        }
+        else{
+            team.score += roomObject.otherIncorrect
+        }
+
+        let t = getRandomInt(0, team.teamMembers.length - 1)
+
+        while(t === team.randomIndex){
+            t = getRandomInt(0, team.teamMembers.length - 1)
+        }
+
+        team.teamMembers[t].isRandomlySelected = true
+        team.randomIndex = t
+
+        for(let i = 0; i < team.teamMembers.length; i++){
+            if(i !== team.randomIndex)
+                team.teamMembers[i].isRandomlySelected = false
+        }
+
+        team.roundNo += 1
+        team.emotionsGuessed.push(guessedEmotions)
+        team.typingTimer = roomObject.typingTimer
+        team.guessingTimer = roomObject.guessingTimer
+        team.isDisabled = false
+
+        let arr = roomObject.guessingTimer.split(':')
+        let totalTimerG = Number(arr[0]) * 60 + Number(arr[1])
+        
+        let arr2 = roomObject.typingTimer.split(':')
+        let totalTimerT = Number(arr2[0]) * 60 + Number(arr2[1])
+
+        team.typingCounter = totalTimerT
+        team.guessingCounter = totalTimerG
+        
+        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
+            team.messages.push(roomObject.scene[0].nudge)
+        }
+
+        io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
+        io.in(`${gameCode}-${teamName}`).emit('active-player', '')
+        io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
+        io.in(`${gameCode}-${teamName}`).emit('set-this-to-true', false)
         io.in(`${gameCode}-${teamName}`).emit('team-round', team.roundNo)
         io.in(`${gameCode}-${teamName}`).emit('team-players', team.teamMembers)
         io.in(`${gameCode}-${teamName}`).emit('typing-counter', team.typingCounter)
@@ -151,4 +213,5 @@ module.exports = (io, socket) => {
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
     socket.on('host-dashboard', hostDashboard)
+    socket.on('guessed-array', emotionGuessedArray)
 }

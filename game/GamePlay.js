@@ -6,6 +6,7 @@ module.exports = (io, socket) => {
 
     const joinTeamRoom = ({code, teamName}) => {
         console.log('My team is ', teamName)
+        socket.join(code)
         socket.join(`${code}-${teamName}`)
         const roomObject = roomArrayMap.get(code)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
@@ -286,10 +287,16 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('other-incorrect', roomObject.otherIncorrect)
     }
 
+    const quitGame = (gameCode) => {
+        console.log('Quitting Game...');
+        io.in(gameCode).emit('quit-game')
+    }
+
     socket.on('submit-statement', addedMessage)
     socket.on('join-team-room', joinTeamRoom)
     socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
     socket.on('host-dashboard', hostDashboard)
     socket.on('guessed-array', emotionGuessedArray)
+    socket.on('quit-game', quitGame)
 }

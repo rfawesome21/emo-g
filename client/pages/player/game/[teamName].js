@@ -84,7 +84,7 @@ const game = () => {
         socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
-        
+        socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
         socket.on('typing-counter', counter => {

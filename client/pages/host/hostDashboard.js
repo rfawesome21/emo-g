@@ -78,7 +78,7 @@ const hostDashboard = () => {
 
             selected==="teams"?
 // teams     
-            <Teams teams={teams} />:
+            <Teams teams={teams} rounds = {rounds} />:
 
 // lobby 
             <div className="flex justify-center items-center h-screen">

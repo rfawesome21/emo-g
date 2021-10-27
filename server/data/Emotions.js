@@ -1,10 +1,10 @@
-const Emotions = [['RAGE','ANGER'],['ANGER', 'ANNOYANCE'], ['LOATHING', 'DISGUST'], ['DISGUST', 'BOREDOME'], ['ADMIRATION', 'TRUST']
+const Emotions = [['RAGE','ANGER'],['ANGER', 'ANNOYANCE'], ['LOATHING', 'DISGUST'], ['DISGUST', 'BOREDOM'], ['ADMIRATION', 'TRUST']
                 , ['TRUST', 'ACCEPTANCE'], ['TERROR', 'FEAR'], ['FEAR', 'APPREHENSION'], ['AMAZEMENT', 'SURPRISE'], ['SURPRISE', 'DISTRACTION'],
                 ['GRIEF', 'SADNESS'], ['SADNESS', 'PENSIVENESS'], ['VIGILANCE', 'ANTICIPATION'], ['ANTICIPATION', 'INTEREST'], ['ECSTACY','JOY'], ['JOY', 'SERENITY']]
 
 const CompoundEmotions = ['AGGRESSIVENESS','CONTEMPT', 'REMORSE', 'DISAPPROVAL', 'AWE', 'SUBMISSION', 'LOVE','OPTIMISM']
 
-const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOME','ADMIRATION','TRUST','ACCEPTANCE','TERROR',
+const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOM','ADMIRATION','TRUST','ACCEPTANCE','TERROR',
                     'FEAR','APPREHENSION','AMAZEMENT','SURPRISE','GRIEF','SADNESS','PENSIVENESS','VIGILANCE','ANTICIPATION',
                     'INTEREST','ECSTACY','JOY','SERENITY', 'AGGRESSIVENESS','CONTEMPT','REMORSE','DISAPPROVAL','AWE','LOVE','SUBMISSION'
                     ,'OPTIMISM']
@@ -127,7 +127,7 @@ const EmotionsAccordingToColor = [
     colorTwo : 'Violet',
     colorThree : 'Vi'
 },{
-    emotion : 'BOREDOME',
+    emotion : 'BOREDOM',
     color : 'LightViolet',
     colorTwo : 'V',
     colorThree : 'Vi'
@@ -258,7 +258,7 @@ const EmotionsAccordingToColorSeparatedInArray = [
     colorTwo : 'Violet',
     colorThree : 'Vi'
 },{
-    emotion : 'BOREDOME',
+    emotion : 'BOREDOM',
     color : 'LightViolet',
     colorTwo : 'V',
     colorThree : 'Vi'

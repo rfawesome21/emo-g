@@ -60,6 +60,8 @@ module.exports = (io, socket) => {
                 let compoundEmotionRow = CompoundEmotions.find(e => e === emotion)
                 if(compoundEmotionRow)
                     team.score += roomObject.compoundCorrect
+                else if(!emotionRow && !compoundEmotionRow)
+                    team.score += roomObject.compoundIncorrect
             }
             else if(!CompoundEmotions.includes(emotion)){
                 const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === emotion).color
@@ -70,19 +72,22 @@ module.exports = (io, socket) => {
                     correctColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).color
                     colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find(e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
                 }
+                let localVar = 0
                 for(let i of allEmotionsOfThisColor){
                     if(i.color === correctColoredEmotion){
-                        team.score += roomObject.adjacent
+                    localVar += roomObject.adjacent
+                    team.score += roomObject.adjacent
                         break
                     }
                     else if(i.colorTwo === colorTwoCorrectColoredEmotion){
-                        team.score += roomObject.adjacent
+                    localVar += roomObject.adjacent
+                    team.score += roomObject.adjacent
                         break
                     }
                 }
-            }
-            else{
-                team.score += roomObject.otherIncorrect
+                if(localVar === 0){
+                    team.score += roomObject.otherIncorrect
+                }
             }
         }
         
@@ -115,7 +120,7 @@ module.exports = (io, socket) => {
         team.typingCounter = totalTimerT
         team.guessingCounter = totalTimerG
 
-        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
+        if(team.roundNo === roomObject.scene[0].nudgeRoundNo){
             team.messages.push(roomObject.scene[0].nudge)
         }
 
@@ -138,13 +143,67 @@ module.exports = (io, socket) => {
         console.log(guessedEmotions);
         const roomObject = roomArrayMap.get(gameCode)
         guessedEmotions = guessedEmotions.map(g => g.toUpperCase())
+        console.log(guessedEmotions);
+        console.log(guessedEmotions[0]);
+        console.log(guessedEmotions[1]);
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         if(guessedEmotions.includes(roomObject.emotion[team.roundNo - 1])){
             console.log(roomObject.emotion[team.roundNo - 1]);
             team.score += roomObject.otherCorrect
         }
-        else{
-            team.score += roomObject.otherIncorrect
+        else if(!CompoundEmotions.includes(guessedEmotions[0]) || !CompoundEmotions.includes(guessedEmotions[1])){
+            console.log('Getting Points for adjacent cell...');
+            const coloredEmotion = EmotionsAccordingToColor.find(e => e.emotion === guessedEmotions[0]).color
+            const coloredOtherEmotion = EmotionsAccordingToColor.find(e => e.emotion === guessedEmotions[1]).color
+            const allEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredEmotion)
+            const allOtherEmotionsOfThisColor = EmotionsAccordingToColor.filter(e => e.color === coloredOtherEmotion)
+            let correctColoredEmotion = ''
+            let colorTwoCorrectColoredEmotion = ''
+            if(!CompoundEmotions.includes(roomObject.emotion[team.roundNo - 1])){
+                correctColoredEmotion = EmotionsAccordingToColor.find
+                (e => e.emotion === roomObject.emotion[team.roundNo - 1]).color
+                colorTwoCorrectColoredEmotion = EmotionsAccordingToColor.find
+                (e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
+                
+            }
+            console.log(correctColoredEmotion);
+            console.log(colorTwoCorrectColoredEmotion);
+            console.log(coloredEmotion);
+            console.log(coloredOtherEmotion);
+            console.log(allEmotionsOfThisColor);
+            console.log(allOtherEmotionsOfThisColor);
+            let localVar = 0
+            for(let i of allEmotionsOfThisColor){
+                if(i.color === correctColoredEmotion){
+                    console.log('Match found!');
+                    team.score += roomObject.adjacent
+                    localVar += roomObject.adjacent
+                    break
+                }
+                else if(i.colorTwo === colorTwoCorrectColoredEmotion){
+                    console.log('Other match found!');
+                    team.score += roomObject.adjacent
+                    localVar += roomObject.adjacent
+                    break
+                }
+            }
+            for(let i of allOtherEmotionsOfThisColor){
+                if(i.color === correctColoredEmotion){
+                    console.log('Match found!');
+                    localVar += roomObject.adjacent
+                    team.score += roomObject.adjacent
+                    break
+                }
+                else if(i.colorTwo === colorTwoCorrectColoredEmotion){
+                    console.log('Other match found!');
+                    localVar += roomObject.adjacent
+                    team.score += roomObject.adjacent
+                    break
+                }
+                if(localVar === 0){
+                    team.score += roomObject.otherIncorrect
+                }
+            }
         }
 
         let t = getRandomInt(0, team.teamMembers.length - 1)

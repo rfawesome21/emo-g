@@ -21,6 +21,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('typing-counter', team.typingCounter)
         io.to(socket.id).emit('guessing-counter', team.guessingCounter)
         io.to(socket.id).emit('current-team', team)
+        io.to(socket.id).emit('game-log', team.emotionPerRound)
         io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(code).emit('team-details', roomObject.teams)
     }
@@ -42,7 +43,7 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
     }
 
-    const emotionGuessed = ({gameCode, teamName, emotion}) => {
+    const emotionGuessed = ({gameCode, teamName, emotion, playerName}) => {
         emotion = emotion.toUpperCase()
         const roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
@@ -104,8 +105,8 @@ module.exports = (io, socket) => {
             if(i !== team.randomIndex)
                 team.teamMembers[i].isRandomlySelected = false
         }
-
-        team.roundNo += 1
+        if(team.roundNo < roomObject.MAX_ROUNDS)
+            team.roundNo += 1
         team.emotionsGuessed.push(emotion)
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
@@ -119,6 +120,11 @@ module.exports = (io, socket) => {
 
         team.typingCounter = totalTimerT
         team.guessingCounter = totalTimerG
+
+        team.emotionPerRound.push({
+            guesser : playerName,
+            emotion : emotion
+        })
 
         if(team.roundNo === roomObject.scene[0].nudgeRoundNo){
             team.messages.push(roomObject.scene[0].nudge)
@@ -136,10 +142,11 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
         io.in(gameCode).emit('team-details', roomObject.teams)
     }
 
-    const emotionGuessedArray = ({gameCode, teamName, guessedEmotions}) => {
+    const emotionGuessedArray = ({gameCode, teamName, guessedEmotions, playerName}) => {
         console.log(guessedEmotions);
         const roomObject = roomArrayMap.get(gameCode)
         guessedEmotions = guessedEmotions.map(g => g.toUpperCase())
@@ -220,7 +227,9 @@ module.exports = (io, socket) => {
                 team.teamMembers[i].isRandomlySelected = false
         }
 
-        team.roundNo += 1
+        if(team.roundNo < roomObject.MAX_ROUNDS)
+            team.roundNo += 1
+        
         team.emotionsGuessed.push(guessedEmotions)
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
@@ -235,6 +244,12 @@ module.exports = (io, socket) => {
         team.typingCounter = totalTimerT
         team.guessingCounter = totalTimerG
         
+        team.emotionPerRound.push({
+            guesser : playerName,
+            emotion : guessedEmotions
+        })
+
+
         if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
             team.messages.push(roomObject.scene[0].nudge)
         }
@@ -250,6 +265,7 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
         io.in(`${gameCode}-${teamName}`).emit('current-team', team)
+        io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(gameCode).emit('team-details', roomObject.teams)
     }

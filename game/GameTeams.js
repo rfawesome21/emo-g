@@ -34,7 +34,7 @@ module.exports = (io, socket) => {
                 teamName : m+1,
                 teamMembers : [],
                 roundNo : 1,
-                previousSceneRole : '',
+                emotionPerRound : [],
                 messages : [roomObject.scene[0].statementOne, roomObject.scene[0].statementTwo],
                 isDisabled : false, 
                 emotionsGuessed : [], 
@@ -201,12 +201,12 @@ module.exports = (io, socket) => {
             typingTimer = totalTimerT,
             guessingTimer = totalTimerG
             emotionsGuessed = [],
-            previousSceneRole = ''
+            emotionPerRound = []
         let callTheBot = false,
             thisOrThat = false,
             deleteARow = false
             
-        let team = { teamName, teamMembers, roundNo, randomIndex, isDisabled, messages, score, typingTimer, guessingTimer, emotionsGuessed, previousSceneRole,
+        let team = { teamName, teamMembers, roundNo, randomIndex, isDisabled, messages, score, typingTimer, guessingTimer, emotionsGuessed, emotionPerRound,
                     thisOrThat, callTheBot, deleteARow }
         roomObject.teams.push(team)
 

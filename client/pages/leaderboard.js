@@ -18,7 +18,7 @@ const leaderboard = () => {
         <div className='h-screen flex flex-col justify-center items-center' style={bg}>
             <div className="px-12 flex-col py-12 h-2/3 w-1/2 heading rounded-lg">
                 <div className="text-center font-bold text-4xl">LEADERBOARD</div>
-                <div className="flex-1 overflow-y-auto">
+                <div className="h-5/6 overflow-y-auto scl pr-1 mt-2">
                     {teams.map((team,index) => 
                     <div className="w-full flex mt-2" key = {index}>
                         <div className="ebaBg p-2 whiteText rounded-lg w-16 h-16 text-4xl flex justify-center items-center">0{index}</div>

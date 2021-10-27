@@ -20,6 +20,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('team-disabled', team.isDisabled)
         io.to(socket.id).emit('typing-counter', team.typingCounter)
         io.to(socket.id).emit('guessing-counter', team.guessingCounter)
+        io.to(socket.id).emit('current-team', team)
         io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(code).emit('team-details', roomObject.teams)
     }
@@ -121,6 +122,7 @@ module.exports = (io, socket) => {
         
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', '')
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
         io.in(`${gameCode}-${teamName}`).emit('team-round', team.roundNo)
         io.in(`${gameCode}-${teamName}`).emit('team-players', team.teamMembers)
@@ -188,6 +190,7 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('guessing-counter', team.guessingCounter)
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(gameCode).emit('team-details', roomObject.teams)
     }

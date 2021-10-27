@@ -8,7 +8,7 @@ const Wheel = ({ emotionFunction, currentRoundEmotion, deletedRow, callRobot }) 
 
   console.log(callRobot);
 
-  if(!callRobot || callRobot[0]===undefined){
+  if(!callRobot || callRobot[0]===''){
     callRobot=undefined
   }
 

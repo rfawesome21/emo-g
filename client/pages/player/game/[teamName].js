@@ -42,6 +42,7 @@ const game = () => {
     const [thirdEmotion, setThirdEmotion] = useState('')
     const [deletedRow, setDeletedRow] = useState([])
     const [guessedEmotions, setGuessedEmotions] = useState([])
+    const [gameLog, setGameLog] = useState([])
 
     const [callHost, setCallHost] = useState(false)
     const [callHostFunction, setCallHostFunction] = useState(false)
@@ -87,6 +88,10 @@ const game = () => {
         socket.on('set-this-to-true', bool => setThisOrThatBool(bool))
 
         socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
+
+        socket.on('game-log', gameLog => {
+            console.log(gameLog);
+            setGameLog(gameLog)})
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
         socket.on('team-score', score => setScore(score))
@@ -160,7 +165,7 @@ const game = () => {
                 }
                 else{
                     const emotion = ''
-                    socket.emit('guessed', {gameCode, teamName, emotion })
+                    socket.emit('guessed', {gameCode, teamName, emotion, playerName })
                     clearInterval(timerRef.current)
                     setTimeGuesserFormat('00:00')
                     setGuessCounter(0)
@@ -214,9 +219,9 @@ const game = () => {
             return
         }
         thisOrThatBool?
-        socket.emit('guessed-array', {gameCode, teamName, guessedEmotions})
+        socket.emit('guessed-array', {gameCode, teamName, guessedEmotions, playerName})
         :
-        socket.emit('guessed', {gameCode, teamName, emotion})
+        socket.emit('guessed', {gameCode, teamName, emotion, playerName})
     }
 
     const onChangeHandler = (e) => {
@@ -239,7 +244,6 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen bgNormal">
-            {console.log("emotion", emotion)}
             <div className="flex justify-end my-8">
                 
             </div>
@@ -317,10 +321,15 @@ const game = () => {
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}
-                        <div className="flex-1 heading rounded-xl pt-3">
+                        <div className="heading rounded-xl py-3 h-auto">
                             <div className="text-center">Game Log</div>
-                            <div className="scl overscroll-y-auto px-1 py-1">
-                                {/* Put the logs here */}
+                            <div className="scl overscroll-y-auto px-1 py-1 text-xs text-center h-48">
+                                {gameLog.map((game, index) => 
+                                    typeof(game.emotion) === "object" && roundNo > 1?
+                                    <div key={index} className='py-2'>{game.guesser} Guessed {game.emotion[0]} and {game.emotion[1]}</div>
+                                    :
+                                    <div key={index} className='py-2'>{game.guesser} Guessed {game.emotion}</div>
+                                )}
                             </div>
                         </div>
                     </div>

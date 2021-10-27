@@ -68,6 +68,12 @@ const game = () => {
             setPlayers(players)
             }
         )
+
+        socket.on('quit-game', () => {
+            sessionStorage.clear()
+            alert('The Host decided to quit the game!')
+            router.push('/')
+        })
         
         socket.on('current-team', team => setTeam(team))
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))

@@ -537,4 +537,5 @@ text {
 
 .burlywoodOverlay {
   background-color: rgba(218, 118, 75, 0.5);
+  z-index: 999;
 }

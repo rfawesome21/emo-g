@@ -4,7 +4,7 @@ const { roomArrayMap } = require("./GameVariables")
 module.exports = (io, socket) => {
     
     const callTheBot = ({gameCode, teamName}) => {
-        console.log('LifeLine used: This or that!');
+        console.log('LifeLine used: Call the bot!');
         let roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.callTheBot = true
@@ -43,7 +43,17 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('current-team', team)
     }
 
+    const callTheHost = ({gameCode, teamName}) => {
+        console.log('Calling the host!');
+        let roomObject = roomArrayMap.get(gameCode)
+        const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        team.callTheHost = true
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
+        io.in(gameCode).emit('team-details', roomObject.teams)
+    }
+
     socket.on('call-the-bot', callTheBot)
     socket.on('delete-a-row', deleteARow)
     socket.on('this-or-that', thisOrThat)
+    socket.on('call-the-host', callTheHost)
 }

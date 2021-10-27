@@ -4,9 +4,17 @@ import {roundArrow} from 'tippy.js';
 import 'tippy.js/dist/svg-arrow.css';
 import { useEffect } from 'react';
 
-const Wheel = ({ emotionFunction, currentRoundEmotion }) => {
+const Wheel = ({ emotionFunction, currentRoundEmotion, deletedRow, callRobot }) => {
 
-  console.log(currentRoundEmotion);
+  console.log(callRobot);
+
+  if(!callRobot || callRobot[0]===undefined){
+    callRobot=undefined
+  }
+
+  if (!deletedRow || deletedRow.length===0){
+    deletedRow=["", "", ""]
+  }
 
     useEffect(() => {
             tippy('#ecstacy', {
@@ -282,100 +290,100 @@ const Wheel = ({ emotionFunction, currentRoundEmotion }) => {
         </g>
         <g id="Layer_3" data-name="Layer 3">
           <text onClick={() => emotionFunction("ecstacy")} id="ecstacy" className="cls-34 st10" transform="translate(278.4 239.42) rotate(-90)">
-            ECSTACY
+            {deletedRow[0].emotion==="ECSTACY" || deletedRow[1].emotion==="ECSTACY" || deletedRow[2].emotion==="ECSTACY"?"":(callRobot && (callRobot[0]!=="ECSTACY" && callRobot[1]!=="ECSTACY" && callRobot[2]!=="ECSTACY")?"":"ECSTACY")}
           </text>
           <text onClick={() => emotionFunction("admiration")} id="admiration_x0D_" className="cls-34 st10" transform="translate(295.06 257.67) rotate(-45)">
-            ADMIRATION
+          {deletedRow[0].emotion==="ADMIRATION" || deletedRow[1].emotion==="ADMIRATION" || deletedRow[2].emotion==="ADMIRATION"?"":(callRobot && (callRobot[0]!=="ADMIRATION" && callRobot[1]!=="ADMIRATION" && callRobot[2]!=="ADMIRATION")?"":"ADMIRATION")}
           </text>
           <text onClick={() => emotionFunction("terror")} id="terror_x0D_" className="cls-34 st10" transform="translate(313.55 281.31)">
-            TERROR
+          {deletedRow[0].emotion==="TERROR" || deletedRow[1].emotion==="TERROR" || deletedRow[2].emotion==="TERROR"?"":(callRobot && (callRobot[0]!=="TERROR" && callRobot[1]!=="TERROR" && callRobot[2]!=="TERROR")?"":"TERROR")}
           </text>
           <text onClick={() => emotionFunction("optimism")} id="optimism" className="cls-34 st10" transform="translate(179.48 53.79) rotate(68.04)">
-            OPTIMISIM
+          {deletedRow[0].emotion==="OPTIMISM" || deletedRow[1].emotion==="OPTIMISM" || deletedRow[2].emotion==="OPTIMISM"?"":(callRobot && (callRobot[0]!=="OPTIMISM" && callRobot[1]!=="OPTIMISM" && callRobot[2]!=="OPTIMISM")?"":"OPTIMISM")}
           </text>
           <text onClick={() => emotionFunction("love")} id="love" className="cls-34 st10" transform="matrix(0.42, -0.91, 0.91, 0.42, 346.83, 109.7)">
-            LOVE
+          {deletedRow[0].emotion==="LOVE" || deletedRow[1].emotion==="LOVE" || deletedRow[2].emotion==="LOVE"?"":(callRobot && (callRobot[0]!=="LOVE" && callRobot[1]!=="LOVE" && callRobot[2]!=="LOVE")?"":"LOVE")}
           </text>
           <text onClick={() => emotionFunction("submission")} id="submission" className="cls-34 st10" transform="matrix(0.94, -0.34, 0.34, 0.94, 410.05, 219.79)">
-            SUBMISSION
+          {deletedRow[0].emotion==="SUBMISSION" || deletedRow[1].emotion==="SUBMISSION" || deletedRow[2].emotion==="SUBMISSION"?"":(callRobot && (callRobot[0]!=="SUBMISSION" && callRobot[1]!=="SUBMISSION" && callRobot[2]!=="SUBMISSION")?"":"SUBMISSION")}
           </text>
           <text onClick={() => emotionFunction("awe")} id="awe" className="cls-34" transform="translate(425 340.55) rotate(22.5)">
-            AWE
+          {deletedRow[0].emotion==="AWE" || deletedRow[1].emotion==="AWE " || deletedRow[2].emotion==="AWE"?"":(callRobot && (callRobot[0]!=="AWE" && callRobot[1]!=="AWE" && callRobot[2]!=="AWE")?"":"AWE")}
           </text>
           <text onClick={() => emotionFunction("disapproval")} id="disapproval" className="cls-34" transform="matrix(0.34, 0.94, -0.94, 0.34, 323.83, 405.28)">
-            DISAPPROVAL
+          {deletedRow[0].emotion==="DISAPPROVAL" || deletedRow[1].emotion==="DISAPPROVAL" || deletedRow[2].emotion==="DISAPPROVAL"?"":(callRobot && (callRobot[0]!=="DISAPPROVAL" && callRobot[1]!=="DISAPPROVAL" && callRobot[2]!=="DISAPPROVAL")?"":"DISAPPROVAL")}
           </text>
           <text onClick={() => emotionFunction("remorse")} id="remorse" className="cls-34" transform="translate(195.2 480.88) rotate(-70)">
-            REMORSE
+          {deletedRow[0].emotion==="REMORSE" || deletedRow[1].emotion==="REMORSE" || deletedRow[2].emotion==="REMORSE"?"":(callRobot && (callRobot[0]!=="REMORSE" && callRobot[1]!=="REMORSE" && callRobot[2]!=="REMORSE")?"":"REMORSE")}
           </text>
           <text onClick={() => emotionFunction("contempt")} id="contempt_x0D_" className="cls-34" transform="translate(63.48 365.1) rotate(-20)">
-            CONTEMPT
+          {deletedRow[0].emotion==="CONTEMPT" || deletedRow[1].emotion==="CONTEMPT" || deletedRow[2].emotion==="CONTEMPT"?"":(callRobot && (callRobot[0]!=="CONTEMPT" && callRobot[1]!=="CONTEMPT" && callRobot[2]!=="CONTEMPT")?"":"CONTEMPT")}
           </text>
           <text onClick={() => emotionFunction("aggressiveness")} id="aggressiveness" className="cls-34" transform="translate(45.62 181.95) rotate(25)">
-            AGGRESSIVENESS
+          {deletedRow[0].emotion==="AGGRESSIVENESS" || deletedRow[1].emotion==="AGGRESSIVENESS" || deletedRow[2].emotion==="AGGRESSIVENESS"?"":(callRobot && (callRobot[0]!=="AGGRESSIVENESS" && callRobot[1]!=="AGGRESSIVENESS" && callRobot[2]!=="AGGRESSIVENESS")?"":"AGGRESSIVENESS")}
           </text>
           <text onClick={() => emotionFunction("grief")} id="grief_x0D_" className="cls-34" transform="translate(269.54 320.17) rotate(90)">
-            GRIEF
+          {deletedRow[0].emotion==="GRIEF" || deletedRow[1].emotion==="GRIEF" || deletedRow[2].emotion==="GRIEF"?"":(callRobot && (callRobot[0]!=="GRIEF" && callRobot[1]!=="GRIEF" && callRobot[2]!=="GRIEF")?"":"GRIEF")}
           </text>
           <text onClick={() => emotionFunction("loathing")} id="loathing_x0D_" className="cls-34" transform="translate(211.76 349.29) rotate(-45)">
-            LOATHING
+          {deletedRow[0].emotion==="LOATHING" || deletedRow[1].emotion==="LOATHING" || deletedRow[2].emotion==="LOATHING"?"":(callRobot && (callRobot[0]!=="LOATHING" && callRobot[1]!=="LOATHING" && callRobot[2]!=="LOATHING")?"":"LOATHING")}
           </text>
           <text onClick={() => emotionFunction("rage")} id="rage_x0D_" className="cls-34" transform="translate(197.89 281.31)">
-            RAGE
+          {deletedRow[0].emotion==="RAGE" || deletedRow[1].emotion==="RAGE" || deletedRow[2].emotion==="RAGE"?"":(callRobot && (callRobot[0]!=="RAGE" && callRobot[1]!=="RAGE" && callRobot[2]!=="RAGE")?"":"RAGE")}
           </text>
           <text onClick={() => emotionFunction("vigilance")} id="vigilance" className="cls-34" transform="translate(197.73 204.03) rotate(45)">
-            VIGILANCE
+          {deletedRow[0].emotion==="VIGILANCE" || deletedRow[1].emotion==="VIGILANCE" || deletedRow[2].emotion==="VIGILANCE"?"":(callRobot && (callRobot[0]!=="VIGILANCE" && callRobot[1]!=="VIGILANCE" && callRobot[2]!=="VIGILANCE")?"":"VIGILANCE")}
           </text>
           <text onClick={() => emotionFunction("amazement")} id="amazement_x0D_" className="cls-34" transform="translate(288.29 292.3) rotate(45)">
-            AMAZEMENT
+          {deletedRow[0].emotion==="AMAZEMENT" || deletedRow[1].emotion==="AMAZEMENT" || deletedRow[2].emotion==="AMAZEMENT"?"":(callRobot && (callRobot[0]!=="AMAZEMENT" && callRobot[1]!=="AMAZEMENT" && callRobot[2]!=="AMAZEMENT")?"":"AMAZEMENT")}
           </text>
           <text onClick={() => emotionFunction("trust")} id="trust" className="cls-34" transform="translate(363.03 148.92) rotate(45)">
-            TRUST
+          {deletedRow[0].emotion==="TRUST" || deletedRow[1].emotion==="TRUST" || deletedRow[2].emotion==="TRUST"?"":(callRobot && (callRobot[0]!=="TRUST" && callRobot[1]!=="TRUST" && callRobot[2]!=="TRUST")?"":"TRUST")}
           </text>
           <text onClick={() => emotionFunction("acceptance")} id="acceptance" className="cls-34 st10" transform="translate(392.53 90.42) rotate(45)">
-            ACCEPTANCE
+          {deletedRow[0].emotion==="ACCEPTANCE" || deletedRow[1].emotion==="ACCEPTANCE" || deletedRow[2].emotion==="ACCEPTANCE"?"":(callRobot && (callRobot[0]!=="ACCEPTANCE" && callRobot[1]!=="ACCEPTANCE" && callRobot[2]!=="ACCEPTANCE")?"":"ACCEPTANCE")}
           </text>
           <text onClick={() => emotionFunction("joy")} id="joy_x0D_" className="cls-34" transform="translate(261.36 121.92)">
-            JOY
+          {deletedRow[0].emotion==="JOY" || deletedRow[1].emotion==="JOY" || deletedRow[2].emotion==="JOY"?"":(callRobot && (callRobot[0]!=="JOY" && callRobot[1]!=="JOY" && callRobot[2]!=="JOY")?"":"JOY")}
           </text>
           <text onClick={() => emotionFunction("serenity")} id="serenity" className="cls-34" transform="translate(245.36 60.92)">
-            SERENITY
+          {deletedRow[0].emotion==="SERENITY" || deletedRow[1].emotion==="SERENITY" || deletedRow[2].emotion==="SERENITY"?"":(callRobot && (callRobot[0]!=="SERENITY" && callRobot[1]!=="SERENITY" && callRobot[2]!=="SERENITY")?"":"SERENITY")}
           </text>
           <text onClick={() => emotionFunction("fear")} id="fear" className="cls-34" transform="translate(421.69 257.61) rotate(90)">
-            FEAR
+          {deletedRow[0].emotion==="FEAR" || deletedRow[1].emotion==="FEAR" || deletedRow[2].emotion==="FEAR"?"":(callRobot && (callRobot[0]!=="FEAR" && callRobot[1]!=="FEAR" && callRobot[2]!=="FEAR")?"":"FEAR")}
           </text>
           <text onClick={() => emotionFunction("apprehension")} id="apprehension" className="cls-34" transform="translate(489.69 225.61) rotate(90)">
-            APPREHENSION
+          {deletedRow[0].emotion==="APPREHENSION" || deletedRow[1].emotion==="APPREHENSION" || deletedRow[2].emotion==="APPREHENSION"?"":(callRobot && (callRobot[0]!=="APPREHENSION" && callRobot[1]!=="APPREHENSION" && callRobot[2]!=="APPREHENSION")?"":"APPREHENSION")}
           </text>
           <text onClick={() => emotionFunction("surprise")} id="surprise" className="cls-34" transform="translate(370.41 413.87) rotate(-45)">
-            SURPRISE
+          {deletedRow[0].emotion==="SURPRISE" || deletedRow[1].emotion==="SURPRISE" || deletedRow[2].emotion==="SURPRISE"?"":(callRobot && (callRobot[0]!=="SURPRISE" && callRobot[1]!=="SURPRISE" && callRobot[2]!=="SURPRISE")?"":"SURPRISE")}
           </text>
           <text onClick={() => emotionFunction("distraction")} id="distraction" className="cls-34" transform="translate(400.41 460.87) rotate(-45)">
-            DISTRACTION
+          {deletedRow[0].emotion==="DISTRACTION" || deletedRow[1].emotion==="DISTRACTION" || deletedRow[2].emotion==="DISTRACTION"?"":(callRobot && (callRobot[0]!=="DISTRACTION" && callRobot[1]!=="DISTRACTION" && callRobot[2]!=="DISTRACTION")?"":"DISTRACTION")}
           </text>
           <text onClick={() => emotionFunction("sadness")} id="sadness" className="cls-34" transform="translate(241.36 438.92)">
-            SADNESS
+          {deletedRow[0].emotion==="SADNESS" || deletedRow[1].emotion==="SADNESS" || deletedRow[2].emotion==="SADNESS"?"":(callRobot && (callRobot[0]!=="SADNESS" && callRobot[1]!=="SADNESS" && callRobot[2]!=="SADNESS")?"":"SADNESS")}
           </text>
           <text onClick={() => emotionFunction("pensiveness")} id="pensiveness" className="cls-34" transform="translate(229.36 497.92)">
-            PENSIVENESS
+          {deletedRow[0].emotion==="PENSIVENESS" || deletedRow[1].emotion==="PENSIVENESS" || deletedRow[2].emotion==="PENSIVENESS"?"":(callRobot && (callRobot[0]!=="PENSIVENESS" && callRobot[1]!=="PENSIVENESS" && callRobot[2]!=="PENSIVENESS")?"":"PENSIVENESS")}
           </text>
           <text onClick={() => emotionFunction("disgust")} id="disgust" className="cls-34" transform="translate(139.24 373.17) rotate(45)">
-            DISGUST
+          {deletedRow[0].emotion==="DISGUST" || deletedRow[1].emotion==="DISGUST" || deletedRow[2].emotion==="DISGUST"?"":(callRobot && (callRobot[0]!=="DISGUST" && callRobot[1]!=="DISGUST" && callRobot[2]!=="DISGUST")?"":"DISGUST")}
           </text>
           <text onClick={() => emotionFunction("boredom")} id="boredom" className="cls-34" transform="translate(91.24 403.17) rotate(45)">
-            BOREDOM
+          {deletedRow[0].emotion==="BOREDOM" || deletedRow[1].emotion==="BOREDOM" || deletedRow[2].emotion==="BOREDOM"?"":(callRobot && (callRobot[0]!=="BOREDOM" && callRobot[1]!=="BOREDOM" && callRobot[2]!=="BOREDOM")?"":"BOREDOM")}
           </text>
           <text onClick={() => emotionFunction("anger")} id="anger" className="cls-34" transform="translate(128.67 301.25) rotate(-90)">
-            ANGER
+          {deletedRow[0].emotion==="ANGER" || deletedRow[1].emotion==="ANGER" || deletedRow[2].emotion==="ANGER"?"":(callRobot && (callRobot[0]!=="ANGER" && callRobot[1]!=="ANGER" && callRobot[2]!=="ANGER")?"":"ANGER")}
           </text>
           <text onClick={() => emotionFunction("annoyance")} id="annoyance" className="cls-34" transform="translate(62.67 315.25) rotate(-90)">
-            ANNOYANCE
+          {deletedRow[0].emotion==="ANNOYANCE" || deletedRow[1].emotion==="ANNOYANCE" || deletedRow[2].emotion==="ANNOYANCE"?"":(callRobot && (callRobot[0]!=="ANNOYANCE" && callRobot[1]!=="ANNOYANCE" && callRobot[2]!=="ANNOYANCE")?"":"ANNOYANCE")}
           </text>
           <text onClick={() => emotionFunction("interest")} id="interest" className="cls-34" transform="matrix(0.71, -0.71, 0.71, 0.71, 103.47, 141.57)">
-            INTEREST
+          {deletedRow[0].emotion==="INTEREST" || deletedRow[1].emotion==="INTEREST" || deletedRow[2].emotion==="INTEREST"?"":(callRobot && (callRobot[0]!=="INTEREST" && callRobot[1]!=="INTEREST" && callRobot[2]!=="INTEREST")?"":"INTEREST")}
           </text>
           <text onClick={() => emotionFunction("anticipation")} id="anticipation" className="cls-51" transform="matrix(0.71, -0.71, 0.71, 0.71, 134.82, 190.92)">
-            ANTICIPATION
+          {deletedRow[0].emotion==="ANTICIPATION" || deletedRow[1].emotion==="ANTICIPATION" || deletedRow[2].emotion==="ANTICIPATION"?"":(callRobot && (callRobot[0]!=="ANTICIPATION" && callRobot[1]!=="ANTICIPATION" && callRobot[2]!=="ANTICIPATION")?"":"ANTICIPATION")}
           </text>
         </g>
       </svg>

@@ -5,7 +5,6 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     const socket = useContext(SocketContext)
     const [menu, setMenu] = useState()
     const [moveTeams, setMoveTeams] = useState(false)
-    console.log(players);
 
     const [sliderPlayers, setSliderPlayers] = useState(4);
     const [slideIndex, setSlideIndex] = useState(0)
@@ -34,20 +33,19 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
     largeWidth === 'md' ? respWidth = 'md' : respWidth = 'xs'
     return (
         <div className="flex items-center w-100"> 
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+Math.ceil(players.length/sliderPlayers)-1)%(Math.ceil(players.length/sliderPlayers)))}>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+Math.ceil(players.length/sliderPlayers)-1)%(Math.ceil(players.length/sliderPlayers)))}>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
 
             <div className={`flex flex-row flex-wrap h-72 w-full justify-evenly items-center overflow-y-auto scl`} id="players" >
                         {players && players.length > 0? players.map((player, index) => (
-                            <>{index>=sliderPlayers*slideIndex && index<sliderPlayers*(slideIndex+1)?<div className="z-10 text-center" key = {index} onClick={event => setMenu({x: event.clientX, y: event.clientY, player: player})}>
-                                <div className="mx-7">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                            <div key={index}>{index>=sliderPlayers*slideIndex && index<sliderPlayers*(slideIndex+1)?
+                            <div className="z-10 text-center" onClick={event => setMenu({x: event.clientX, y: event.clientY, player: player})}>
+                                <div className="mx-7" >
+                                    {player.avatar && <img src = {player.avatar} alt = 'avatar' className='h-20 w-20' />}
                                 </div>
                                 {player.name && player.name}
-                            </div>:<></>}</>
+                            </div>:<></>}</div>
                         )) : null}
             {
                 menu && !player?
@@ -58,15 +56,15 @@ const PlayerComponent = ({players, width, largeWidth, teams, player}) => {
                             <div className="ebaBg px-2 border-2 whiteText border-white " onClick={() => removePlayer()}>Remove</div>
                         </div>
                         {moveTeams?<div className="scl cursor-pointer max-h-32 overflow-y-auto">
-                            {teams?teams.map((team) => <div className='w-auto px-2 ebaBg border-2 whiteText border-white ' onClickCapture = {() => {setMoveTeams(false);clickHandler(team.teamName)}}>Team {team.teamName}</div>):<></>}
+                            {teams?teams.map((team, index) => <div className='w-auto px-2 ebaBg border-2 whiteText border-white ' onClickCapture = {() => {setMoveTeams(false);clickHandler(team.teamName)}} key={index} >Team {team.teamName}</div>):<></>}
                         </div>:<></>}
                     </div>
                 </div>:<></>}
                 {/* <div className="invisible">MADIEE is awesome</div> */}
             </div>
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+1)%(Math.ceil(players.length/sliderPlayers)))}>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-4 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => setSlideIndex((slideIndex+1)%(Math.ceil(players.length/sliderPlayers)))}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
 
 

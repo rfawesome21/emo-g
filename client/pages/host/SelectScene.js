@@ -21,6 +21,7 @@ const SelectScene = () => {
     const [statementOne, setStatementOne] = useState('')
     const [statementTwo, setStatementTwo] = useState('')
     const [sceneID, setSceneID] = useState()
+    const [nudgeRoundNo, setNudgeRoundNo] = useState(4)
 
     const router = useRouter()
 
@@ -31,7 +32,8 @@ const SelectScene = () => {
             roleOne : scene.roleOne,
             roleTwo : scene.roleTwo,
             statementOne : scene.statementOne,
-            statementTwo : scene.statementTwo
+            statementTwo : scene.statementTwo,
+            nudgeRoundNo : scene.nudgeRoundNo
         }
         let arr = addScenesToGame.slice(0)
         arr.length = 0
@@ -42,6 +44,10 @@ const SelectScene = () => {
 
     const clickHandler = () => {
         setSelectedItem([])
+        if(addScenesToGame.length === 0){
+            alert('Please Select a scene before proceeding')
+            return
+        }
         socket.emit('new-scenes', {addScenesToGame, gameCode})
         router.push('/host/scenes')
     }
@@ -79,7 +85,7 @@ const SelectScene = () => {
             <div className="flex justify-center mt-10">
                 {!createScenes?<div className="rounded p-10 w-3/4 heading">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
@@ -126,11 +132,12 @@ const SelectScene = () => {
                                         setRoleTwo(scene.roleTwo)
                                         setStatementOne(scene.statementOne)
                                         setStatementTwo(scene.statementTwo)
+                                        setNudgeRoundNo(scene.nudgeRoundNo)
                                         setCreateScenes(true)}}
                                     >
                                         <div className="font-bold text-lg">
                                             Scene {index}
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
@@ -152,6 +159,7 @@ const SelectScene = () => {
                             statementOne = {statementOne}
                             statementTwo = {statementTwo}
                             sceneID = {sceneID}
+                            nudgeRoundNumber = {nudgeRoundNo}
                              /> : null}
         </div>
     )

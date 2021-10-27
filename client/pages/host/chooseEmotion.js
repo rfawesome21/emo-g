@@ -6,6 +6,8 @@ import { SocketContext } from "../../context/socket/SocketContext";
 import Wheel from "../../components/wheel";
 const ChooseEmotions = () => {
 
+    const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOME','ADMIRATION','TRUST','ACCEPTANCE','TERROR', 'FEAR','APPREHENSION','AMAZEMENT','SURPRISE','GRIEF','SADNESS','PENSIVENESS','VIGILANCE','ANTICIPATION', 'INTEREST','ECSTACY','JOY','SERENITY', 'AGGRESSIVENESS','CONTEMPT','REMORSE','DISAPPROVAL','AWE','LOVE','SUBMISSION','OPTIMISM']
+
 
     const clickHandler = () => {
         if(emotionArray.length < maxRound)
@@ -65,17 +67,28 @@ const ChooseEmotions = () => {
 
         const array = emotionArray;
 
-        for (var i = array.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
+        if (array.length===0){
+            console.log("create randomize")
+
+            // Shuffle array
+            const shuffled = allEmotions.sort(() => 0.5 - Math.random());
+
+            // Get sub-array of first n elements after shuffled
+            setEmotionArray(shuffled.slice(0, maxRound))
+
+        } else {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+    
+    
+            setEmotionArray([...array])
+            console.log(emotionArray);
+            emotionArray.force
         }
-
-
-        setEmotionArray([...array])
-        console.log(emotionArray);
-        emotionArray.force
     }
 
     return (
@@ -92,7 +105,7 @@ const ChooseEmotions = () => {
                             {emotionArray.map((emotion, index) => <div className="py-2 text-left px-3 w-40 h-18 font-bold text-md inputs burlywoodBorder rounded-lg grid relative" key={index} >Round{` 0${index + 1}`}
                                 <span className="text-base font-normal">{emotion}</span>
                                 <span className="absolute top-0 right-0 cursor-pointer" onClick={() => setEdit(index)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </span>

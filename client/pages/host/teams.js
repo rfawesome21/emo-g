@@ -14,22 +14,24 @@ const teams = () => {
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
     const [mode, setMode] = useState('random')
-
+    const [numberTeams, setNumberTeams] = useState(0)
     const [players, setPlayers] = useState([])
-    const [playerIcon, deletePlayer] = useState()
     const [playersPerTeam, setPlayersPerTeam] = useState(4)
+
     useEffect(() => {
         let isMounted = true
-        if(isMounted)
-            setGameCode(sessionStorage.getItem('game-code'))
+        setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('join-teams', sessionStorage.getItem('game-code'))
-        socket.on('players', numberPlayers => {
+        
             if(isMounted){
-                setNumberOfPlayers(numberPlayers.length)
-                console.log(numberPlayers);
-                setPlayers(numberPlayers)
-            }
-        })
+            socket.on('players', numberPlayers => {
+                if(isMounted){
+                    setNumberOfPlayers(numberPlayers.length)
+                }
+                if(isMounted)
+                    setPlayers(numberPlayers)
+            })
+        }
         
         return() => {
             isMounted = false
@@ -70,7 +72,7 @@ const teams = () => {
                         onChange = {(e) => onChangeHandler(e)}
                         /></div>
                         <div className="text-xl mt-1 flex justify-between">No of Teams:  <input type="number" className="w-16 burlywoodBorder rounded pl-2"
-                        value = {Math.ceil(numberOfPlayers/playersPerTeam)}
+                        value = {numberTeams} onChange = {(e) => setNumberTeams(e.target.value)}
                         /></div>
                         <div className="text-xl mt-4"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>
                         <div className="text-xl"> <input type="radio" name = 'option' onClick = {() => setMode('manual')} /> Manual  </div>
@@ -88,14 +90,6 @@ const teams = () => {
                 <div className="text-center">
                     <Button clickHandler = {continueGame} text = 'Continue' />
                 </div>
-
-
-                {
-                playerIcon?
-                <div className="bg-gray-200 border-2 border-black cursor-pointer" style={{position:"absolute", top:playerIcon.y, left:playerIcon.x, zIndex:2}}>
-                    <div>Remove Player</div>
-                    <div onClick={() => deletePlayer(undefined)}>Back</div>  
-                </div>:<></>}
             </div>
 
             <EndGame />

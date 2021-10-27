@@ -8,6 +8,7 @@ let { Password, roomArrayMap} = require('./GameVariables')
 const { Emotions, CompoundEmotions } = require('../data/Emotions')
 const GameEmotions = JSON.parse(JSON.stringify(Emotions))
 const GameCompoundEmotions = JSON.parse(JSON.stringify(CompoundEmotions))
+const colors = ["https://i.imgur.com/Lh9JoJn.png", "https://i.imgur.com/9nKWnVE.png", "https://i.imgur.com/hYZIEEV.png","https://i.imgur.com/02wPaiQ.png","https://i.imgur.com/h1fCyBi.png", "https://i.imgur.com/SkvFWSY.png", "https://i.imgur.com/LptRaIW.png", "https://i.imgur.com/0EkGcud.png", "https://i.imgur.com/8pfgcFz.png"]
 
 const deepCopyFunction = (inObject) => {
     let outObject, value, key
@@ -50,9 +51,10 @@ module.exports = (io, socket) => {
             }
             else{
                 roomObject.players.push(name)
+                const num = getRandomInt(0, colors.length - 1)
                 roomObject.playerDetails.push({
                     name : name,
-                    avatar : '',
+                    avatar : colors[num],
                     join : false,
                     isRandomlySelected : false
                 })
@@ -82,7 +84,7 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('Room-code', code)
         io.to(socket.id).emit('Players', Players.length)
         Password.push(code)
-        let number = getRandomInt(0, 9)
+        let number = getRandomInt(1, Scenes.length - 1)
         let sceneObj = {
             id : GameScenes[number].id,
             scene : GameScenes[number].scene,

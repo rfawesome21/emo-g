@@ -137,7 +137,7 @@ const settings = () => {
                                 <input 
                                 value={numberOfRounds} 
                                 onChange={event => setNumberOfRounds(event.target.value)} 
-                                type="number" min="6" 
+                                type="number" min="2" 
                                 placeholder = 'Set Number of Rounds' 
                                 className={'ml-1 text-center h-7 w-14 counterInput'}
                                 />

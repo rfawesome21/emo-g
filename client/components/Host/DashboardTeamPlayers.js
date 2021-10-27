@@ -3,7 +3,12 @@ import React from 'react'
 
 const DashboardTeamPlayers = ({activeTeam}) => {
     const router = useRouter()
-    console.log(activeTeam);
+
+    const clickHandler = () => {
+        sessionStorage.setItem('team-name', activeTeam.teamName)   
+        router.push(`/player/game/${activeTeam.teamName}`)
+    }
+
     return (
         <div className='flex flex-col justify-start items-start' style={{flex:4}}>
             <div className="pt-4 flex justify-between px-4 w-100 rounded-t-xl ebaBg whiteText">
@@ -16,7 +21,7 @@ const DashboardTeamPlayers = ({activeTeam}) => {
                     </div>
                 </div>
                 <div className="pt-3">
-                    <button className="buttonNew rounded font-normal text-base px-2 py-1 cursor-pointer" onClick={() => router.push(`/player/game/${activeTeam.teamName}`)}>JOIN</button>
+                    <button className="buttonNew rounded font-normal text-base px-2 py-1 cursor-pointer" onClick={clickHandler}>JOIN</button>
                 </div>
             </div>
             <div className='flex flex-row h-full w-100 overflow-y-auto heading rounded-b-xl'>
@@ -24,9 +29,7 @@ const DashboardTeamPlayers = ({activeTeam}) => {
                     {activeTeam && activeTeam.teamMembers.map((player, index) => 
                         <div className="z-10 text-center pt-2" key = {index}>
                         <div className="">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                            <img src = {player.avatar} alt = 'avatar' className='w-20 h-20' />
                         </div>
                         {player.name && player.name}
                     </div>

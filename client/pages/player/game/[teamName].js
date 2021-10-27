@@ -1,10 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect, useRef, useState } from "react";
-import ExitGame from "../../../components/exitGame";
 import { SocketContext } from "../../../context/socket/SocketContext";
-import Button from '../../../components/Button'
 import Wheel from '../../../components/wheel'
-import SettingsAndBack from "../../../components/settingsAndBack";
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
 
 const game = () => {
@@ -14,10 +11,10 @@ const game = () => {
 
 
     const [ruleBook, ruleBookClicked] = useState(false)
-    const [settingsPressed, setSettingsPressed] = useState(false)
+    const [team, setTeam] = useState({})
     const [players, setPlayers] = useState([])
     const [roundNo, setRoundNo] = useState(1)
-    const [maxRounds, setMaxRounds] = useState(10)
+    const maxRounds = useRef(10)
     const [scene, setScene] = useState('')
     const [messages, setMessages] = useState([])
     const socket = useContext(SocketContext)
@@ -39,43 +36,54 @@ const game = () => {
     const [currentRoundEmotion, setCurrentRoundEmotion] = useState('')
     const [status, setStatus] = useState('')
     const [confirmLifeline, setConfirmLifeline] = useState()
+    const [thisOrThatBool, setThisOrThatBool] = useState(false)
+    const [correctEmotion, setCorrectEmotion] = useState('')
+    const [otherEmotion, setOtherEmotion] = useState('')
+    const [thirdEmotion, setThirdEmotion] = useState('')
+    const [deletedRow, setDeletedRow] = useState([])
+    const [guessedEmotions, setGuessedEmotions] = useState([])
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
         setPlayerName(sessionStorage.getItem('player-name'))
         const code = sessionStorage.getItem('game-code')
         setGameCode(sessionStorage.getItem('game-code'))  
-        const teamName = sessionStorage.getItem('team-name')      
-        socket.emit('join-team-room', {code, teamName })
+        let teamName = sessionStorage.getItem('team-name')
+        let isMounted = true
+        if(isMounted)
+            socket.emit('join-team-room', {code, teamName })
 
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    
             setPlayers(players)
             }
         )
-
+        
+        socket.on('current-team', team => setTeam(team))
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
             console.log(roundNumber);
-            console.log(maxRounds);
-            console.log(typeof(maxRounds));
-            if(roundNumber > roundNo)
+            if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
             {    
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
-            if(roundNumber > maxRounds){
+            if(roundNumber > maxRounds.current){
                 console.log(roundNumber);
-                router.push('/play')
+                router.push('/leaderboard')
             }
+            setGuessedEmotions([])
+            console.log('I hope you');
+            sessionStorage.setItem('round-no-team', roundNumber)
             setRoundNo(roundNumber)
         })
 
-        socket.on('max-rounds', maxRounds => setMaxRounds(maxRounds))
+        socket.on('set-this-to-true', bool => setThisOrThatBool(bool))
+
+        socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
-        
         socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
@@ -98,6 +106,16 @@ const game = () => {
     useEffect(() => {
 
         
+        socket.on('your-three-choices', ({correctEmotion, otherEmotion, thirdEmotion}) => {
+            setCorrectEmotion(correctEmotion)
+            setOtherEmotion(otherEmotion)
+            setThirdEmotion(thirdEmotion)
+        })
+
+        socket.on('deleted-row', ({deletedRow}) => {
+            setDeletedRow(deletedRow)
+        })
+
 
         if(sessionStorage.getItem('guess-counter'))
             setGuessCounter(Number(sessionStorage.getItem('guess-counter')))
@@ -151,7 +169,27 @@ const game = () => {
     }, [counter, active, guessCounter, socket])
 
     const guessEmotion = (e) => {
-        setEmotion(e)
+        if(guessedEmotions.length >= 2){
+            alert('You guessed two emotions already!')
+            return
+        }
+        thisOrThatBool? guessedEmotions.push(e) : setEmotion(e)
+    }
+
+    const confirmTheLifeline = (text) => {
+        setConfirmLifeline(text)
+
+        switch(text){
+            case 'This or That':
+                socket.emit('this-or-that', {gameCode, teamName})
+                break
+            case 'Call The Bot':
+                socket.emit('call-the-bot', {gameCode, teamName})
+                break
+            case 'Delete a row':
+                socket.emit('delete-a-row', {gameCode, teamName})
+                break
+        }
     }
 
     const clickHandler = () => {
@@ -161,6 +199,18 @@ const game = () => {
         sessionStorage.removeItem('type-counter')
         sessionStorage.removeItem('guess-counter')
         setIsTimerOver(false)
+        if(!thisOrThatBool && emotion === '')
+        {
+            alert('Please select an emotion')
+            return
+        }
+        if(thisOrThatBool && guessedEmotions.length < 2){
+            alert('Please select at least two emotions')
+            return
+        }
+        thisOrThatBool?
+        socket.emit('guessed-array', {gameCode, teamName, guessedEmotions})
+        :
         socket.emit('guessed', {gameCode, teamName, emotion})
     }
 
@@ -192,9 +242,7 @@ const game = () => {
                     {players.map((player, index) => (
                         <div className={player.name===activePlayer?"mt-4 p-2 burlywoodBorder rounded-lg":"mt-4 p-2"} key = {index}>
                             <div className="flex justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke={player.name === activePlayer? "#dd6127" : "currentColor"}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <img src = {player.avatar} alt = 'avatar' className='h-20 w-20' />
                             </div>
                             <div className="text-center">
                                 {player.name}
@@ -205,7 +253,7 @@ const game = () => {
                 <div className="flex flex-column heading rounded-xl mx-2" style={{flex:"4", height:"80vh"}}>
                     <div className="flex justify-between rounded-t-xl ebaBg whiteText text-xl px-8 pt-4 flex-1">
                         <div>
-                            Round {roundNo}/{maxRounds}                            
+                            Round {roundNo}/{maxRounds.current}                            
                         </div>
                         <div>
                             {isTimerOver? timeGuesserFormat : timeFormat}
@@ -217,8 +265,8 @@ const game = () => {
                                 
                                 <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input font-normal pl-2 border-2 rounded-lg ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
                                 <button className='flex-1 ebaText h-full' onClick = {onSubmit} disabled = {isDisabled? true: false} > 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
                                     </svg>
                                 </button>
                             </div>
@@ -254,12 +302,12 @@ const game = () => {
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(0,1):"0"}</div>
-                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}{console.log(score)}</div>
+                        <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("This ot That")}>This or That</div>
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Delete a row")}>Delete a row</div>
-                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => setConfirmLifeline("Call the bot")}>Call the bot</div>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat} >This or That</button>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow} >Delete a row</button>
+                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot} >Call the bot</button>
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}

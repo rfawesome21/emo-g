@@ -2,7 +2,7 @@ import { useState } from "react";
 import TeamPlayers from "../TeamPlayers";
 import DashboardTeamPlayers from "./DashboardTeamPlayers";
 
-const Teams = ({teams}) => {
+const Teams = ({teams, rounds}) => {
     console.log(teams);
     const [activeTeam, setActiveTeam] = useState(1)
 
@@ -24,7 +24,7 @@ const Teams = ({teams}) => {
                     >
                         <div className='pl-5'>Team {team.teamName}</div>
                         <div className="-ml-5">{team.teamMembers.length} Players</div>
-                        <div className="-ml-3">{team.roundNo}/10</div>
+                        <div className="-ml-3">{team.roundNo}/{rounds}</div>
                         <div className="ml-5">{team.score < 10? `0${team.score}` : `${team.score}`}</div>
                         {team.call?<div className="rounded-full bg-red-700 h-4 w-4"></div>:<div className="rounded-full h-4 w-4"></div>}
                     </div>

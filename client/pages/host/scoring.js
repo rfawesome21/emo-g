@@ -19,9 +19,16 @@ const Scoring = () => {
     const router = useRouter()
     const socket = useContext(SocketContext)
     useEffect(() => {
+        let isMounted = true
         setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('join-score-settings', sessionStorage.getItem('game-code'))
-        socket.on('players', players => setNumberOfPlayers(players.length))
+        socket.on('players', players => {
+            if(isMounted)
+                setNumberOfPlayers(players.length)
+        })
+        return () => {
+            isMounted = false
+        }
     })
 
     const clickHandler = () => {

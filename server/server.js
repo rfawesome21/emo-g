@@ -34,6 +34,7 @@ const gameScenes = require('./game/GameScenes')
 const gameTeams = require('./game/GameTeams')
 const gameEmotions = require('./game/GameEmotions')
 const gameScores = require('./game/GameScores')
+const gameLifeLines = require('./game/GameLifelines')
 
 const onConnection = socket => {
   gameSetup(io, socket)
@@ -43,6 +44,7 @@ const onConnection = socket => {
   gameTeams(io, socket)
   gameEmotions(io, socket)
   gameScores(io, socket)
+  gameLifeLines(io, socket)
 }
 
 io.on(

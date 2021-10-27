@@ -17,6 +17,7 @@ module.exports = (io, socket) => {
         while(thirdEmotion === correctEmotion || otherEmotion === thirdEmotion){
             thirdEmotion = allEmotions[getRandomInt(0, allEmotions.length - 1)]
         }
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
         io.in(`${gameCode}-${teamName}`).emit('your-three-choices', {correctEmotion, otherEmotion, thirdEmotion})
     }
 
@@ -30,6 +31,7 @@ module.exports = (io, socket) => {
         deleteRowEmotions = deleteRowEmotions.filter(d => d.length > 0)
         const deletedRow = deleteRowEmotions[getRandomInt(0, deleteRowEmotions.length - 1)]
         io.in(`${gameCode}-${teamName}`).emit('deleted-row', {deletedRow})
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
      }
 
     const thisOrThat = ({gameCode, teamName}) => {
@@ -38,6 +40,7 @@ module.exports = (io, socket) => {
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         team.thisOrThat = true
         io.in(`${gameCode}-${teamName}`).emit('set-this-to-true', true)
+        io.in(`${gameCode}-${teamName}`).emit('current-team', team)
     }
 
     socket.on('call-the-bot', callTheBot)

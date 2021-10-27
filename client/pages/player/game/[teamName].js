@@ -11,6 +11,7 @@ const game = () => {
 
 
     const [ruleBook, ruleBookClicked] = useState(false)
+    const [team, setTeam] = useState({})
     const [players, setPlayers] = useState([])
     const [roundNo, setRoundNo] = useState(1)
     const maxRounds = useRef(10)
@@ -57,7 +58,8 @@ const game = () => {
             setPlayers(players)
             }
         )
-
+        
+        socket.on('current-team', team => setTeam(team))
         socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
 
         socket.on('team-round', roundNumber => {
@@ -83,7 +85,6 @@ const game = () => {
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
         
-        socket.on('team-score', score => setScore(score))
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
         socket.on('typing-counter', counter => {
@@ -304,9 +305,9 @@ const game = () => {
                         <div className="flex-1 h-16 whiteText text-6xl font-light flex justify-center items-center ml-2 ebaBg rounded-lg">{score.toString().length>1?score.toString().slice(1,2):score}</div>
                     </div>
                     <div className="h-full flex flex-column pt-2">
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")}>This or That</div>
-                        <div className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")}>Delete a row</div>
-                        <div className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")}>Call the bot</div>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat} >This or That</button>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow} >Delete a row</button>
+                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot} >Call the bot</button>
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}

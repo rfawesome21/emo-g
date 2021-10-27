@@ -299,7 +299,7 @@ const game = () => {
                     <div className="font-bold px-8 py-4 heading rounded-xl w-3/4 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    {player.isRandomlySelected && player.name === playerName? <Wheel emotionFunction = {guessEmotion} currentRoundEmotion={currentRoundEmotion} /> : <Wheel emotionFunction = {guessEmotion} /> }
+                    {player.isRandomlySelected && player.name === playerName? <Wheel emotionFunction = {guessEmotion} currentRoundEmotion={currentRoundEmotion} /> : <Wheel emotionFunction = {guessEmotion} deletedRow={deletedRow}/> }
                 </div>
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">

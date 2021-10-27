@@ -59,7 +59,6 @@ const manual = () => {
                     {teams? (<TeamComponent teams = {teams} activeTeam={activeTeam} activeIcon = {activeButton} playersWithoutTeams = {players} />) : (null)}
                 </div>
                 <div className='w-3/12'>
-                {console.log(teams.map(t => console.log(t.teamName === activeTeam)))}
                 {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} status = {true} /> : null}
                 </div>
             </div>

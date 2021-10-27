@@ -82,7 +82,6 @@ const hostDashboard = () => {
 
 // lobby 
             <div className="flex justify-center items-center h-screen">
-                {console.log(playersWithoutTeams)}
                 <PlayerComponent players = {playersWithoutTeams} teams = {teams} />
             </div>}
         </div>

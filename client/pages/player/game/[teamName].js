@@ -190,18 +190,6 @@ const game = () => {
 
     const confirmTheLifeline = (text) => {
         setConfirmLifeline(text)
-
-        switch(text){
-            case 'This or That':
-                socket.emit('this-or-that', {gameCode, teamName})
-                break
-            case 'Call The Bot':
-                socket.emit('call-the-bot', {gameCode, teamName})
-                break
-            case 'Delete a row':
-                socket.emit('delete-a-row', {gameCode, teamName})
-                break
-        }
     }
 
     const clickHandler = () => {
@@ -318,15 +306,15 @@ const game = () => {
                     </div>
                     <div className="h-full flex flex-column pt-2">
 
-                        {console.log(confirmLifeline)}
-                        {console.log(emotion)}
-
-                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat || (player.isRandomlySelected && player.name === playerName)} >This or That</button>
-                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow || (player.isRandomlySelected && player.name === playerName)} >Delete a row</button>
-
-                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot || (player.isRandomlySelected && player.name === playerName)} >Call the bot</button>
-
-
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("This or That")} disabled={team.thisOrThat || (player.isRandomlySelected && player.name === playerName)} >
+                            This or That
+                        </button>
+                        <button className="mt-2 text-sm rounded-md px-2 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Delete a row")} disabled={team.deleteARow || (player.isRandomlySelected && player.name === playerName)} >
+                            Delete a row
+                        </button>
+                        <button className="my-2 text-sm rounded-md px-3 py-2 text-center font-bold buttonLifeline" onClick={() => confirmTheLifeline("Call the Bot")} disabled={team.callTheBot || (player.isRandomlySelected && player.name === playerName)} >
+                            Call the bot
+                        </button>
 
                         {player.name === playerName && player.isRandomlySelected? null:
                         <button className='buttonNew rounded-md px-3 py-2 mb-3 mt-4 text-lg font-bold text-center'

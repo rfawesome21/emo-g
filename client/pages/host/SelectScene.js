@@ -79,14 +79,13 @@ const SelectScene = () => {
             }
     },  [socket])
 
-
     return (
         <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
             <div className="flex justify-center mt-10">
                 {!createScenes?<div className="rounded p-10 w-3/4 heading">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div className="flex items-center justify-between px-3 pb-4">

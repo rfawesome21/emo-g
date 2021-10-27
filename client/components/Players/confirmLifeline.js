@@ -5,9 +5,8 @@ const ConfirmLifeline = (props) => {
                <div className="text-xl font-bold">
                     Do you want to use the lifeline<br />{props.lifeLine}?
                </div>
-               <div className="my-2">This will do some shit</div>
                <div className="flex justify-evenly items-center">
-                    <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => {}}>Yes</div>
+                    <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => props.setConfirmLifeline(false)}>Yes</div>
                     <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => props.setConfirmLifeline(false)}>No</div>
                </div>
             </div>                

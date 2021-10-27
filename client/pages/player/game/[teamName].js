@@ -51,10 +51,7 @@ const game = () => {
     const [guessedEmotions, setGuessedEmotions] = useState([])
     const [gameLog, setGameLog] = useState([])
 
-    const [callHost, setCallHost] = useState(false)
-    const [callHostFunction, setCallHostFunction] = useState(false)
-
-    
+    const [callHost, setCallHost] = useState(false)    
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
@@ -179,6 +176,11 @@ const game = () => {
             clearInterval(timerRef.current)
         }
     }, [counter, active, guessCounter, socket])
+
+    const callHostF = () => {
+        socket.emit('call-the-host', {gameCode, teamName})
+        setCallHost(false)
+    }
 
     const guessEmotion = (e) => {
         if(guessedEmotions.length >= 2){
@@ -360,7 +362,7 @@ const game = () => {
                             Do you want to call<br />the Host?
                         </div>
                         <div className="flex justify-evenly items-center">
-                            <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => setCallHostFunction(true)}>Yes</div>
+                            <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => callHostF()}>Yes</div>
                             <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => setCallHost(false)}>No</div>
                         </div>
                     </div>                

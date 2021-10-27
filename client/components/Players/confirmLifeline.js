@@ -12,7 +12,7 @@ const ConfirmLifeline = (props) => {
                case 'This or That':
                    socket.emit('this-or-that', {gameCode, teamName})
                    break
-               case 'Call The Bot':
+               case 'Call the Bot':
                    socket.emit('call-the-bot', {gameCode, teamName})
                    break
                case 'Delete a row':

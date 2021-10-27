@@ -102,7 +102,7 @@ const ChooseEmotions = () => {
                         </div>
 
                         <div className="grid grid-cols-2 text-xl grid-flow-row h-3/4 scl auto-rows-max gap-2 overflow-y-auto">
-                            {emotionArray.map((emotion, index) => <div className="py-2 text-left px-3 w-40 h-18 font-bold text-md inputs burlywoodBorder rounded-lg grid relative" key={index} >Round{` 0${index + 1}`}
+                            {emotionArray.map((emotion, index) => <div className="py-2 text-left px-3 w-40 h-18 font-bold text-md inputs burlywoodBorder rounded-lg grid relative" key={index} >Round {`${index + 1}`.length>1?`${index + 1}`:`0${index + 1}`}
                                 <span className="text-base font-normal">{emotion}</span>
                                 <span className="absolute top-0 right-0 cursor-pointer" onClick={() => setEdit(index)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

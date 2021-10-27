@@ -43,6 +43,11 @@ const game = () => {
     const [deletedRow, setDeletedRow] = useState([])
     const [guessedEmotions, setGuessedEmotions] = useState([])
 
+    const [callHost, setCallHost] = useState(false)
+    const [callHostFunction, setCallHostFunction] = useState(false)
+
+    
+
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
         setPlayerName(sessionStorage.getItem('player-name'))
@@ -234,6 +239,7 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen bgNormal">
+            {console.log("TEam", team)}
             <div className="flex justify-end my-8">
                 
             </div>
@@ -322,7 +328,7 @@ const game = () => {
             </div>
 
             <div className="flex justify-end absolute bottom-4 right-0">
-                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer">
+                <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer" onClick={() => setCallHost(true)}>
                     Call host
                 </div>
                 <div className="buttonNew rounded font-bold py-2 px-4 mx-2 cursor-pointer" onClick={() => ruleBookClicked(true)}>
@@ -339,6 +345,20 @@ const game = () => {
                     <div className="text-center font-bold text-2xl mt-4">RULE BOOK</div>
                 </div>
             </div>:<></>}
+
+            {callHost?
+                <div className="h-screen w-screen bg-opacity-50 absolute top-0 left-0 flex justify-center items-center" style={{backgroundColor:"rgba(235, 162, 130, 0.5)"}}>
+                    <div className="bg-gray-200 rounded-lg p-4 text-center" style={{backgroundColor:"#fffaee", color:"#da764b"}}>
+                        <div className="text-xl font-bold">
+                            Do you want to call<br />the Host?
+                        </div>
+                        <div className="flex justify-evenly items-center">
+                            <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => setCallHostFunction(true)}>Yes</div>
+                            <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => setCallHost(false)}>No</div>
+                        </div>
+                    </div>                
+                </div>
+            :<></>}
 
             {confirmLifeline?<ConfirmLifeline setConfirmLifeline={setConfirmLifeline} lifeLine={confirmLifeline}/>:<></>}
         </div>

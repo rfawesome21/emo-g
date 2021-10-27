@@ -35,7 +35,7 @@ const DashboardTeamPlayers = ({activeTeam}) => {
                     </div>
                     )}
                 </div>
-                <div className='flex flex-col flex-1 font-semibold pt-4'>
+                <div className='flex flex-col flex-1 font-bold pt-4'>
                         {activeTeam && activeTeam.emotionsGuessed.map((emotion, index) => 
                         <div className='px-2 pt-2'>
                             Round {index + 1}

@@ -5,7 +5,11 @@
 // let mode = 'default'
 // let { roomSpecificGamePlay, Password} = require('./GameVariables')
 
+const { Emotions, CompoundEmotions } = require("../data/Emotions")
+const { getRandomInt } = require("./GameFunctions")
 const { roomArrayMap } = require("./GameVariables")
+const GameEmotions = JSON.parse(JSON.stringify(Emotions))
+
 
 module.exports = (io, socket) => {
 
@@ -14,6 +18,23 @@ module.exports = (io, socket) => {
     const setRounds = ({MAX_ROUND, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.MAX_ROUNDS = Number(MAX_ROUND)
+        let myEmotionData = new Set()
+        let j = 0
+        while(myEmotionData.size !== Number(MAX_ROUND)){
+            let i = getRandomInt(0, Emotions.length - 1)
+            if(myEmotionData.size < MAX_ROUND - 2){
+                myEmotionData.add(GameEmotions[i][j])
+                j = 1
+            }
+            else{
+                i = getRandomInt(0, CompoundEmotions.length - 1)
+                myEmotionData.add(CompoundEmotions[i])
+            }
+        }
+        myEmotionData = [...myEmotionData]
+
+        roomObject.emotion = myEmotionData
+        console.log(roomObject.emotion);
     }
 
     const setTimer = ({guesser, typer, gameCode}) => {

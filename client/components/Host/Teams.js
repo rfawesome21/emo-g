@@ -1,11 +1,10 @@
 import { useState } from "react";
-import TeamPlayers from "../TeamPlayers";
 import DashboardTeamPlayers from "./DashboardTeamPlayers";
 
 const Teams = ({teams, rounds}) => {
     console.log(teams);
     const [activeTeam, setActiveTeam] = useState(1)
-
+    console.log(rounds);
     return ( 
         <div className="flex justify-center items-center h-screen">
             <div className=" h-2/3 w-4/5 flex">

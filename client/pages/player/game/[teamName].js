@@ -84,9 +84,6 @@ const game = () => {
                 sessionStorage.removeItem('type-counter')
                 sessionStorage.removeItem('guess-counter')
             }
-            if(roundNumber > maxRounds.current){
-                router.push('/leaderboard')
-            }
             setGuessedEmotions([])
             sessionStorage.setItem('round-no-team', roundNumber)
             setRoundNo(roundNumber)
@@ -95,9 +92,16 @@ const game = () => {
         socket.on('set-this-to-true', bool => setThisOrThatBool(bool))
 
         socket.on('max-rounds', maxRound => { maxRounds.current = maxRound })
-
+        socket.on('go-to-leaderboard', () => router.push('/leaderboard'))
         socket.on('game-log', gameLog => {
             setGameLog(gameLog)})
+
+        socket.on('reset-emotions', () => {
+            setDeletedRow([])
+            setOtherEmotion("")
+            setCorrectEmotion("")
+            setThirdEmotion("")
+        })
 
         socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
         socket.on('team-score', score => setScore(score))

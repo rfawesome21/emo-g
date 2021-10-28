@@ -10,7 +10,6 @@ const leaderboard = () => {
     }
 
     useEffect(() => {
-        sessionStorage.clear()
         socket.emit('join-leaderboard',sessionStorage.getItem('game-code'))
         socket.on('team-scores', teams => setTeams(teams))
     },[socket])

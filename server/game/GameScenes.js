@@ -37,7 +37,7 @@ module.exports = (io, socket) => {
 
     const gameScenes = (gameCode) => {
         socket.join(gameCode)
-        io.in(gameCode).emit('players',roomArrayMap.get(gameCode).players)
+        io.in(gameCode).emit('players',roomArrayMap.get(gameCode).playerDetails)
     }
 
     const addScene = ({scene, nudgeStatement, nudgeRole1, nudgeRole2, gameCode, initialStatementOne, initialStatementTwo, nudgeRoundNo}) => {

@@ -9,6 +9,7 @@ import Emotion from "../../components/Host/Emotion"
 import Scoring from "../../components/Host/Scoring"
 import Teams from "../../components/Host/Teams"
 import { SocketContext } from "../../context/socket/SocketContext"
+import router from "next/router"
 
 const hostDashboard = () => {
 
@@ -20,7 +21,7 @@ const hostDashboard = () => {
     const [emotionArray, setEmotionArray] = useState(["Hate", "Love", "Greed", "Jealous"])
     const [playersWithoutTeams, setPlayers] = useState([])
     const [teams, setTeams] = useState([])
-    const [rounds, setMaxRounds] = useState(10)
+    const [rounds, setMaxRounds] = useState()
     
     const [otherCorrect, setOtherCorrect] = useState(2)
     const [otherIncorrect, setOtherIncorrect] = useState(0)
@@ -36,12 +37,13 @@ const hostDashboard = () => {
            socket.on('guessing-timer', guessingTimer => setGuessingTime(guessingTimer))
            socket.on('player-without-teams', players => setPlayers(players))
            socket.on('emotions', emotions => setEmotionArray(emotions) )
-           socket.on('max-round', maxRound => setMaxRounds(maxRound))
+           socket.on('max-rounds', maxRound => setMaxRounds(maxRound))
            socket.on('compound-correct', compoundCorrect => setCompoundCorrect(compoundCorrect))
            socket.on('compound-incorrect', compoundIncorrect => setCompoundIncorrect(compoundIncorrect))
            socket.on('adjacent', otherAdjacent => setOtherAdjacent(otherAdjacent))
            socket.on('other-correct', otherCorrect => setOtherCorrect(otherCorrect))
            socket.on('other-incorrect', otherIncorrect => setOtherIncorrect(otherIncorrect))
+           socket.on('leaderboard-js', () => router.push('/leaderboard'))
     },  [socket])
 
 

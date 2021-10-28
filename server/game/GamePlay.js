@@ -180,6 +180,7 @@ module.exports = (io, socket) => {
         console.log(guessedEmotions);
         console.log(guessedEmotions[0]);
         console.log(guessedEmotions[1]);
+        console.log(gameCode);
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
         if(guessedEmotions.includes(roomObject.emotion[team.roundNo - 1])){
             console.log(roomObject.emotion[team.roundNo - 1]);

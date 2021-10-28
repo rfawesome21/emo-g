@@ -8,7 +8,6 @@ import SettingsAndBack from "../../../components/settingsAndBack"
 const game = () => {
 
     const router = useRouter()
-    const { teamName } = router.query
 
 
     const [ruleBook, ruleBookClicked] = useState(false)
@@ -29,7 +28,6 @@ const game = () => {
     const [isTimerOver, setIsTimerOver] = useState(false)
     const [timeFormat, setTimeFormat] = useState('')
     const [timeGuesserFormat, setTimeGuesserFormat] = useState('')
-    const [active, setActive] = useState(false)
     const [counter, setCounter] = useState(90)
     const [guessCounter, setGuessCounter] = useState(180)
     const [gameCode, setGameCode] = useState('')
@@ -124,7 +122,7 @@ const game = () => {
 
     useEffect(() => {
 
-        
+        const teamName = sessionStorage.getItem('team-name')
         socket.on('your-three-choices', ({correctEmotion, otherEmotion, thirdEmotion}) => {
             setCorrectEmotion(correctEmotion)
             setOtherEmotion(otherEmotion)
@@ -141,6 +139,7 @@ const game = () => {
         if(sessionStorage.getItem('type-counter')){
             setCounter(Number(sessionStorage.getItem('type-counter')))
         }
+        let active = false
         if(!active)
         {
             if(counter !== 0){
@@ -174,7 +173,10 @@ const game = () => {
                 }
                 else{
                     const emotion = ''
-                    socket.emit('guessed', {gameCode, teamName, emotion, playerName })
+                    console.log('Alohomora');
+                    console.log(guessCounter);
+                    if(!player.isRandomlySelected && player.name !== playerName)
+                        socket.emit('guessed', {gameCode, teamName, emotion, playerName })
                     clearInterval(timerRef.current)
                     setTimeGuesserFormat('00:00')
                     setGuessCounter(0)
@@ -184,10 +186,13 @@ const game = () => {
         }
         return() => {
             clearInterval(timerRef.current)
+            active = true
         }
-    }, [counter, active, guessCounter, socket])
+
+    }, [counter, guessCounter, socket])
 
     const callHostF = () => {
+        let teamName = sessionStorage.getItem('team-name')
         socket.emit('call-the-host', {gameCode, teamName})
         setCallHost(false)
     }
@@ -209,7 +214,6 @@ const game = () => {
         setOtherEmotion("")
         setCorrectEmotion("")
         setThirdEmotion("")
-        const gameCode = sessionStorage.getItem('game-code')
         sessionStorage.removeItem('is-disabled')
         sessionStorage.removeItem('is-time-over')
         sessionStorage.removeItem('type-counter')
@@ -232,13 +236,13 @@ const game = () => {
     }
 
     const onChangeHandler = (e) => {
-        
-        const gameCode = sessionStorage.getItem('game-code')
+        const teamName = sessionStorage.getItem('team-name')
         setStatement(e.target.value)
         socket.emit('is-typing', {gameCode, teamName, playerName})
     }
 
     const onSubmit = () => {
+        let teamName = sessionStorage.getItem('team-name')
         setStatement('')
         let message = messages.slice(0)
         message.push(statement)

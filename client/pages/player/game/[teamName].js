@@ -221,11 +221,11 @@ const game = () => {
         setIsTimerOver(false)
         if(!thisOrThatBool && emotion === '')
         {
-            alert('Please select an emotion')
+            alert('Please select an emotion.')
             return
         }
         if(thisOrThatBool && guessedEmotions.length < 2){
-            alert('Please select at least two emotions')
+            alert('Please select at least two emotions.')
             return
         }
         const teamName = sessionStorage.getItem('team-name')

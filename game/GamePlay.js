@@ -46,6 +46,7 @@ module.exports = (io, socket) => {
 
     const emotionGuessed = ({gameCode, teamName, emotion, playerName}) => {
         emotion = emotion.toUpperCase()
+        console.log('The Player guessed an emotion! ');
         const roomObject = roomArrayMap.get(gameCode)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
 

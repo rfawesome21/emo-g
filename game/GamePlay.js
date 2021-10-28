@@ -108,6 +108,21 @@ module.exports = (io, socket) => {
         }
         if(team.roundNo < roomObject.MAX_ROUNDS)
             team.roundNo += 1
+        else{
+            team.emotionsGuessed.push(emotion)
+            io.in(`${gameCode}-${teamName}`).emit('go-to-leaderboard')
+            io.in(gameCode).emit('team-details', roomObject.teams)
+            let j = 0
+            for(var i of roomObject.teams){
+                if(i.emotionsGuessed.length === roomObject.MAX_ROUNDS)
+                    j += 1
+            }
+            if(j === roomObject.teams.length)
+            {
+                io.in(gameCode).emit('leaderboard-js')
+            }
+            return
+        }
         team.emotionsGuessed.push(emotion)
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
@@ -144,7 +159,17 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
+        io.in(`${gameCode}-${teamName}`).emit('reset-emotions')
         io.in(gameCode).emit('team-details', roomObject.teams)
+        let j = 0
+        for(var i of roomObject.teams){
+            if(i.emotionsGuessed.length === roomObject.MAX_ROUNDS)
+                j += 1
+        }
+        if(j === roomObject.teams.length)
+        {
+            io.in(gameCode).emit('leaderboard-js')
+        }
     }
 
     const emotionGuessedArray = ({gameCode, teamName, guessedEmotions, playerName}) => {
@@ -174,12 +199,6 @@ module.exports = (io, socket) => {
                 (e => e.emotion === roomObject.emotion[team.roundNo - 1]).colorTwo
                 
             }
-            console.log(correctColoredEmotion);
-            console.log(colorTwoCorrectColoredEmotion);
-            console.log(coloredEmotion);
-            console.log(coloredOtherEmotion);
-            console.log(allEmotionsOfThisColor);
-            console.log(allOtherEmotionsOfThisColor);
             let localVar = 0
             for(let i of allEmotionsOfThisColor){
                 if(i.color === correctColoredEmotion){
@@ -230,6 +249,10 @@ module.exports = (io, socket) => {
 
         if(team.roundNo < roomObject.MAX_ROUNDS)
             team.roundNo += 1
+        else{
+            io.in(`${gameCode}-${teamName}`).emit('go-to-leaderboard')
+            return
+        }
         
         team.emotionsGuessed.push(guessedEmotions)
         team.typingTimer = roomObject.typingTimer
@@ -251,7 +274,7 @@ module.exports = (io, socket) => {
         })
 
 
-        if(team.roundNo === roomObject.scene[0].nudgeRoundNo - 1){
+        if(team.roundNo === roomObject.scene[0].nudgeRoundNo){
             team.messages.push(roomObject.scene[0].nudge)
         }
 
@@ -267,8 +290,18 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
         io.in(`${gameCode}-${teamName}`).emit('current-team', team)
         io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
+        io.in(`${gameCode}-${teamName}`).emit('reset-emotions')
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
         io.in(gameCode).emit('team-details', roomObject.teams)
+        let j = 0
+        for(var i of roomObject.teams){
+            if(i.emotionsGuessed.length === roomObject.MAX_ROUNDS)
+                j += 1
+        }
+        if(j === roomObject.teams.length)
+        {
+            io.in(gameCode).emit('leaderboard-js')
+        }
     }
 
     const hostDashboard = (gameCode) => {

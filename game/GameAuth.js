@@ -110,21 +110,7 @@ module.exports = (io, socket) => {
         })
 
 
-        let myEmotionData = new Set()
-        let j = 0
-        while(myEmotionData.size !== 10){
-            let i = getRandomInt(0, Emotions.length - 1)
-            if(myEmotionData.size < 7){
-                myEmotionData.add(GameEmotions[i][j])
-                j = 1
-            }
-            else{
-                i = getRandomInt(0, CompoundEmotions.length - 1)
-                myEmotionData.add(CompoundEmotions[i])
-            }
-        }
 
-        myEmotionData = [...myEmotionData]
 
         roomArrayMap.set(code, {
             id : code,
@@ -142,7 +128,7 @@ module.exports = (io, socket) => {
             emotions : GameEmotions,
             compoundEmotions : GameCompoundEmotions,
             emotionsPerRounds : [],
-            emotion : myEmotionData,
+            emotion : [],
             mode : '',
             manuallySetScene : false,
             manuallySetEmotion : false,
@@ -153,7 +139,7 @@ module.exports = (io, socket) => {
             adjacent : 1
         })
         
-        console.log(roomArrayMap.get(code).emotion);
+        console.log(roomArrayMap.get(code).scene);
 
         io.to(socket.id).emit('guessing-timer', roomArrayMap.get(code).guessingTimer)
         io.to(socket.id).emit('typing-timer', roomArrayMap.get(code).typingTimer)

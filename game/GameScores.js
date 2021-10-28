@@ -16,6 +16,7 @@ module.exports = (io, socket) => {
     const showLeaderBoard = (gameCode) => {
         socket.join(gameCode)
         let roomObject = roomArrayMap.get(gameCode)
+        roomObject.teams = roomObject.teams.sort((a, b) => b.score - a.score)
         io.in(gameCode).emit('team-scores',roomObject.teams)
     }
     

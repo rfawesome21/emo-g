@@ -224,6 +224,7 @@ const game = () => {
             alert('Please select at least two emotions')
             return
         }
+        const teamName = sessionStorage.getItem('team-name')
         thisOrThatBool?
         socket.emit('guessed-array', {gameCode, teamName, guessedEmotions, playerName})
         :

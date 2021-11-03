@@ -241,9 +241,6 @@ text {
 .cls-9 {
   fill: #f99d75;
 }
-.disabled {
-  fill: gray;
-}
 .cls-10 {
   fill: #f17b3d;
 }
@@ -398,6 +395,10 @@ text {
   cursor: pointer;
 }
 
+.disabled {
+  fill: gray;
+}
+
 .buttonNew:hover {
   background-color: #eba282;
   color: #fffaee;
@@ -544,7 +545,12 @@ text {
 
 .stroke:hover {
   stroke: black;
-  stroke-width: 2px;
+  stroke-width: 4px;
+}
+
+.selected {
+  stroke: black;
+  stroke-width: 4px;
 }
 
 .acceptance {

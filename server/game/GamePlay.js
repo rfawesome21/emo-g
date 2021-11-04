@@ -324,6 +324,7 @@ module.exports = (io, socket) => {
 
     const quitGame = (gameCode) => {
         console.log('Quitting Game...');
+        roomArrayMap.delete(gameCode)
         io.in(gameCode).emit('quit-game')
     }
 

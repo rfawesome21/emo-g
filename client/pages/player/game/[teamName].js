@@ -198,11 +198,17 @@ const game = () => {
     }
 
     const guessEmotion = (e) => {
-        if(guessedEmotions.length >= 2){
-            alert('You guessed two emotions already!')
-            return
+        // if(guessedEmotions.length >= 2){
+        //     alert('You guessed two emotions already!')
+        //     return
+        // }
+        if (thisOrThatBool){
+            guessedEmotions.length >= 2?guessedEmotions.shift():null
+            guessedEmotions.push(e)
+        } else {
+            setEmotion(e)
         }
-        thisOrThatBool? guessedEmotions.push(e) : setEmotion(e)
+        console.log(guessedEmotions, "hi");
     }
 
     const confirmTheLifeline = (text) => {
@@ -225,7 +231,7 @@ const game = () => {
             return
         }
         if(thisOrThatBool && guessedEmotions.length < 2){
-            alert('Please select at least two emotions.')
+            alert('Please select two emotions.')
             return
         }
         const teamName = sessionStorage.getItem('team-name')
@@ -318,7 +324,7 @@ const game = () => {
                     <div className="font-bold px-8 py-4 heading rounded-xl w-3/4 text-lg">
                         Scene: {scene.scene}
                     </div>
-                    {player.isRandomlySelected && player.name === playerName? <Wheel emotionFunction = {guessEmotion} currentRoundEmotion={currentRoundEmotion} /> : <Wheel emotionFunction = {guessEmotion} deletedRow={deletedRow} callRobot={[correctEmotion, otherEmotion, thirdEmotion]}/> }
+                    {player.isRandomlySelected && player.name === playerName? <Wheel emotionFunction = {guessEmotion} currentRoundEmotion={currentRoundEmotion} /> : <Wheel emotionFunction = {guessEmotion} deletedRow={deletedRow} callRobot={[correctEmotion, otherEmotion, thirdEmotion]} thisOrThatBool={thisOrThatBool} guessedEmotions={guessedEmotions}/> }
                 </div>
                 <div className="flex flex-column mx-2 flex-1" style={{height:"80vh"}}>
                     <div className="font-bold flex p-2 heading rounded-lg text-lg">

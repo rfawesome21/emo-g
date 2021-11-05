@@ -48,7 +48,7 @@ const scenes = () => {
 
     return (
         <div className="flex flex-row justify-center h-screen bgNormal">
-            {/* <SettingsAndBack link='/host/settings' /> */}
+            <SettingsAndBack link='/host/settings' player={false}/>
             <EndGame />
             
             <div className="flex flex-col justify-evenly">

@@ -8,9 +8,9 @@ const Host = () => {
     return (
         <div className='h-full flex flex-col'>
             <br/>
-            <input className='inputs rounded-md p-2 text-black text-center' placeholder='Username' />
+            <input className='inputs rounded-md p-2 text-black text-center' placeholder='User ID' />
             <input className='inputs rounded-md p-2 mt-3 text-black text-center' placeholder='Password' />
-            <div className="absolute xs-mobile:bottom-36 tall-devices:bottom-72 left-0 flex justify-center w-100"><Button text = {'Login'} clickHandler = {() => router.push('/host/settings')} /></div>
+            <div className="absolute xs-mobile:bottom-36 tall-devices:bottom-72 left-0 flex justify-center w-100"><Button text = {'LOGIN'} clickHandler = {() => router.push('/host/settings')} /></div>
         </div>
     )
 }

@@ -22,6 +22,8 @@ const SelectScene = () => {
     const [statementTwo, setStatementTwo] = useState('')
     const [sceneID, setSceneID] = useState()
     const [nudgeRoundNo, setNudgeRoundNo] = useState(4)
+    const [search, setSearch] = useState("")
+
 
     const router = useRouter()
 
@@ -81,16 +83,17 @@ const SelectScene = () => {
 
     return (
         <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
+            <SettingsAndBack link="/host/scenes" player={false}/>
             <div className="flex justify-center mt-10">
                 {!createScenes?<div className="rounded p-10 w-3/4 heading">
                     <div className="font-bold mb-5 align-center text-center text-3xl">Choose a Scene
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 cursor-pointer inline-block float-right" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={() => router.push("/host/scenes")}>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div className="flex items-center justify-between px-3 pb-4">
                         <div className="h-8">
-                            <input placeholder="  Search" className="burlywoodBorder burlywoodText rounded h-100"/>
+                            <input placeholder="  Search" value={search} onChange={(event) => setSearch(event.target.value)} className="burlywoodBorder burlywoodText rounded h-100"/>
                         </div>
                         <div className="float-right">
                             <button className="buttonNew rounded px-3 py-2 text-lg font-bold" onClick = {() =>  {
@@ -110,9 +113,9 @@ const SelectScene = () => {
                     </div>
                     <div className="h-64 w-full grid grid-flow-row lg:grid-cols-2 px-1 xl:grid-cols-3 md:grid-cols-1 gap-3 text-xl overflow-y-auto scl">
                         {scenes && scenes.map((scene, index) => {
-                            if(index > 0){
+                            if(index > 0 && scene.scene.toLowerCase().search(search.toLowerCase())!==-1){
                                 return(
-                                <div className={selectedItem.includes(index)? 'border-2 rounded ebaBorder ebaBg whiteText' : 'burlywoodBorder rounded'} key = {index*100}>
+                                <div className={selectedItem.includes(index)? 'border-2 rounded ebaBorder ebaBg whiteText h-36' : 'burlywoodBorder rounded h-36'} key = {index*100}>
                                     <button className="py-2 lg:px-4 text-left h-32 w-100 rounded overflow-y-auto scl"
                                     onClick = {() => {
                                         let arr = selectedItem.slice(0)

@@ -16,9 +16,11 @@ const choice = () => {
     const [gameCodeZ, setGameCode] = useState("")
     const socket = useContext(SocketContext)
     const [playerMax, setPlayerMax] = useState()
+    const [myTeam, setMyTeam] = useState()
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
     const [mode, setMode] = useState('')
+    const [playerName, setPlayerName] = useState("")
 
 
     useEffect(() => {
@@ -26,6 +28,7 @@ const choice = () => {
         socket.on('players', players => setNumberOfPlayers(players.length))
         socket.on('removed', () => window.location.href = '/play')
         const playerName = sessionStorage.getItem('player-name')
+        setPlayerName(playerName)
         const gameCode = sessionStorage.getItem('game-code')
         socket.emit('player-in-teams', {gameCode, playerName})
         socket.on('player-teams', ({teams,mode}) => {
@@ -51,8 +54,11 @@ const choice = () => {
         setActiveTeam(active)
     }
 
+    const findMyTeam()
+
     return ( 
         <div className="flex flex-col justify-center items-center bgNormal h-screen">
+            {console.log(teams, "boo")}
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCodeZ} numberOfPlayers={numberOfPlayers}/></div>
@@ -60,7 +66,7 @@ const choice = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} player={true} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} activeTeam={activeTeam} player={true} />) : (null)}
                 </div>
                 <div className='w-3/12'>
                 {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true} mode = {mode} /> : null}

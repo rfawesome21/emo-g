@@ -59,19 +59,20 @@ const teams = () => {
 
     return ( 
         <div className="flex flex-row justify-center h-screen bgNormal">
+            <SettingsAndBack link="/host/scoring" player={false}/>
             <div className="flex flex-column justify-evenly">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>
                 </div>
 
                 <div className="flex flex-row justify-between items-center container">
-                    <div className="heading rounded-xl px-12 py-8 mr-12 flex flex-column justify-evenly" style={{flex:4}}>
-                        <div className="font-bold text-xl mt-1">Divide players into Teams</div>
-                        <div className="text-xl mt-4 flex justify-between">Players per team:  <input type="number" min="2" max = "10" className="w-16 burlywoodBorder rounded pl-2"
+                    <div className="heading ebaText rounded-xl px-12 py-8 mr-12 flex flex-column justify-evenly" style={{flex:4}}>
+                        <div className="font-bold burlywoodText text-xl mt-1">Divide players into Teams</div>
+                        <div className="text-xl mt-4 flex justify-between">Players per team:  <input type="number" min="2" max = "10" className="w-12 ebaBorder rounded pl-2"
                         value = {playersPerTeam}
                         onChange = {(e) => onChangeHandler(e)}
                         /></div>
-                        <div className="text-xl mt-1 flex justify-between">No of Teams:  <input type="number" className="w-16 burlywoodBorder rounded pl-2"
+                        <div className="text-xl mt-1 flex justify-between">No of Teams:  <input type="number" className="w-12 ebaBorder rounded pl-2"
                         value = {Math.ceil(numberOfPlayers/playersPerTeam)} onChange = {(e) => setNumberTeams(e.target.value)}
                         /></div>
                         <div className="text-xl mt-4"> <input type="radio" defaultChecked name = 'option' onClick = {() => setMode('random')} /> Random  </div>

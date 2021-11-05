@@ -61,11 +61,11 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTe
                 {display==="teams"?teams.map((team, index) => {
                     return(
                         <div className='text-lg' key = {index} onClick={(event) => console.log(event, "click")}>
-                            <div className={team.teamName===activeTeam?'flex w-40 h-24 inputs flex-col items-start justify-around whiteText rounded-lg ebaBg mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':"flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap"} onClick = {() => activeIcon(team.teamName)}>
+                            <div className={team.teamName===activeTeam?'flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder border-3 mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':"flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg ebaBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap border-1"} onClick = {() => activeIcon(team.teamName)}>
                                 <div className='self-start font-bold flex-wrap'>
                                     {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
                                 </div>
-                                <div>
+                                <div className="ebaText">
                                     {team.teamMembers.length} players
                                 </div>
                             </div>

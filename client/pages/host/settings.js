@@ -79,8 +79,8 @@ const settings = () => {
                     <br/>
                     <div className="container-fluid my-2 text-lg">
                         <div className="row">
-                            <div className="col-6 p-0">Guessing time</div>
-                            <div className="col-6 p-0">
+                            <div className="col-6 ebaText p-0">Guessing time</div>
+                            <div className="col-6 ebaText p-0">
                                 <input type="number"
                                 min="1"
                                 max="10"
@@ -102,8 +102,8 @@ const settings = () => {
                     </div>
                     <div className="my-2 text-lg container-fluid">
                         <div className="row">
-                            <div className="col-6 p-0">Typing time</div>
-                            <div className="col-6 p-0">
+                            <div className="col-6 ebaText font-normal p-0">Typing time</div>
+                            <div className="col-6 ebaText p-0">
                                 <input 
                                 type="number" 
                                 min='1' 
@@ -130,10 +130,10 @@ const settings = () => {
                     <br />
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-6 text-lg p-0">
+                            <div className="col-6 ebaText text-lg font-normal p-0">
                                 No. of rounds
                             </div>
-                            <div className="col-6 p-0">
+                            <div className="col-6 ebaText p-0">
                                 <input 
                                 value={numberOfRounds} 
                                 onChange={event => setNumberOfRounds(event.target.value)} 

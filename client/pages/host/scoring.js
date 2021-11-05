@@ -39,7 +39,7 @@ const Scoring = () => {
 
     return ( 
         <div className="flex flex-row bgNormal justify-center h-screen">
-
+            <SettingsAndBack link="/host/scenes" player={false}/>
             <div className="flex flex-col items-center justify-evenly">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>
@@ -47,32 +47,32 @@ const Scoring = () => {
 
                 <div className="heading rounded-xl flex justify-around items-center h-1/2" style={{width:"50vw"}}>
                     <div>
-                        <div className="text-2xl mb-8 font-bold">Other Emotion</div>
-                        <div className="text-2xl flex justify-between">
+                        <div className="text-2xl mb-8 font-bold">Other Emotions</div>
+                        <div className="text-xl flex justify-between">
                             <div>Correct Guess:</div>
-                            <input type="number" value={otherCorrect} onChange={(event) => setOtherCorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                            <input type="number" value={otherCorrect} onChange={(event) => setOtherCorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 ebaText inputs ebaBorder"/>
                         </div>
                         <br/>
-                        <div className="text-2xl flex justify-between">
+                        <div className="text-xl flex justify-between">
                             <div>Adjacent Cell:</div>
-                            <input type="number" value={otherAdjacent} onChange={(event) => setOtherAdjacent(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                            <input type="number" value={otherAdjacent} onChange={(event) => setOtherAdjacent(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 ebaText inputs ebaBorder"/>
                         </div>
                         <br/>
-                        <div className="text-2xl flex justify-between">
+                        <div className="text-xl flex justify-between">
                             <div>Incorrect Guess:</div>
-                            <input type="number" value={otherIncorrect} onChange={(event) => setOtherIncorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                            <input type="number" value={otherIncorrect} onChange={(event) => setOtherIncorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 ebaText inputs ebaBorder"/>
                         </div>
                     </div>
                     <div>
-                        <div className="text-2xl mb-8 font-bold">Compound Emotion</div>
-                        <div className="text-2xl flex justify-between">
+                        <div className="text-2xl mb-8 font-bold">Compound Emotions</div>
+                        <div className="text-xl flex justify-between">
                             <div>Correct Guess:</div>
-                            <input type="number" value={compoundCorrect} onChange={(event) => setCompoundCorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                            <input type="number" value={compoundCorrect} onChange={(event) => setCompoundCorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 ebaText inputs ebaBorder"/>
                         </div>
                         <br/>
-                        <div className="text-2xl flex justify-between">
+                        <div className="text-xl font-thin flex justify-between">
                             <div>Incorrect Guess:</div>
-                            <input type="number" value={compoundIncorrect} onChange={(event) => setCompoundIncorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 burlywoodText inputs burlywoodBorder"/>
+                            <input type="number" value={compoundIncorrect} onChange={(event) => setCompoundIncorrect(event.target.value)} className="ml-4 w-16 rounded-lg pl-2 ebaText inputs ebaBorder"/>
                         </div>
                     </div>
                 </div>

@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SocketContext } from '../context/socket/SocketContext';
 import PlayerComponent from './Host/PlayerComponent';
 
-const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTeam}) => {
+const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTeam, playerName}) => {
     console.log(playersWithoutTeams);
     const [display, setDisplay] = useState("teams")    
     const [players, setPlayers] = useState(playersWithoutTeams)
+    const [myTeam, setMyTeam] = useState()
     const socket = useContext(SocketContext)
 
     const [menu, setMenu] = useState(undefined)
@@ -19,11 +20,23 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTe
         document.addEventListener("contextmenu", function(event){event.preventDefault()})
     },[])
 
+    useEffect(() => {
+        teams.forEach((team) => {
+            if(team?.teamMembers?.length>0){
+                team.teamMembers.forEach((member) => {
+                    if (member.name===playerName){
+                        setMyTeam(team.teamName)
+                        console.log(team.teamName, "Teamname")
+                    }
+                })
+            }
+        })
+    }, [teams])
+
     const createNewTeam = () => {
         socket.emit('create-team', sessionStorage.getItem('game-code'))
     }
 
-    console.log("teams", teams);
     return (
         <div className="heading rounded-xl px-12 py-8 mt-5 overflow-y-hidden scl" style={{minHeight:"50vh", maxHeight:"26rem"}}>
             <div className='flex flex-row justify-between items-center'>
@@ -59,13 +72,14 @@ const TeamComponent = ({teams, activeIcon, player, playersWithoutTeams, activeTe
             </div>
             <div className='flex max-h-64 justify-between scl flex-row flex-wrap overflow-y-auto'>
                 {display==="teams"?teams.map((team, index) => {
+                    console.log(team, "team")
                     return(
                         <div className='text-lg' key = {index} onClick={(event) => console.log(event, "click")}>
-                            <div className={team.teamName===activeTeam?'flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder border-3 mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':"flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg ebaBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap border-1"} onClick = {() => activeIcon(team.teamName)}>
+                            <div className={team.teamName===myTeam?'flex w-40 h-24 inputs flex-col items-start justify-around whiteText rounded-lg ebaBg mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':team.teamName===activeTeam?'flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg burlywoodBorder border-3 mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap':"flex w-40 h-24 inputs flex-col items-start justify-around burlywoodText rounded-lg ebaBorder mb-3 px-3 cursor-pointer py-2 m-2 flex-wrap border-1"} onClick = {() => activeIcon(team.teamName)}>
                                 <div className='self-start font-bold flex-wrap'>
                                     {index < 9? `Team 0${index+1}` : `Team ${index+1}`}
                                 </div>
-                                <div className="ebaText">
+                                <div className={team.teamName===myTeam?"whiteText":"ebaText"}>
                                     {team.teamMembers.length} players
                                 </div>
                             </div>

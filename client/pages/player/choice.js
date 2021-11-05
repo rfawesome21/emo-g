@@ -16,7 +16,6 @@ const choice = () => {
     const [gameCodeZ, setGameCode] = useState("")
     const socket = useContext(SocketContext)
     const [playerMax, setPlayerMax] = useState()
-    const [myTeam, setMyTeam] = useState()
     const [teams, setTeams] = useState([])
     const [activeTeam, setActiveTeam] = useState(1)
     const [mode, setMode] = useState('')
@@ -54,11 +53,8 @@ const choice = () => {
         setActiveTeam(active)
     }
 
-    const findMyTeam()
-
     return ( 
         <div className="flex flex-col justify-center items-center bgNormal h-screen">
-            {console.log(teams, "boo")}
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCodeZ} numberOfPlayers={numberOfPlayers}/></div>
@@ -66,10 +62,10 @@ const choice = () => {
             </div>
             <div className='flex flex-row w-full justify-evenly'>
                 <div className='lg:w-6/12 md:w-6/12'>
-                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} activeTeam={activeTeam} player={true} />) : (null)}
+                    {teams? (<TeamComponent teams = {teams} activeIcon = {activeButton} activeTeam={activeTeam} player={true} playerName={playerName}/>) : (null)}
                 </div>
                 <div className='w-3/12'>
-                {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true} mode = {mode} /> : null}
+                {teams? <TeamPlayers teams = {teams.find(t => t.teamName == activeTeam)} activeTeam = {activeTeam} allTeams = {teams} player={true} mode = {mode} playerMax={playerMax}/> : null}
                 </div>
             </div>
             </div>

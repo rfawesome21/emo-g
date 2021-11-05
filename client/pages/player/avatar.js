@@ -10,6 +10,7 @@ const avatar = () => {
     const router = useRouter()
     const socket  = useContext(SocketContext)
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
+    const [playerName, setPlayerName] = useState()
 
     const [players, setPlayers] = useState([])
     const [color, setColor] = useState(0)
@@ -21,6 +22,7 @@ const avatar = () => {
         const gameCode = sessionStorage.getItem('game-code')
         setGameCode(gameCode)
         const playerName = sessionStorage.getItem('player-name')
+        setPlayerName(playerName)
         socket.emit('join-avatar', {gameCode, playerName})
         socket.on('players', players => {
             setNumberOfPlayers(players.length)
@@ -68,7 +70,7 @@ const avatar = () => {
                         </svg>
                     </div>
                     <div className="font-bold text-xl">
-                        Avatar
+                        {playerName}
                     </div>
                 </div>
                 <div className="flex pl-28">

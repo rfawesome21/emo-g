@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
 
 const ConfirmLifeline = (props) => {
@@ -27,6 +27,7 @@ const ConfirmLifeline = (props) => {
                     <div className="text-xl font-bold">
                          Do you want to use the lifeline<br />{props.lifeLine}?
                     </div>
+                    <div className="ebaText my-3">{props.lifeLine==="This or That"?"This will allow you to make two guesses":props.lifeLine==="Call the Bot"?"System will give 3 answers to choose from":props.lifeLine==="Delete a row"?"System will drop a row of incorrect answers":""}</div>
                     <div className="flex justify-evenly items-center">
                          <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => clickHandler()}>Yes</div>
                          <div className="buttonNew text-lg px-2 py-0 rounded" onClick={() => props.setConfirmLifeline(false)}>No</div>

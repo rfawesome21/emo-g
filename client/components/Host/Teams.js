@@ -1,10 +1,14 @@
 import { useState } from "react";
+import CallHostPopup from "./callHostPopup";
 import DashboardTeamPlayers from "./DashboardTeamPlayers";
 
 const Teams = ({teams, rounds}) => {
-    console.log(teams);
+    // console.log(teams);
     const [activeTeam, setActiveTeam] = useState(1)
-    console.log(rounds);
+
+    const [callHostPopup, setCallHostPopup] = useState(false)
+
+    // console.log(rounds);
     return ( 
         <div className="flex justify-center items-center h-screen">
             <div className=" h-2/3 w-4/5 flex">
@@ -25,12 +29,16 @@ const Teams = ({teams, rounds}) => {
                         <div className="-ml-5">{team.teamMembers.length} Players</div>
                         <div className="-ml-3">{team.roundNo}/{rounds}</div>
                         <div className="ml-5">{team.score < 10? `0${team.score}` : `${team.score}`}</div>
-                        {team.callTheHost?<div className="rounded-full bg-red-700 h-4 w-4"></div>:<div className="rounded-full h-4 w-4"></div>}
+                        {team.callTheHost?<div className="rounded-full bg-red-700 h-4 w-4" onClick={() => setCallHostPopup(true)}></div>:<div className="rounded-full h-4 w-4"></div>}
                     </div>
                     )):<></>}
                 </div>
                 <DashboardTeamPlayers activeTeam = {teams.find(t => t.teamName === activeTeam)} />
             </div>
+            {callHostPopup?
+                <CallHostPopup setCallHostPopup={setCallHostPopup} activeTeam={teams.find(t => t.teamName === activeTeam)}/>:
+                <></>
+            }
         </div>
      );
 }

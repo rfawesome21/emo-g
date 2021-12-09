@@ -4,6 +4,7 @@ import { SocketContext } from "../../../context/socket/SocketContext";
 import Wheel from '../../../components/wheel'
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
 import SettingsAndBack from "../../../components/settingsAndBack"
+import Summary from "../../../components/Players/summary";
 
 const game = () => {
 
@@ -49,7 +50,13 @@ const game = () => {
     const [guessedEmotions, setGuessedEmotions] = useState([])
     const [gameLog, setGameLog] = useState([])
 
-    const [callHost, setCallHost] = useState(false)    
+    const [callHost, setCallHost] = useState(false)
+    
+    // popup after every round
+    const [summary, setSummary] = useState(false)
+    const [correctAnswer, setCorrectAnswer] = useState("")
+    const [yourAnswer, setYourAnswer] = useState([])
+    const [pointsEarned, setPointsEarned] = useState(0)
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
@@ -425,6 +432,8 @@ const game = () => {
                     </div>                
                 </div>
             :<></>}
+
+            {summary?<Summary correctAnswer={correctAnswer} yourAnswer={yourAnswer} pointsEarnerd={pointsEarned}/>:<></>}
 
             {confirmLifeline?<ConfirmLifeline setConfirmLifeline={setConfirmLifeline} lifeLine={confirmLifeline}/>:<></>}
         </div>

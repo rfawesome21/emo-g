@@ -4,12 +4,15 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({code, teamName}) => {
+    const joinTeamRoom = ({code, teamName, pName}) => {
+        try{
         console.log('My team is ', teamName)
         socket.join(code)
         socket.join(`${code}-${teamName}`)
         const roomObject = roomArrayMap.get(code)
+        const player = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        team.showSummary = false
         io.to(socket.id).emit('team-score', team.score)
         io.to(socket.id).emit('team-messages', team.messages)
         io.to(socket.id).emit('team-players', team.teamMembers)
@@ -24,13 +27,14 @@ module.exports = (io, socket) => {
         io.to(socket.id).emit('current-team', team)
         io.to(socket.id).emit('game-log', team.emotionPerRound)
         io.to(socket.id).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.to(socket.id).emit('next-round-emotion', roomObject.emotion[team.roundNo - 2])
+        io.to(socket.id).emit('active-player', player)
+        io.in(`${code}-${teamName}`).emit('show-summary', team.showSummary)
         io.in(code).emit('team-details', roomObject.teams)
-    }
-
-    const isTyping = ({gameCode, teamName, playerName}) => {
-        const roomObject = roomArrayMap.get(gameCode)
-        const player = roomObject.playerDetails.find(p => p.name === playerName)
-        io.in(`${gameCode}-${teamName}`).emit('active-player', player.name)
+        }
+        catch(e){
+            console.log(e);
+        }
     }
 
     const addedMessage = ({gameCode,teamName, message}) => {
@@ -128,7 +132,7 @@ module.exports = (io, socket) => {
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
         team.isDisabled = false
-
+        team.showSummary = true
         let arr = roomObject.guessingTimer.split(':')
         let totalTimerG = Number(arr[0]) * 60 + Number(arr[1])
         
@@ -148,8 +152,11 @@ module.exports = (io, socket) => {
         }
 
         
+        const playerDude = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
+
+
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
-        io.in(`${gameCode}-${teamName}`).emit('active-player', '')
+        io.in(`${gameCode}-${teamName}`).emit('active-player', playerDude)
         io.in(`${gameCode}-${teamName}`).emit('current-team', team)
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
         io.in(`${gameCode}-${teamName}`).emit('team-round', team.roundNo)
@@ -159,8 +166,11 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('team-score', team.score)
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.in(`${gameCode}-${teamName}`).emit('next-round-emotion', roomObject.emotion[team.roundNo - 2])
         io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
         io.in(`${gameCode}-${teamName}`).emit('reset-emotions')
+        io.in(`${gameCode}-${teamName}`).emit('your-answer', emotion)
+        io.in(`${gameCode}-${teamName}`).emit('show-summary', team.showSummary)
         io.in(gameCode).emit('team-details', roomObject.teams)
         let j = 0
         for(var i of roomObject.teams){
@@ -260,7 +270,7 @@ module.exports = (io, socket) => {
         team.typingTimer = roomObject.typingTimer
         team.guessingTimer = roomObject.guessingTimer
         team.isDisabled = false
-
+        team.showSummary = true
         let arr = roomObject.guessingTimer.split(':')
         let totalTimerG = Number(arr[0]) * 60 + Number(arr[1])
         
@@ -279,9 +289,10 @@ module.exports = (io, socket) => {
         if(team.roundNo === roomObject.scene[0].nudgeRoundNo){
             team.messages.push(roomObject.scene[0].nudge)
         }
+        const playerDude = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
 
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
-        io.in(`${gameCode}-${teamName}`).emit('active-player', '')
+        io.in(`${gameCode}-${teamName}`).emit('active-player', playerDude)
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
         io.in(`${gameCode}-${teamName}`).emit('set-this-to-true', false)
         io.in(`${gameCode}-${teamName}`).emit('team-round', team.roundNo)
@@ -294,6 +305,8 @@ module.exports = (io, socket) => {
         io.in(`${gameCode}-${teamName}`).emit('game-log', team.emotionPerRound)
         io.in(`${gameCode}-${teamName}`).emit('reset-emotions')
         io.in(`${gameCode}-${teamName}`).emit('current-round-emotion', roomObject.emotion[team.roundNo - 1])
+        io.in(`${gameCode}-${teamName}`).emit('your-answer', guessedEmotions)
+        io.in(`${gameCode}-${teamName}`).emit('show-summary', team.showSummary)
         io.in(gameCode).emit('team-details', roomObject.teams)
         let j = 0
         for(var i of roomObject.teams){
@@ -330,7 +343,6 @@ module.exports = (io, socket) => {
 
     socket.on('submit-statement', addedMessage)
     socket.on('join-team-room', joinTeamRoom)
-    socket.on('is-typing', isTyping)
     socket.on('guessed', emotionGuessed)
     socket.on('host-dashboard', hostDashboard)
     socket.on('guessed-array', emotionGuessedArray)

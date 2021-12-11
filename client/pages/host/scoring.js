@@ -20,6 +20,7 @@ const Scoring = () => {
     const socket = useContext(SocketContext)
     useEffect(() => {
         let isMounted = true
+        sessionStorage.setItem('player-name', 'host')
         setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('join-score-settings', sessionStorage.getItem('game-code'))
         socket.on('players', players => {

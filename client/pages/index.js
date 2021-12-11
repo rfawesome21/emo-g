@@ -1,11 +1,15 @@
 import Head from 'next/head'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { SocketContext } from '../context/socket/SocketContext'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
 export default function Home() {
   const socket = useContext(SocketContext)
+
+  useEffect(() => {
+    sessionStorage.clear()
+  }, [])
   
   return (
     <div className={styles.container}>

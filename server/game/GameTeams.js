@@ -46,7 +46,8 @@ module.exports = (io, socket) => {
                 guessingCounter : totalTimerG,
                 callTheBot : false,
                 thisOrThat : false,
-                deleteARow : false
+                deleteARow : false,
+                showSummary : false
             })
         }
 

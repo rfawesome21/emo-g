@@ -56,17 +56,19 @@ const game = () => {
     const [summary, setSummary] = useState(false)
     const [correctAnswer, setCorrectAnswer] = useState("")
     const [yourAnswer, setYourAnswer] = useState([])
-    const [pointsEarned, setPointsEarned] = useState(0)
+    const [currScore, setCurrScore] = useState(0)
+    const [nextPlayer,setNextPlayer] = useState("")
 
     useEffect(() => {
         setStatus(sessionStorage.getItem('status'))
         setPlayerName(sessionStorage.getItem('player-name'))
         const code = sessionStorage.getItem('game-code')
+        const pName = sessionStorage.getItem('player-name')
         setGameCode(sessionStorage.getItem('game-code'))  
         let teamName = sessionStorage.getItem('team-name')
         let isMounted = true
         if(isMounted)
-            socket.emit('join-team-room', {code, teamName })
+            socket.emit('join-team-room', {code, teamName, pName })
 
         socket.on('team-players', players => {
             setPlayer(players.find(p => p.isRandomlySelected === true))    
@@ -81,17 +83,23 @@ const game = () => {
         })
         
         socket.on('current-team', team => setTeam(team))
-        socket.on('current-round-emotion', emotion => setCurrentRoundEmotion(emotion))
+        socket.on('current-round-emotion', emotion => {
+            setCurrentRoundEmotion(emotion)
+        })
 
+        socket.on('next-round-emotion', emotion => setCorrectAnswer(emotion))
+
+        socket.on('show-summary', bool => setSummary(bool))
+        
         socket.on('team-round', roundNumber => {
-            if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
-            {    
-                sessionStorage.removeItem('type-counter')
-                sessionStorage.removeItem('guess-counter')
-            }
-            setGuessedEmotions([])
-            sessionStorage.setItem('round-no-team', roundNumber)
-            setRoundNo(roundNumber)
+                if(sessionStorage.getItem('round-no-team') && roundNumber > Number(sessionStorage.getItem('round-no-team')))
+                {    
+                    sessionStorage.removeItem('type-counter')
+                    sessionStorage.removeItem('guess-counter')
+                }
+                setGuessedEmotions([])
+                sessionStorage.setItem('round-no-team', roundNumber)
+                setRoundNo(roundNumber)
         })
 
         socket.on('set-this-to-true', bool => setThisOrThatBool(bool))
@@ -108,8 +116,41 @@ const game = () => {
             setThirdEmotion("")
         })
 
-        socket.on('active-player', activePlayer => setActivePlayer(activePlayer))
-        socket.on('team-score', score => setScore(score))
+        socket.on('active-player', activePlayer => {
+            activePlayer.isRandomlySelected? setActivePlayer(activePlayer) : null
+            activePlayer.isRandomlySelected? setNextPlayer(activePlayer) : null
+        })
+
+        socket.on('team-score', newScore => {
+            console.log(score);
+            let curScore = 0
+            if(sessionStorage.getItem('curr-round-score-val'))
+                curScore = Number(sessionStorage.getItem('curr-round-score-val'))
+            setCurrScore(newScore - curScore)
+            sessionStorage.setItem('curr-round-score-val', newScore)
+            setScore(newScore)
+        })
+
+        socket.on('your-answer', emotion => {
+            setTimeout(() => {
+                setSummary(false)
+            }, 5000)
+            let arr = yourAnswer.slice()
+            if(typeof(emotion) === 'string'){
+                arr.push(emotion)
+                setYourAnswer(arr)
+            }
+            else
+            {
+                arr.push(emotion[0])
+                arr.push(emotion[1])
+                setYourAnswer(arr)
+            }
+            
+        })
+
+
+
         socket.on('scene', scene => setScene(scene))
         socket.on('team-messages', messages => setMessages(messages))
         socket.on('typing-counter', counter => {
@@ -242,6 +283,7 @@ const game = () => {
             return
         }
         const teamName = sessionStorage.getItem('team-name')
+        
         thisOrThatBool?
         socket.emit('guessed-array', {gameCode, teamName, guessedEmotions, playerName})
         :
@@ -249,9 +291,7 @@ const game = () => {
     }
 
     const onChangeHandler = (e) => {
-        const teamName = sessionStorage.getItem('team-name')
         setStatement(e.target.value)
-        socket.emit('is-typing', {gameCode, teamName, playerName})
     }
 
     const onSubmit = () => {
@@ -266,6 +306,14 @@ const game = () => {
         socket.emit('submit-statement', {gameCode, teamName, message})
     }
 
+    // const [screenZoom, setScreenZoom] = useState(1)
+
+    // useEffect(() => {
+    //     if(window.innerWidth<1280){
+    //         setScreenZoom(0.9)
+    //     }
+    // }, [])
+
     return ( 
         <div className="flex flex-column h-screen bgNormal">
             <div className="flex justify-end my-8">
@@ -274,7 +322,7 @@ const game = () => {
             <div className="flex flex-row px-8 pb-4" style={{flex:"1"}}>
                 <div className="flex heading rounded-xl mx-2 flex-column items-center flex-1" style={{height:"80vh"}}>
                     {players.map((player, index) => (
-                        <div className={player.name===activePlayer?"mt-4 p-2 burlywoodBorder rounded-lg":"mt-4 p-2"} key = {index}>
+                        <div className={player.name===activePlayer.name?"mt-4 p-2 burlywoodBorder rounded-lg":"mt-4 p-2"} key = {index}>
                             <div className="flex justify-center">
                                 <img src = {player.avatar} alt = 'avatar' className='h-20 w-20' />
                             </div>
@@ -290,11 +338,11 @@ const game = () => {
                             Round {roundNo}/{maxRounds.current}                            
                         </div>
                         <div>
-                            {isTimerOver? timeGuesserFormat : timeFormat}
+                            {isTimerOver?  `Guessing time: ${timeGuesserFormat}` : `Typing time: ${timeFormat}`}
                         </div>
                     </div>
                     <div className="flex flex-column-reverse overflow-y-auto" style={{flex:"9"}}>
-                            {player.name === playerName && player.isRandomlySelected?
+                            {player.name === playerName && player.isRandomlySelected || playerName === 'host'?
                             <div className='flex flex-row justify-between py-2 px-3'>
                                 
                                 <input placeholder='Be Careful! You can only submit one statement in a round.' className="ebaBg w-full input font-normal pl-2 border-2 rounded-lg ebaBorder whiteText h-8" value = {statement} onChange = {e => onChangeHandler(e)} disabled = {isDisabled? true: false} />
@@ -433,7 +481,7 @@ const game = () => {
                 </div>
             :<></>}
 
-            {summary?<Summary correctAnswer={correctAnswer} yourAnswer={yourAnswer} pointsEarnerd={pointsEarned}/>:<></>}
+            {summary?<Summary setSummary={setSummary} correctAnswer={correctAnswer} yourAnswer={yourAnswer} pointsEarnerd={currScore}  nextPlayer={nextPlayer.name}/>:<></>}
 
             {confirmLifeline?<ConfirmLifeline setConfirmLifeline={setConfirmLifeline} lifeLine={confirmLifeline}/>:<></>}
         </div>

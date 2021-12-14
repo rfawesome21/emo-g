@@ -171,6 +171,8 @@ const game = () => {
     useEffect(() => {
         var objDiv = document.getElementById("chatBox");
         objDiv.scrollTop = objDiv.scrollHeight;
+        var objDiv2 = document.getElementById("gameLog");
+        objDiv2.scrollTop = objDiv2.scrollHeight;
     })
 
     useEffect(() => {
@@ -408,7 +410,7 @@ const game = () => {
                         onClick = {() => clickHandler()} disabled = {!isDisabled} >Confirm</button>}
                         <div className="heading rounded-xl py-3 h-auto">
                             <div className="text-center">Game Log</div>
-                            <div className="scl overscroll-y-auto px-1 py-1 text-xs text-center h-48">
+                            <div className="scl overscroll-y-auto px-1 py-1 text-xs text-center h-48" id="gameLog">
                                 {gameLog.map((game, index) => 
                                     typeof(game.emotion) === "object" && roundNo > 1?
                                     <div key={index} className='py-2'>{game.guesser} Guessed {game.emotion[0]} and {game.emotion[1]}</div>

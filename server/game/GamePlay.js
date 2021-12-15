@@ -4,14 +4,15 @@ const { getRandomInt } = require('./GameFunctions')
 
 module.exports = (io, socket) => {
 
-    const joinTeamRoom = ({code, teamName, pName}) => {
+    const joinTeamRoom = ({code, teamName}) => {
         try{
         console.log('My team is ', teamName)
         socket.join(code)
         socket.join(`${code}-${teamName}`)
         const roomObject = roomArrayMap.get(code)
-        const player = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
+        console.log(roomObject.playerDetails);
         const team = roomObject.teams.find(t => t.teamName === Number(teamName))
+        const player = team.teamMembers.find(p => p.isRandomlySelected === true)
         team.showSummary = false
         io.to(socket.id).emit('team-score', team.score)
         io.to(socket.id).emit('team-messages', team.messages)
@@ -152,7 +153,8 @@ module.exports = (io, socket) => {
         }
 
         
-        const playerDude = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
+        const playerDude = team.teamMembers.find(p => p.isRandomlySelected === true)
+
 
 
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
@@ -289,7 +291,9 @@ module.exports = (io, socket) => {
         if(team.roundNo === roomObject.scene[0].nudgeRoundNo){
             team.messages.push(roomObject.scene[0].nudge)
         }
-        const playerDude = roomObject.playerDetails.find(p => p.isRandomlySelected === true)
+        
+        const playerDude = team.teamMembers.find(p => p.isRandomlySelected === true)
+
 
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
         io.in(`${gameCode}-${teamName}`).emit('active-player', playerDude)

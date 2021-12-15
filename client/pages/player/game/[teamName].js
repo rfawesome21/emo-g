@@ -117,8 +117,8 @@ const game = () => {
         })
 
         socket.on('active-player', activePlayer => {
-            activePlayer.isRandomlySelected? setActivePlayer(activePlayer) : null
-            activePlayer.isRandomlySelected? setNextPlayer(activePlayer) : null
+            activePlayer.isRandomlySelected? setActivePlayer(activePlayer) : setActivePlayer('')
+            activePlayer.isRandomlySelected? setNextPlayer(activePlayer) : setActivePlayer('')
         })
 
         socket.on('team-score', newScore => {

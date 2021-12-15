@@ -15,15 +15,16 @@ module.exports = (io, socket) => {
             if(roomObject.GAME_SCENES[j].id === sceneID){
                 sceneIndex = j
             }
-        }    
+        }
+        console.log(sceneIndex);    
         if(sceneIndex){           
-            roomObject.scene.scene = scene
-            roomObject.scene.roleOne = nudgeRole1
-            roomObject.scene.roleTwo = nudgeRole2
-            roomObject.scene.statementOne = initialStatementOne
-            roomObject.scene.statementTwo = initialStatementTwo
-            roomObject.scene.nudge = nudgeStatement
-            roomObject.scene.nudgeRoundNo = nudgeRoundNo
+            roomObject.scene[0].scene = scene
+            roomObject.scene[0].roleOne = nudgeRole1
+            roomObject.scene[0].roleTwo = nudgeRole2
+            roomObject.scene[0].statementOne = initialStatementOne
+            roomObject.scene[0].statementTwo = initialStatementTwo
+            roomObject.scene[0].nudge = nudgeStatement
+            roomObject.scene[0].nudgeRoundNo = nudgeRoundNo
             roomObject.GAME_SCENES[sceneIndex].scene = scene
             roomObject.GAME_SCENES[sceneIndex].roleOne = nudgeRole1
             roomObject.GAME_SCENES[sceneIndex].roleTwo = nudgeRole2
@@ -32,6 +33,7 @@ module.exports = (io, socket) => {
             roomObject.GAME_SCENES[sceneIndex].nudge = nudgeStatement
             roomObject.GAME_SCENES[sceneIndex].nudgeRoundNo = nudgeRoundNo
         }
+        console.log('hi', roomObject.scene);
         io.to(socket.id).emit('updated-scenes', roomObject.GAME_SCENES)
     }
 
@@ -70,7 +72,7 @@ module.exports = (io, socket) => {
     const addNewScenes = ({addScenesToGame, gameCode}) => {
         let roomObject = roomArrayMap.get(gameCode)
         roomObject.scene = addScenesToGame
-        console.log(addScenesToGame);
+        console.log('hi', addScenesToGame);
         roomObject.manuallySetScene = true
         io.to(socket.id).emit('received-scenes', roomObject.manuallySetScene)
     }
@@ -94,6 +96,7 @@ module.exports = (io, socket) => {
         {
             console.log(i.teamMembers);
         }
+        console.log(roomObject.teams[0].teamMembers);
         io.in(gameCode).emit('scene-page')
         io.to(socket.id).emit('scene-page')
     }

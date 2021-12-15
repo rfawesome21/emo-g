@@ -28,6 +28,7 @@ const SelectScene = () => {
     const router = useRouter()
 
     const addScenes = (scene) => {
+        console.log(scene);
         const newScene = {
             scene : scene.scene,
             nudge : scene.nudge,
@@ -68,8 +69,8 @@ const SelectScene = () => {
                     setScenes(scenes)
                 })
             socket.on('updated-scenes', scenes => {
-                if(isMounted)
-                    setScenes(scenes)
+                console.log(scenes);
+                setScenes(scenes)
             })
             socket.on('players', players => 
             {
@@ -105,7 +106,7 @@ const SelectScene = () => {
                                 setStatementOne('')
                                 setCreateScenes(true)}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline-block mr-2 -mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                                     </svg>
                                     Create Scene
                             </button>
@@ -135,7 +136,9 @@ const SelectScene = () => {
                                         setStatementOne(scene.statementOne)
                                         setStatementTwo(scene.statementTwo)
                                         setNudgeRoundNo(scene.nudgeRoundNo)
-                                        setCreateScenes(true)}}
+                                        setCreateScenes(true)
+                                        setSelectedItem([])
+                                    }}
                                     >
                                         <div className="font-bold text-lg">
                                             Scene {index}

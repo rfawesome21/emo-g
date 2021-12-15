@@ -33,7 +33,7 @@ module.exports = (io, socket) => {
             roomObject.GAME_SCENES[sceneIndex].nudge = nudgeStatement
             roomObject.GAME_SCENES[sceneIndex].nudgeRoundNo = nudgeRoundNo
         }
-        console.log('hi', roomObject.scene);
+        console.log('hello', roomObject.scene);
         io.to(socket.id).emit('updated-scenes', roomObject.GAME_SCENES)
     }
 
@@ -96,7 +96,6 @@ module.exports = (io, socket) => {
         {
             console.log(i.teamMembers);
         }
-        console.log(roomObject.teams[0].teamMembers);
         io.in(gameCode).emit('scene-page')
         io.to(socket.id).emit('scene-page')
     }

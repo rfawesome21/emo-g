@@ -45,7 +45,6 @@ module.exports = (io, socket) => {
         console.log(team.roundNo);
         team.isDisabled = true
         io.in(`${gameCode}-${teamName}`).emit('team-disabled', team.isDisabled)
-        io.in(`${gameCode}-${teamName}`).emit('active-player', '')
         io.in(`${gameCode}-${teamName}`).emit('team-messages', team.messages)
     }
 

@@ -1,18 +1,24 @@
 import Head from 'next/head'
 import { useContext, useEffect } from 'react'
-import { SocketContext } from '../context/socket/SocketContext'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function Home() {
-  const socket = useContext(SocketContext)
-
+  const router = useRouter()
+  
   useEffect(() => {
+    document.getElementById('focusDiv').focus();
     sessionStorage.clear()
   }, [])
+
+  const onSubmit = () => {
+    console.log('Clicked');
+    router.push("/play")
+  }
   
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onKeyPress={(e) => e.key === 'Enter' && onSubmit()} tabIndex={0} id={'focusDiv'}  >
       <Head>
         <title>Emo-G</title>
         <meta name="description" content="Emo-G" />

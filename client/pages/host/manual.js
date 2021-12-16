@@ -1,12 +1,12 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
-import SettingsAndBack from "../../components/settingsAndBack";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-import PlayerComponent from "../../components/Host/PlayerComponent";
 import {SocketContext} from '../../context/socket/SocketContext'
 import TeamPlayers from "../../components/TeamPlayers";
 import TeamComponent from "../../components/TeamComponent";
 import Button from "../../components/Button";
+import Head from 'next/head'
+
 // import styles from "../css/hostScreen.module.css"
 
 const manual = () => {
@@ -26,6 +26,7 @@ const manual = () => {
     }
 
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         socket.emit('manual-division', sessionStorage.getItem('game-code'))
         socket.on('players', players => {
             setNumberOfPlayers(players.length)
@@ -48,7 +49,12 @@ const manual = () => {
     }
 
     return ( 
-        <div className="flex flex-col bgNormal justify-center items-center h-screen">
+        <div className="flex flex-col bgNormal justify-center items-center h-screen" onKeyPress={(e) => e.key === 'Enter' && clickHandler()} tabIndex={0} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Manual Teams</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>

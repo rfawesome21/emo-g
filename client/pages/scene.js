@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useContext, useEffect, useState } from 'react'
 import { SocketContext } from '../context/socket/SocketContext'
+import Head from 'next/head'
 
 const scene = () => {
     const socket = useContext(SocketContext)
@@ -20,6 +21,11 @@ const scene = () => {
     }, [socket])
     return (
         <div className='flex flex-col items-center justify-center h-screen bgNormal'>
+            <Head>
+                <title>Emo-G | Scene</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="heading rounded-xl w-2/5 text-center px-8 py-4">
                 <h1 className='font-bold text-2xl'>Scene</h1>
                 <div className="text-xl ebaText">{scene[0] && scene[0].scene}</div>

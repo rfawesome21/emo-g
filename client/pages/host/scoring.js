@@ -4,6 +4,7 @@ import SettingsAndBack from "../../components/settingsAndBack";
 import { useRouter } from "next/router";
 import { SocketContext } from "../../context/socket/SocketContext";
 import EndGame from "../../components/endGame";
+import Head from 'next/head'
 
 const Scoring = () => {
 
@@ -19,6 +20,7 @@ const Scoring = () => {
     const router = useRouter()
     const socket = useContext(SocketContext)
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         let isMounted = true
         sessionStorage.setItem('player-name', 'host')
         setGameCode(sessionStorage.getItem('game-code'))
@@ -39,7 +41,12 @@ const Scoring = () => {
 
 
     return ( 
-        <div className="flex flex-row bgNormal justify-center h-screen">
+        <div className="flex flex-row bgNormal justify-center h-screen" onKeyPress={(e) => e.key === 'Enter' && clickHandler()} tabIndex={0} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Scoring</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <SettingsAndBack link="/host/scenes" player={false}/>
             <div className="flex flex-col items-center justify-evenly">
                 <div className="w-screen flex justify-center">

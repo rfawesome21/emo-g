@@ -4,6 +4,7 @@ import { SocketContext } from "../../context/socket/SocketContext";
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import PlayerComponent from "../../components/Host/PlayerComponent";
 import RuleBook from "../../components/RuleBook";
+import Head from 'next/head'
 
 const avatar = () => {
 
@@ -50,6 +51,11 @@ const avatar = () => {
 
     return ( 
         <div className="bgNormal h-screen flex flex-col justify-evenly">
+            <Head>
+                <title>Emo-G | Avatar</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
         <RuleBook />
         <div className="w-screen flex justify-center">
             <div className="w-2/6"><SendCodeToInvitePlayers gameCode={gameCodeRender} text={"Waiting for the host to start the game"} numberOfPlayers={numberOfPlayers}/></div>

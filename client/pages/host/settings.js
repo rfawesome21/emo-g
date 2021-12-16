@@ -1,10 +1,10 @@
 import {useContext, useEffect, useState} from "react"
 import {useRouter} from "next/router"
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers"
-import SettingsAndBack from "../../components/settingsAndBack"
-import styles from '../../styles/Settings.module.css'
 import { SocketContext } from "../../context/socket/SocketContext"
 import EndGame from "../../components/endGame"
+import Head from 'next/head'
+
 
 const settings = () => {
 
@@ -13,14 +13,13 @@ const settings = () => {
     const [numberOfRounds, setNumberOfRounds] = useState(10)
     const [numberOfPlayers, setNumberOfPlayers] = useState(0)
     const [gameCode, setGameCode] = useState("")
-    const [disabled, setDisabled] = useState(true)
     const [guessingTime, setGuessingTime] = useState('')
     const [typingTime, setTypingTime] = useState('')
     const [guessingTimeInSeconds, setGuessingTimeInSeconds] = useState('')
     const [typingTimeInSeconds, setTypingTimeInSeconds] = useState('')
-    const [disableRounds, setDisableRounds] = useState(true)
 
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         let isMounted = true
         sessionStorage.setItem('status', 1)
         socket.emit('create-game')
@@ -70,7 +69,12 @@ const settings = () => {
     }
 
     return ( 
-        <div className="flex flex-row justify-center h-screen w-screen bgNormal">
+        <div className="flex flex-row justify-center h-screen w-screen bgNormal" tabIndex={0} onKeyPress={(e) => e.key === 'Enter' && continueGame()} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Settings</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             {/* <SettingsAndBack link = '/play' /> */}
             <div className="flex flex-column justify-evenly">
                 <SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/>

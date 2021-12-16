@@ -10,6 +10,8 @@ import Scoring from "../../components/Host/Scoring"
 import Teams from "../../components/Host/Teams"
 import { SocketContext } from "../../context/socket/SocketContext"
 import router from "next/router"
+import Head from 'next/head'
+
 
 const hostDashboard = () => {
 
@@ -48,7 +50,11 @@ const hostDashboard = () => {
 
 
     return ( <div className="flex flex-row bgNormal">
-
+        <Head>
+                <title>Emo-G | Host Dashboard</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+        </Head>
         <Sidebar selected={selected} setSelected={setSelected}/>
          
         <div style={{flex:10}}>

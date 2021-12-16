@@ -5,7 +5,7 @@ import Wheel from '../../../components/wheel'
 import ConfirmLifeline from "../../../components/Players/confirmLifeline";
 import SettingsAndBack from "../../../components/settingsAndBack"
 import Summary from "../../../components/Players/summary";
-
+import Head from "next/head";
 const game = () => {
 
     const router = useRouter()
@@ -323,6 +323,11 @@ const game = () => {
 
     return ( 
         <div className="flex flex-column h-screen bgNormal">
+            <Head>
+                <title>Emo-G | Game</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="flex justify-end my-8">
                 {status === '1' ? <SettingsAndBack link = '/host/hostDashboard' /> : null}
             </div>

@@ -1,11 +1,12 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
-import SettingsAndBack from "../../components/settingsAndBack";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { SocketContext } from "../../context/socket/SocketContext";
 import TeamComponent from "../../components/TeamComponent";
 import Button from "../../components/Button";
 import TeamPlayers from "../../components/TeamPlayers";
+import Head from 'next/head'
+
 // import styles from "../css/hostScreen.module.css"
 
 const random = () => {
@@ -23,6 +24,7 @@ const random = () => {
     }
 
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         let isMounted = true
         if(isMounted)
             setGameCode(sessionStorage.getItem('game-code'))
@@ -56,7 +58,12 @@ const random = () => {
     }
 
     return ( 
-        <div className="flex flex-col justify-center items-center h-screen bgNormal">
+        <div className="flex flex-col justify-center items-center h-screen bgNormal" onKeyPress={(e) => e.key === 'Enter' && clickHandler()} tabIndex={0} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Random Teams</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCode} numberOfPlayers={numberOfPlayers}/></div>

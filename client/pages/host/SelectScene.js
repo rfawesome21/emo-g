@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import SettingsAndBack from '../../components/settingsAndBack'
 import {SocketContext} from '../../context/socket/SocketContext'
 import CreateNewScene from '../../components/CreateNewScene'
-import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
 import { useRouter } from "next/router";
 import Button from '../../components/Button';
+import Head from 'next/head'
+
 
 const SelectScene = () => {
     const socket = useContext(SocketContext)
@@ -84,6 +85,11 @@ const SelectScene = () => {
 
     return (
         <div className="justify-center align-center text-center flex flex-col px-10 h-screen bgNormal">
+            <Head>
+                <title>Emo-G | Select Scene</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <SettingsAndBack link="/host/scenes" player={false}/>
             <div className="flex justify-center mt-10">
                 {!createScenes?<div className="rounded p-10 w-3/4 heading">

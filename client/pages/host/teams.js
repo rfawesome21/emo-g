@@ -6,6 +6,7 @@ import PlayerComponent from "../../components/Host/PlayerComponent";
 import {SocketContext} from '../../context/socket/SocketContext'
 import Button from '../../components/Button'
 import EndGame from "../../components/endGame"
+import Head from 'next/head'
 
 const teams = () => {
 
@@ -19,6 +20,7 @@ const teams = () => {
     const [playersPerTeam, setPlayersPerTeam] = useState(4)
 
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         let isMounted = true
         setGameCode(sessionStorage.getItem('game-code'))
         socket.emit('join-teams', sessionStorage.getItem('game-code'))
@@ -58,7 +60,12 @@ const teams = () => {
     }
 
     return ( 
-        <div className="flex flex-row justify-center h-screen bgNormal">
+        <div className="flex flex-row justify-center h-screen bgNormal" onKeyPress={(e) => e.key === 'Enter' && continueGame()} tabIndex={0} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Team Mode</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <SettingsAndBack link="/host/scoring" player={false}/>
             <div className="flex flex-column justify-evenly">
                 <div className="w-screen flex justify-center">

@@ -1,9 +1,8 @@
 import SendCodeToInvitePlayers from "../../components/sendCodeToInvitePlayers";
-import SettingsAndBack from "../../components/settingsAndBack";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import TeamComponent from "../../components/TeamComponent";
-import Button from "../../components/Button";
+import Head from "next/head";
 import TeamPlayers from "../../components/TeamPlayers";
 import { SocketContext } from "../../context/socket/SocketContext";
 // import styles from "../css/hostScreen.module.css"
@@ -55,6 +54,11 @@ const choice = () => {
 
     return ( 
         <div className="flex flex-col justify-center items-center bgNormal h-screen">
+            <Head>
+                <title>Emo-G | Player's Choice</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="grid grid-cols-1 justify-center self-center w-full align-center">
                 <div className="w-screen flex justify-center">
                     <div className="w-80"><SendCodeToInvitePlayers gameCode={gameCodeZ} numberOfPlayers={numberOfPlayers}/></div>

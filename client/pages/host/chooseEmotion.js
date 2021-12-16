@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../context/socket/SocketContext";
 import Wheel from "../../components/wheel";
 import SettingsAndBack from "../../components/settingsAndBack";
+import Head from 'next/head'
+
 const ChooseEmotions = () => {
 
     const allEmotions = ['RAGE','ANGER','ANNOYANCE','LOATHING','DISGUST','BOREDOM','ADMIRATION','TRUST','ACCEPTANCE','TERROR', 'FEAR','APPREHENSION','AMAZEMENT','SURPRISE','GRIEF','SADNESS','PENSIVENESS','VIGILANCE','ANTICIPATION', 'INTEREST','ECSTACY','JOY','SERENITY', 'AGGRESSIVENESS','CONTEMPT','REMORSE','DISAPPROVAL','AWE','LOVE','SUBMISSION','OPTIMISM']
@@ -91,6 +93,11 @@ const ChooseEmotions = () => {
 
     return (
         <div className="flex bgNormal h-screen flex-column justify-center">
+            <Head>
+                <title>Emo-G | Select Emotions</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <SettingsAndBack link="/host/scenes" player={false}/>
             <div className="text-center container px-10" >
                 <div className="h-80 grid grid-col-1 grid-flow-col place-items-center ">

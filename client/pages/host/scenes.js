@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import SelectScene from "./SelectScene";
 import { SocketContext } from "../../context/socket/SocketContext";
 import EndGame from "../../components/endGame";
+import Head from 'next/head'
 
 const scenes = () => {
 
@@ -16,6 +17,7 @@ const scenes = () => {
     const [sceneClassName, setSceneClassName] = useState(false)
     const [emotionClassName,setEmotionClassName] = useState(false)
     useEffect(() => {
+        document.getElementById('focusDiv').focus()
         if(sessionStorage.getItem('scene-class'))
             setSceneClassName(true)
         if(sessionStorage.getItem('emotion-class'))
@@ -46,8 +48,17 @@ const scenes = () => {
 
     const router = useRouter()
 
+    const onSubmit = () => {
+        router.push('/host/scoring')
+    }
+
     return (
-        <div className="flex flex-row justify-center h-screen bgNormal">
+        <div className="flex flex-row justify-center h-screen bgNormal" onKeyPress={(e) => e.key === 'Enter' && onSubmit()} tabIndex={0} id={'focusDiv'}>
+            <Head>
+                <title>Emo-G | Scenes</title>
+                <meta name="description" content="Emo-G" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <SettingsAndBack link='/host/settings' player={false}/>
             <EndGame />
             

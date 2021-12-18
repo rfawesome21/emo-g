@@ -3,8 +3,13 @@ import {SocketContext, socket} from '../context/socket/SocketContext'
 import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {SSRProvider} from '@react-aria/ssr';
+import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }) {
+
+  useEffect(() => {
+    window.onbeforeunload = function() { return "Your work will be lost."; };
+  }, [])
   
   return (
     <SSRProvider>

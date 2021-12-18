@@ -12,6 +12,7 @@ export default function Home() {
     sessionStorage.clear()
   }, [])
 
+
   const onSubmit = () => {
     console.log('Clicked');
     router.push("/play")
